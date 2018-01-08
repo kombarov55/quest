@@ -16,39 +16,18 @@ import com.ovt.quest.commons.QuestGame
 
 class MainMenuScreen(internal var game: QuestGame) : Screen {
 
-    internal var stage = Stage()
-
-    private val toQuestScreen = object : ClickListener() {
-        override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-            game.screen = com.ovt.quest.quest.QuestScreen(game)
-        }
-    }
-
-    private val exit = object : ClickListener() {
-        override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-            Gdx.app.exit()
-        }
-    }
-
-    private val toMinigames = object : ClickListener() {
-        override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-            game.screen = MinigamesScreen(game)
-        }
-    }
+    private val stage = Stage()
 
     override fun show() {
         Gdx.input.inputProcessor = stage
 
         stage.addActor(game.background)
 
-        val playButton = game.buttonFactory.biggerButton("Играть")
-        playButton.addListener(toQuestScreen)
+        val playButton = game.buttonFactory.biggerButton("Играть", { game.screen = com.ovt.quest.quest.QuestScreen(game) })
 
-        val exitButton = game.buttonFactory.biggerButton("Выход")
-        exitButton.addListener(exit)
+        val minigames = game.buttonFactory.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
 
-        val minigames = game.buttonFactory.biggerButton("Миниигры")
-        minigames.addListener(toMinigames)
+        val exitButton = game.buttonFactory.biggerButton("Выход", { Gdx.app.exit() })
 
         val table = Table()
         table.setFillParent(true)

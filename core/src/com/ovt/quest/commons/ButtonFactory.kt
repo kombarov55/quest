@@ -18,24 +18,22 @@ class ButtonFactory(
 
     private lateinit var lastUsedStyle: TextButtonStyle
 
-    fun biggerButton(text: String): TextButton {
-//        if (lastUsedStyle != biggerStyle) {
-//            switchFontBug(game.bigFont)
-//        }
-//
-//        lastUsedStyle = biggerStyle
+    fun biggerButton(text: String, callback: () -> Unit = { }): TextButton {
 
         switchFontBug(game.bigFont)
 
-        return SoundButton(text, biggerStyle, game.buttonClickSound)
+        val b = SoundButton(text, biggerStyle, game.buttonClickSound)
+
+        b.addListener(object: ClickListener() {
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                callback.invoke()
+            }
+        })
+
+        return b
     }
 
     fun normalButton(text: String): TextButton {
-//        if (lastUsedStyle != normalStyle) {
-//            switchFontBug(game.normalFont)
-//        }
-//
-//        lastUsedStyle = normalStyle
         switchFontBug(game.normalFont)
 
         return SoundButton(text, normalStyle, game.buttonClickSound)
@@ -43,11 +41,6 @@ class ButtonFactory(
 
 
     fun smallerButton(text: String, callback: () -> Unit = { }): TextButton {
-//        if (lastUsedStyle != smallerStyle) {
-//            switchFontBug(game.smallerFont)
-//        }
-//
-//        lastUsedStyle = smallerStyle
         switchFontBug(game.smallerFont)
 
         val b = SoundButton(text, smallerStyle, game.buttonClickSound)
@@ -62,11 +55,6 @@ class ButtonFactory(
     }
 
     fun tinyButton(text: String): TextButton {
-//        if (lastUsedStyle != tinyStyle) {
-//            switchFontBug(game.tinyFont)
-//        }
-//
-//        lastUsedStyle = tinyStyle
 
         switchFontBug(game.tinyFont)
 
