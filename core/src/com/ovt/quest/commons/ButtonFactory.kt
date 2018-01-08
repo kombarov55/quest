@@ -18,8 +18,10 @@ class ButtonFactory(
 
     fun biggerButton(text: String): TextButton {
         if (lastUsedStyle != biggerStyle) {
-            switchFontBug(biggerStyle.font)
+            switchFontBug(game.bigFont)
         }
+
+        switchFontBug(game.bigFont)
 
         lastUsedStyle = biggerStyle
 
@@ -28,10 +30,11 @@ class ButtonFactory(
 
     fun normalButton(text: String): TextButton {
         if (lastUsedStyle != normalStyle) {
-            switchFontBug(normalStyle.font)
+            switchFontBug(game.normalFont)
         }
 
         lastUsedStyle = normalStyle
+        switchFontBug(game.normalFont)
 
         return SoundButton(text, normalStyle, game.buttonClickSound)
     }
@@ -39,19 +42,21 @@ class ButtonFactory(
 
     fun smallerButton(text: String): TextButton {
         if (lastUsedStyle != smallerStyle) {
-            switchFontBug(smallerStyle.font)
+            switchFontBug(game.smallerFont)
         }
 
         lastUsedStyle = smallerStyle
+        switchFontBug(game.smallerFont)
         return SoundButton(text, smallerStyle, game.buttonClickSound)
     }
 
     fun tinyButton(text: String): TextButton {
         if (lastUsedStyle != tinyStyle) {
-            switchFontBug(tinyStyle.font)
+            switchFontBug(game.tinyFont)
         }
 
         lastUsedStyle = tinyStyle
+        switchFontBug(game.tinyFont)
         return SoundButton(text, tinyStyle, game.buttonClickSound)
     }
 

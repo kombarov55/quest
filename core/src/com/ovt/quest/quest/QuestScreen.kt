@@ -67,7 +67,7 @@ class QuestScreen(internal var game: QuestGame) : Screen {
 
         node.options.forEach { option ->
             //TODO: переиспользовать старые кнопки
-            val optionButton = game.buttonFactory.tinyButton(option.text)
+            val optionButton = game.buttonFactory.smallerButton(option.text)
             optionButton.label.setWrap(true)
 
             val width = Gdx.graphics.width * 0.75f
