@@ -14,7 +14,9 @@ import com.ovt.quest.commons.QuestGame
 
 class QuestScreen(internal var game: QuestGame) : Screen {
 
-    var stage = Stage()
+    private val stage = Stage()
+
+    private lateinit var questNodes: List<QuestNode>
 
     private val optionsTable = Table()
 
@@ -37,7 +39,7 @@ class QuestScreen(internal var game: QuestGame) : Screen {
 
         addTables()
 
-        val questNodes = QuestlineParser.loadQuestNodes()
+        questNodes = QuestlineParser.loadQuestNodes()
 
         displayNode(questNodes.first())
 
@@ -64,10 +66,18 @@ class QuestScreen(internal var game: QuestGame) : Screen {
 
         optionsTable.clear()
 
-
+        //TODO: переиспользовать старые кнопки
         node.options.forEach { option ->
-            //TODO: переиспользовать старые кнопки
-            val optionButton = game.buttonFactory.smallerButton(option.text)
+
+            val optionButton = game.buttonFactory.smallerButton(option.text, {
+
+                val nextNode = questNodes.find { it.id == option.targetId } ?: questNodes.first()
+                displayNode(nextNode)
+
+
+            })
+
+
             optionButton.label.setWrap(true)
 
             val width = Gdx.graphics.width * 0.75f

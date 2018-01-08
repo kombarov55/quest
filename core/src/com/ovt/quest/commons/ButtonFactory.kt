@@ -1,9 +1,11 @@
 package com.ovt.quest.commons
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 
 /**
  * Created by nikolay on 08/01/2018.
@@ -17,46 +19,57 @@ class ButtonFactory(
     private lateinit var lastUsedStyle: TextButtonStyle
 
     fun biggerButton(text: String): TextButton {
-        if (lastUsedStyle != biggerStyle) {
-            switchFontBug(game.bigFont)
-        }
+//        if (lastUsedStyle != biggerStyle) {
+//            switchFontBug(game.bigFont)
+//        }
+//
+//        lastUsedStyle = biggerStyle
 
         switchFontBug(game.bigFont)
-
-        lastUsedStyle = biggerStyle
 
         return SoundButton(text, biggerStyle, game.buttonClickSound)
     }
 
     fun normalButton(text: String): TextButton {
-        if (lastUsedStyle != normalStyle) {
-            switchFontBug(game.normalFont)
-        }
-
-        lastUsedStyle = normalStyle
+//        if (lastUsedStyle != normalStyle) {
+//            switchFontBug(game.normalFont)
+//        }
+//
+//        lastUsedStyle = normalStyle
         switchFontBug(game.normalFont)
 
         return SoundButton(text, normalStyle, game.buttonClickSound)
     }
 
 
-    fun smallerButton(text: String): TextButton {
-        if (lastUsedStyle != smallerStyle) {
-            switchFontBug(game.smallerFont)
-        }
-
-        lastUsedStyle = smallerStyle
+    fun smallerButton(text: String, callback: () -> Unit = { }): TextButton {
+//        if (lastUsedStyle != smallerStyle) {
+//            switchFontBug(game.smallerFont)
+//        }
+//
+//        lastUsedStyle = smallerStyle
         switchFontBug(game.smallerFont)
-        return SoundButton(text, smallerStyle, game.buttonClickSound)
+
+        val b = SoundButton(text, smallerStyle, game.buttonClickSound)
+
+        b.addListener(object: ClickListener() {
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                callback.invoke()
+            }
+        })
+
+        return b
     }
 
     fun tinyButton(text: String): TextButton {
-        if (lastUsedStyle != tinyStyle) {
-            switchFontBug(game.tinyFont)
-        }
+//        if (lastUsedStyle != tinyStyle) {
+//            switchFontBug(game.tinyFont)
+//        }
+//
+//        lastUsedStyle = tinyStyle
 
-        lastUsedStyle = tinyStyle
         switchFontBug(game.tinyFont)
+
         return SoundButton(text, tinyStyle, game.buttonClickSound)
     }
 
