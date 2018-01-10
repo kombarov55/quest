@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<QuestNodes>
+
+    <QuestNode id="0" title="Пролог" openDiaryNote="детские воспоминания" content="Дорогой друг! Прости, что не писал Вам последние 2 года, не хотел отвлекать Вас, я понимаю, что после смерти Вашего ботюшки, нашего уважаемого графа на тебя свалилось много дел в столице. В Вашем родном имении все по-прежнему тихо, Ваш дядюшка следит здесь за порядком. У меня для Вас есть новость, но для меня это целое событие. Не столь давно в нашу деревню приехала молодая учительница… Мой юный граф, я женюсь в конце недели. Если у Вас будет время, окажите мне величайшую честь и посетите этот важный момент моей жизни.
+
+     С уважением, Ваш верный слуга Харин.">
+        <Options>
+            <Option targetId="glava1" text="Кучер, седлайте Бурана, я ненадолго покину город. За делами присмотрит Освальд." />
+            <Option targetId="1" text="У меня еще есть дела в городе." />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="1" content="Куда желаете отправиться, граф?">
+        <Options>
+            <Option targetId="2" text="Конюшни" />
+            <Option targetId="3" text="Бордель" />
+            <Option targetId="4" text="Стрельбище" />
+            <Option targetId="5" text="Лаборатория" />
+            <Option targetId="6" text="Погулять по улице" />
+            <Option targetId="glava1" text="Отправиться в поместье к другу" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="2" bg="stables1.png" content="Доброе утро, граф! Желаете потренироваться?">
+        <Options>
+            <Option targetId="2" action="horseRacing" text="С удовольствием, мне и Бурану не помешает разминка." />
+            <Option targetId="2.1" text="Не сейчас. Какие новости в окрестностях?" />
+            <Option targetId="1" text="Покинуть конюшни" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="2.1" openDiaryNote="монстры и мост" content="В городе тишь да гладь, только лишь старый мост нуждается в ремонте.">
+        <Options>
+            <Option targetId="2.2" text="Опять? Месяц назад я отправлял туда ремонтников" />
+            <Option targetId="2" action="horseRacing" text="Меня это мало интересует. Пожалуй, лучше разомнусь." />
+            <Option targetId="1" text="Я зря теряю тут время. " />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="2.2" content="Ваш батюшка сталкивался с этой проблемой. Помнится, именно этот мост стал причиной его гибели. Говорят, виной оползни, но суеверные твердят о красноглазых монстрах." >
+        <Options>
+            <Option targetId="2.3" text="Оползни? Чушь, здесь их никогда не было. Монстры еще большая чушь. Я лично проверю этот мост позже." />
+            <Option targetId="1" text="Оползни, монстры…. Вижу, ты уже принял с утра. Может зайду, когда протрезвеешь." />
+            <Option targetId="1" text="Да, я помню записки отца о «видениях рабочих». Никогда не воспринимал эту информацию всерьез. Пожалуй, стоит все еще раз проверить, тем более в моих планах поездка через этот мост. " />
+            <Option targetId="2.3" action="horseRacing" text="Уф… Знакомые истории. Лучше проверю своего коня перед дорогой." />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="2.3" content="Я могу еще Вам помочь, граф?">
+        <Options>
+            <Option targetId="2.3" action="horseRacing" text="Тренировка мне не помешает" />
+            <Option targetId="1" text="Благодарю. Я узнал все, что меня интересует." />
+            <Option targetId="1" text="Да, прекрати отнимать мое время глупыми разговорами" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3" bg="bordel1.png" content="Прекрасного дня, юный граф! Желаете приятно провести время?">
+        <Options>
+            <Option targetId="?" action="bordelVine" text="Для начала не отказался бы от вина" />
+            <Option targetId="3.1" action="showBordelPortraits" openDiaryNode="портрет" text="Я осмотрюсь." />
+            <Option targetId="3.3" text="Происходило ли что-нибудь интересное?" />
+            <Option targetId="3.1" action="bordel" text="Да, отдых бы мне не помешал" />
+            <Option targetId="1" text="Что я тут вообще делаю?" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3.0" action="screamer1" openDiaryNote="красные глаза" content="">
+        <Options>
+            <Option targetId="3.1" text="Что это было? Ох, и крепкое вино сегодня." />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3.1" content="Мы всегда рады таким достопочтенным и щедрым гостям. Желаете еще чего-нибудь?">
+        <Options>
+            <Option targetId="3.0" text="Еще вина." />
+            <Option targetId="3.3" text="Меня интересуют местные сплетни." />
+            <Option targetId="3.1" action="showBordelPortraits" openDiaryNode="портрет" text="Осмотреться" />
+            <Option targetId="3.1" action="bordel" text="Раз я все равно здесь, покажите, кто у вас есть." />
+            <Option targetId="1" text="Засиделся я, мне пора." />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3.2" content="При всем уважении, граф, мы не можем угощать бесплатно.">
+        <Options>
+            <Option targetId="3.4" text="Ты хоть понимаешь, с кем говоришь? Быстро тащи вино или я завтра же выкину тебя и твою забегаловку из моего города!" />
+            <Option targetId="3.3" text="Прошу прощения, забыл кошель дома. Чтобы мой визит не был напрасным, расскажите местные сплетни." />
+            <Option targetId="3.2" action="bordel" text="Я не против воспользоваться особыми услугами." />
+            <Option targetId="3.1" action="showBordelPortraits" openDiaryNode="портрет" text="Осмотреться" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3.3" openDiaryNote="древнее сокровище" content="Один гость рассказывал о таинственном сокровище недалеко от заброшенной астрономической башни к западу отсюда.">
+        <Options>
+            <Option targetId="3.5" text="Сокровище? Вы серьезно? " />
+            <Option targetId="3.0" text="Этот бред мне трезвым не понять." />
+            <Option targetId="3.3" action="bordel" text="Это все конечно хорошо, но я здесь с другой целью" />
+            <Option targetId="3.3" openDiaryNode="портрет" action="showBordelPortraits" text="Осмотреться" />
+            <Option targetId="1" text="Мне пора" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3.4" content="Ваш батюшка всегда был вежлив. Жаль, что Вы не такой. Пейте сколько влезет. Теперь прошу меня извинить, у меня другие дела.">
+        <Options>
+            <Option targetId="3.0.1" text="Выпить" />
+            <Option targetId="3.4" openDiaryNode="портрет" action="showBordelPortraits" text="Осмотреться" />
+            <Option targetId="3.3" text="3. Прошу прощения, не знаю, что на меня нашло. Раз с выпивкой не получилось, может расскажете свежие сплетни?" />
+            <Option targetId="1" text="Уйти" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3.0.1" action="screamer1" openDiaryNote="красные глаза" content="">
+        <Options>
+            <Option targetId="3.4" text="Что это было? Ох, и крепкое вино сегодня." />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="3.5" content="Мне тоже показалось это глупостью, но в своей комнате гость забыл карту и странный ключ. За вещами он так и не вернулся, если хотите – можете взять.">
+        <Options>
+            <Option targetId="3.6" action="addKeyAndMapToInventory" text="Надо проверить эту башню" />
+            <Option targetId="1" text="Я не люблю собирать чужой мусор." />
+            <Option targetId="1" action="bordel" text="Эти разговоры уже наскучили мне" />
+            <Option targetId="1" text="Уйти" />
+        </Options>
+    </QuestNode>
+    <QuestNode id="3.6" content="Мы можем еще чем-то услужить, граф?">
+        <Options>
+            <Option targetId="1" action="bordel" text="Бордель" />
+            <Option targetId="1" text="Уйти" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="4" bg="shootingRange1.png" content="Здравия желаю, граф! Вы пришли на тренировку?">
+        <Options>
+            <Option targetId="4" action="archery" text="Да, сегодня прекрасный день для проверки своей меткости" />
+            <Option targetId="4.1" text="Не сейчас. Какие новости в округе?" />
+            <Option targetId="1" text="Если честно, я попал сюда случайно" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="4.1" content="Охотники рассказывали о странном вое со стороны Вашего родового поместья.">
+        <Options>
+            <Option targetId="4.2" text="Поместья? Я как раз собираюсь туда. Можете рассказать подробнее?" />
+            <Option targetId="4.2" text="Странное совпадение, я как раз собирался в это поместье" />
+            <Option targetId="4.3" action="archery" text="Меня интересовали действительно полезные новости, а не городские легенды. Лучше потренируюсь" />
+            <Option targetId="1" text="Стрельба и разговоры меня не интересуют. До свидания" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="4.2" openDiaryNote="проклятая башня" content="Говорят, бесовщина началась с таинственной смерти в астрономической башне.">
+        <Options>
+            <Option targetId="4.3" text="Я уже взрослый, сам разберусь." />
+            <Option targetId="4.3" text="Благодарю за предупреждения. Буду внимателен в пути." />
+            <Option targetId="4.3" action="archery" text="Если поездка действительно опасна, стоит потренироваться" />
+            <Option targetId="1" text="Засиделся я здесь. Мне пора" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="4.3" content="Я могу еще чем-то помочь, граф?">
+        <Options>
+            <Option targetId="4.3" action="archery" text="Пожалуй, я еще потренируюсь." />
+            <Option targetId="1" text="Я услышал все, что хотел. До свидания!" />
+            <Option targetId="1" text="Да, не путаться под ногами и не тратить мое драгоценное время." />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="5" bg="lab1.png" content="Эту лабораторию построил для меня отец, когда я только приехал в город. Он всегда поддерживал мое увлечение наукой. Что у нас на полках?">
+        <Options>
+            <Option targetId="5" text="Готовить зелье" />
+            <Option targetId="1" text="Уйти" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6" bg="town1.png" content="Какой чудесный город! Не могу поверить, что он был возведен на средства моих предков. Здесь так тихо и спокойно… «слышен крик помощи»">
+        <Options>
+            <Option targetId="6.1" text="Что? Преступники в моем городе?" />
+            <Option targetId="6.2" text="Не мое дело, пускай займется стража" />
+            <Option targetId="1" text="Здесь не безопасно, лучше вернуться" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.1" content="За углом вы видите головореза, пытающегося отнять шкатулку у юной девушки.">
+        <Options>
+            <Option targetId="6.3" text="Помочь девушке" />
+            <Option targetId="6.4" text="Помочь головорезу" />
+            <Option targetId="1" text="Незаметно уйти" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.2" content="Вы предпочли не лезть не в свое дело. Постепенно крики становились все тише, а Вы удалялись все дальше. ">
+        <Options>
+            <Option targetId="1" text="" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.3" content="Эй! В моем городе не место таким как ты!">
+        <Options>
+            <Option targetId="6.3.1" action="threeInARow_easy" text="Драться" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.3.1" bg="town2.png" openDiaryNote="таинственная незнакомка" content="Спасибо, что спасли меня, граф. Я Аннабель, жрица леса. ">
+        <Options>
+            <Option targetId="6.5" text="Жрица леса? Что это значит? " />
+            <Option targetId="6.6" text="Рад знакомству, Аннабель. Я Герберт Лонгрен. " />
+            <Option targetId="6.7" text="Бандиту нужны были не Вы, а шкатулка. Что в ней?" />
+            <Option targetId="6.8" text="Я разве похож на спасателя? За все надо платить. Деньги есть или договоримся?" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.5" content="Я наследница древнего рода, это все, что я могу сказать.">
+        <Options>
+            <Option targetId="6.9" text="Что ж, это Ваше право." />
+            <Option targetId="6.10" text="Я рисковал жизнью не ради дурацких загадок! Отвечай на мои вопросы, иначе пожалеешь! " />
+            <Option targetId="1" text="Я зря теряю с тобой время. Пока! " />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.6" content="Я знаю кто Вы, граф. Я и сестры слышали о Вашей достойной семье. Если честно, я искала встречи с Вами. ">
+        <Options>
+            <Option targetId="6.9" text="" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.7" content="Шкатулка это то, что привело меня сюда. Я знала, она поможет мне найти Вас.">
+        <Options>
+            <Option targetId="6.9" text="" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.8" content="Я разочарована, граф. Я слышала, что вы честный и благородный человек.">
+        <Options>
+            <Option targetId="6.10" text="Как видишь, не все слухи правдивы" />
+            <Option targetId="6.9" text="Простите, я еще не отошел от битвы. Я не должен был позволять себе грубостей. Кто Вы и что за шкатулка у Вас в руках? " />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.9" openDiaryNote="странный подарок" content="Я проделала долгий путь из лесов Оссилора, виной тому – древнее пророчество о великом зле, проникшем в наш мир через разлом. Но я опоздала, духи мрачных миров уже здесь, скоро они уничтожат весь наш мир. Пророчество гласит, что лишь наследник дома Лонгренов обладает силой, способной навсегда запечатать разлом и уничтожить этих тварей. Знаки привели меня сюда… Граф, прошу, не перебивайте меня. Я отвечу на все Ваши вопросы позже и не здесь. В моей шкатулке есть то, что необходимо для спасения мира… или для его скорейшего уничтожения. Откройте ее, когда придет время.">
+        <Options>
+            <Option targetId="6.10" text="" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.10" content="Что? Она просто исчезла? Этого не может быть…">
+        <Options>
+            <Option targetId="6.11" text="Попытаться открыть шкатулку" />
+            <Option targetId="1" text="Уйти" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.11" content="Крышка шкатулки не поддается">
+        <Options>
+            <Option targetId="1" text="Уйти" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.4" content="Привет, приятель. Думаю, добычи хватит на нас двоих">
+        <Options>
+            <Option targetId="6.4.1" action="threeInARow_trivial" text="Драться" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.4.1" bg="town3.png" content="Идиот! Ты все испортил!">
+        <Options>
+            <Option targetId="6.4.2" action="threeInARow_easy" text="Драться" />
+        </Options>
+    </QuestNode>
+
+    <QuestNode id="6.4.2" content="Что это было? Нужно во всем срочно разобраться">
+        <Options>
+            <Option targetId="1" text="Уйти" />
+        </Options>
+    </QuestNode>
+
+</QuestNodes>

@@ -3,10 +3,12 @@ package com.ovt.quest.commons
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 
 /**
  * Created by nikolay on 08/01/2018.
@@ -37,10 +39,13 @@ class ButtonFactory(
         return SoundButton(text, tinyStyle, game.buttonClickSound, callback)
     }
 
-    fun imgButton(src: String, width: Float, height: Float, callback: () -> Unit = { }): Image {
-        val i = SoundImgButton(Texture(Gdx.files.internal(src)), game.buttonClickSound, callback)
-        i.setSize(width, height)
-        return i
+    fun imgButton(src: String, width: Float, height: Float, callback: () -> Unit = { }): ImageButton {
+        val pic = TextureRegionDrawable(TextureRegion(Texture(Gdx.files.internal(src))))
+
+        val b = SoundImgButton(pic, game.buttonClickSound, callback)
+        b.setSize(width, height)
+
+        return b
     }
 
     private val biggerStyle = createStyle(game.bigFont, skin)

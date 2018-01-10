@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -40,9 +41,9 @@ class QuestGame : Game() {
         batch = SpriteBatch()
 
         bigFont = createFont(92)
-        normalFont = createFont(48)
-        smallerFont = createFont(40)
-        tinyFont = createFont(24)
+        normalFont = createFont(40)
+        smallerFont = createFont(32)
+        tinyFont = createFont(20)
 
 
         textButtonSkin = Skin(Gdx.files.internal("skin/cloud-form-ui.json"))
@@ -61,6 +62,8 @@ class QuestGame : Game() {
         bgMusic.isLooping = true
         bgMusic.volume = 0.5f
         bgMusic.play()
+
+        Gdx.input.isCatchBackKey = true
 
         setScreen(MainMenuScreen(this))
     }

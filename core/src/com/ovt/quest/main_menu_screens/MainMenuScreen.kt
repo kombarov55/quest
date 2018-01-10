@@ -3,12 +3,15 @@ package com.ovt.quest.main_menu_screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Timer
 import com.ovt.quest.commons.QuestGame
+import java.util.*
 
 /**
  * Created by kombarov_na on 21.12.2017.
@@ -40,6 +43,20 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
         table.add(exitButton)
 
         stage.addActor(table)
+    }
+
+    private fun fadeOutMusic(music: Music) {
+        var volume: Float = music.volume * 100
+
+        Timer().scheduleTask(object : Timer.Task() {
+            override fun run() =
+                if (volume <= 0f) {
+                    this.cancel()
+                } else {
+                    volume -= 1
+                }
+
+        }, 0f, 10f)
     }
 
     override fun render(delta: Float) {

@@ -1,6 +1,7 @@
 package com.ovt.quest.quest
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -15,9 +16,18 @@ import com.ovt.quest.main_menu_screens.MainMenuScreen
 
 class QuestScreen(private val game: QuestGame) : Screen {
 
-    private val stage = Stage()
+    private val stage = object : Stage() {
+        override fun keyDown(keyCode: Int): Boolean =
+                when (keyCode) {
+                    Input.Keys.BACK -> {
+                        game.screen = MainMenuScreen(game)
+                        true
+                    }
 
-    private lateinit var questNodes: List<QuestNode>
+                    else -> super.keyDown(keyCode)
+                }
+
+    }
 
     private val optionsTable = Table()
 
@@ -31,18 +41,26 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
     override fun show() {
         initScreen()
+
+        if (Globals.questNodes.isEmpty()) {
+            Globals.questNodes = QuestlineLoader.loadQuestNodes()
+            Globals.currentQuestNode = Globals.questNodes.first()
+        }
+
+        displayNode(Globals.currentQuestNode ?: Globals.questNodes.first())
     }
 
     private fun initScreen() {
         Gdx.input.inputProcessor = stage
+        Gdx.input.isCatchBackKey = true
 
         stage.addActor(game.background)
 
         addWidgets()
 
-        questNodes = QuestlineLoader.loadQuestNodes()
+        Globals.questNodes = QuestlineLoader.loadQuestNodes()
 
-        displayNode(questNodes.first())
+        displayNode(Globals.questNodes.first())
 
     }
 
@@ -51,7 +69,8 @@ class QuestScreen(private val game: QuestGame) : Screen {
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
-        val buttonSideSize = minOf(Gdx.graphics.height, Gdx.graphics.width) * 0.01f
+//        val buttonSideSize = minOf(Gdx.graphics.height, Gdx.graphics.width) * 0.003f
+        val buttonSideSize = 30f
         val toHomeButton = game.buttonFactory.imgButton("img/home.png", buttonSideSize, buttonSideSize, {
             game.screen = MainMenuScreen(game)
         })
@@ -78,8 +97,9 @@ class QuestScreen(private val game: QuestGame) : Screen {
         node.options.map { option ->
 
             val optionButton = game.buttonFactory.smallerButton(option.text, {
-                val nextNode = questNodes.find { it.id == option.targetId } ?: questNodes.first()
-                displayNode(nextNode)
+                Globals.currentQuestNode = Globals.questNodes.find { it.id == option.targetId } ?: Globals.questNodes.first()
+
+                displayNode(Globals.currentQuestNode ?: Globals.questNodes.first())
             })
 
             optionButton.label.setWrap(true)
@@ -97,32 +117,9 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
         }
 
-
-//
-//        }.forEach { }
-//
-//        forEach { option ->
-//
-//            val optionButton = game.buttonFactory.smallerButton(option.text, {
-//
-//                val nextNode = questNodes.find { it.id == option.targetId } ?: questNodes.first()
-//                displayNode(nextNode)
-//
-//
-//            })
-//
-//
-//            optionButton.label.setWrap(true)
-//
-//            val width = Gdx.graphics.width * 0.75f
-//            val height = Gdx.graphics.height * 0.05f
-//            val pad = Gdx.graphics.width * 0.005f
-//
-//            optionsTable.add(optionButton).width(width).minHeight(height).pad(pad)
-//            optionsTable.row()
-//        }
-
     }
+
+
 
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
