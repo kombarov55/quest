@@ -25,7 +25,7 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
 
         val playButton = game.buttonFactory.biggerButton("Играть", { game.screen = com.ovt.quest.quest.QuestScreen(game) })
 
-        val minigames = game.buttonFactory.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
+//        val minigames = game.buttonFactory.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
 
         val exitButton = game.buttonFactory.biggerButton("Выход", { Gdx.app.exit() })
 
@@ -35,8 +35,8 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
 
         table.add(playButton)
         table.row()
-        table.add(minigames)
-        table.row()
+//        table.add(minigames)
+//        table.row()
         table.add(exitButton)
 
         stage.addActor(table)

@@ -8,18 +8,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 /**
  * Created by nikolay on 08/01/2018.
  */
-class SoundButton(text: String, style: TextButtonStyle, clickingSound: Sound) : TextButton(text, style) {
-
-
+class SoundButton(text: String,
+                  style: TextButtonStyle,
+                  clickingSound: Sound, callback: () -> Unit = { }) : TextButton(text, style) {
 
     init {
         addListener(object: ClickListener() {
 
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 clickingSound.play()
-
                 return true
             }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) =
+                    callback.invoke()
+
         })
     }
 }

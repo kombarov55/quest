@@ -39,9 +39,9 @@ class QuestGame : Game() {
     override fun create() {
         batch = SpriteBatch()
 
-        bigFont = createFont(72)
+        bigFont = createFont(92)
         normalFont = createFont(48)
-        smallerFont = createFont(36)
+        smallerFont = createFont(40)
         tinyFont = createFont(24)
 
 
@@ -53,9 +53,14 @@ class QuestGame : Game() {
         titleLabelStyle = LabelStyle(bigFont, Color.BLACK)
         descriptionStyle = LabelStyle(smallerFont, Color.BLACK)
 
-        background = Image(Texture(Gdx.files.internal("bg.jpg")))
+        background = Image(Texture(Gdx.files.internal("img/bg.jpg")))
 
         buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/ButtonClick.mp3"))
+
+        val bgMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/BgMusic.mp3"))
+        bgMusic.isLooping = true
+        bgMusic.volume = 0.5f
+        bgMusic.play()
 
         setScreen(MainMenuScreen(this))
     }

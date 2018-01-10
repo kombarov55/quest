@@ -5,8 +5,10 @@ package com.ovt.quest.quest
  */
 
 data class QuestNode(
-        val id: String = "",
-        val title: String? = "",
-        val content: String = "",
-        var options: MutableList<Option> = mutableListOf()
+        val id: String,
+        val title: String?,
+        val content: String,
+        var options: List<Option> = mutableListOf(),
+        val openDiaryNote: String?,
+        val action: String?
 )
