@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -41,8 +40,8 @@ class QuestGame : Game() {
         batch = SpriteBatch()
 
         bigFont = createFont(92)
-        normalFont = createFont(40)
-        smallerFont = createFont(32)
+        normalFont = createFont(50)
+        smallerFont = createFont(42)
         tinyFont = createFont(20)
 
 

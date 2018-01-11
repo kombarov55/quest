@@ -74,10 +74,11 @@ class QuestScreen(private val game: QuestGame) : Screen {
         val toHomeButton = game.buttonFactory.imgButton("img/home.png", buttonSideSize, buttonSideSize, {
             game.screen = MainMenuScreen(game)
         })
+
         table.add(toHomeButton).left()
         table.row()
 
-        table.add(titleLabel)
+        table.add(titleLabel).height(0f)
         table.row()
         table.add(contentLabel).width(Gdx.graphics.width * 0.9f).padBottom(Gdx.graphics.height * 0.05f).padTop(Gdx.graphics.height * 0.03f)
         table.row()
