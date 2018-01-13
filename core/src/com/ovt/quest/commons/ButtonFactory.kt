@@ -39,11 +39,10 @@ class ButtonFactory(
         return SoundButton(text, tinyStyle, game.buttonClickSound, callback)
     }
 
-    fun imgButton(src: String, width: Float, height: Float, callback: () -> Unit = { }): ImageButton {
+    fun imgButton(src: String, callback: () -> Unit = { }): ImageButton {
         val pic = TextureRegionDrawable(TextureRegion(Texture(Gdx.files.internal(src))))
 
         val b = SoundImgButton(pic, game.buttonClickSound, callback)
-        b.setSize(width, height)
 
         return b
     }

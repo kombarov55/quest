@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.viewport.StretchViewport
 import com.ovt.quest.commons.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 
@@ -16,7 +17,9 @@ import com.ovt.quest.main_menu_screens.MainMenuScreen
 
 class QuestScreen(private val game: QuestGame) : Screen {
 
-    private val stage = object : Stage() {
+    private val viewport = StretchViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+
+    private val stage = object : Stage(viewport) {
         override fun keyDown(keyCode: Int): Boolean =
                 when (keyCode) {
                     Input.Keys.BACK -> {
@@ -69,16 +72,15 @@ class QuestScreen(private val game: QuestGame) : Screen {
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
-//        val buttonSideSize = minOf(Gdx.graphics.height, Gdx.graphics.width) * 0.003f
-        val buttonSideSize = 30f
-        val toHomeButton = game.buttonFactory.imgButton("img/home.png", buttonSideSize, buttonSideSize, {
+        val toHomeButton = game.buttonFactory.imgButton("img/home.png", {
             game.screen = MainMenuScreen(game)
         })
 
-        table.add(toHomeButton).left()
+        val buttonSideSize = 30f
+        table.add(toHomeButton).left().width(buttonSideSize).height(buttonSideSize)
         table.row()
 
-        table.add(titleLabel).height(0f)
+        table.add(titleLabel)
         table.row()
         table.add(contentLabel).width(Gdx.graphics.width * 0.9f).padBottom(Gdx.graphics.height * 0.05f).padTop(Gdx.graphics.height * 0.03f)
         table.row()
