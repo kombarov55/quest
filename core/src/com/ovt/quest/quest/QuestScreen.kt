@@ -173,6 +173,7 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
     private fun hideDiary() {
         diaryTable.isVisible = false
+        toggleSettings()
     }
 
 
