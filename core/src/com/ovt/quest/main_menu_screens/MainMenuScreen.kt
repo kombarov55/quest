@@ -5,14 +5,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Timer
-import com.ovt.quest.commons.ButtonSize
 import com.ovt.quest.commons.QuestGame
-import java.util.*
 
 /**
  * Created by kombarov_na on 21.12.2017.
@@ -27,11 +23,11 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
 
         stage.addActor(game.background)
 
-        val playButton = game.buttonFactory.biggerButton("Играть", { game.screen = com.ovt.quest.quest.QuestScreen(game) })
+        val playButton = game.buttons.biggerButton("Играть", { game.screen = com.ovt.quest.quest.QuestScreen(game) })
 
-//        val minigames = game.buttonFactory.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
+//        val minigames = game.buttons.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
 
-        val exitButton = game.buttonFactory.biggerButton("Выход", { Gdx.app.exit() })
+        val exitButton = game.buttons.biggerButton("Выход", { Gdx.app.exit() })
 
         val table = Table()
         table.setFillParent(true)

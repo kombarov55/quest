@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ovt.quest.main_menu_screens.MainMenuScreen
-import com.ovt.quest.main_menu_screens.TableTestScreen
 import com.ovt.quest.quest.Globals
 
 class QuestGame : Game() {
@@ -27,7 +26,7 @@ class QuestGame : Game() {
 
     lateinit var buttonClickSound: Sound
 
-    lateinit var buttonFactory: ButtonFactory
+    lateinit var buttons: Buttons
     lateinit var labelFactory: LabelFactory
 
     lateinit var globals: Globals
@@ -57,7 +56,7 @@ class QuestGame : Game() {
 
         textButtonSkin = Skin(Gdx.files.internal("skin/cloud-form-ui.json"))
 
-        buttonFactory = ButtonFactory(this, textButtonSkin)
+        buttons = Buttons(this, textButtonSkin)
         labelFactory = LabelFactory(this)
 
         globals = Globals()

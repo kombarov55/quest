@@ -17,10 +17,10 @@ class TableTestScreen(private val game: QuestGame) : Screen {
     private val stage = Stage()
     private val table = Table()
 
-    private val homeButton = game.buttonFactory.normalButton("Главное меню", {
+    private val homeButton = game.buttons.normalButton("Главное меню", {
         stage.actors.removeValue(table, false)
     })
-    private val settingsButton = game.buttonFactory.normalButton("Настройки")
+    private val settingsButton = game.buttons.normalButton("Настройки")
 
 
     override fun show() {

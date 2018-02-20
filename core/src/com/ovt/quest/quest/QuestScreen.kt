@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.StretchViewport
-import com.ovt.quest.commons.ButtonSize
 import com.ovt.quest.commons.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 
@@ -19,6 +18,14 @@ import com.ovt.quest.main_menu_screens.MainMenuScreen
 class QuestScreen(private val game: QuestGame) : Screen {
 
     private val viewport = StretchViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+
+    val settingsButton = game.buttons.imgButton("img/settings.png", { toggleSettings() })
+    val diaryButton = game.buttons.imgButton("img/diary.png")
+    val homeButton = game.buttons.imgButton("img/home.png", { toHome() })
+
+    private val settingsTable = Table()
+
+    private val BUTTON_SIDE_SIZE = 50f
 
     private val stage = object : Stage(viewport) {
         override fun keyDown(keyCode: Int): Boolean =
@@ -54,16 +61,30 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
 
     private fun addWidgets() {
+        val h = Gdx.graphics.height
+        val w = Gdx.graphics.width
+
         val table = Table()
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
-        val toHomeButton = game.buttonFactory.imgButton("img/settings.png", {
-            game.screen = MainMenuScreen(game)
-        })
 
-        val buttonSideSize = 30f
-        table.add(toHomeButton).left().width(buttonSideSize).height(buttonSideSize)
+
+        table.add(settingsTable).left()
+        settingsTable.defaults()
+                .expandX()
+                .pad(w * 0.01f)
+                .left()
+                .width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE)
+        settingsTable.add(settingsButton)
+        settingsTable.add(diaryButton)
+        settingsTable.add(homeButton)
+
+        diaryButton.isVisible = false
+        homeButton.isVisible = false
+
+
+
         table.row()
 
         table.add(titleLabel)
@@ -87,7 +108,7 @@ class QuestScreen(private val game: QuestGame) : Screen {
                 .filter { game.globals.questNodes[it.targetId]?.hidden == false }
                 .map { option ->
 
-            val optionButton = game.buttonFactory.smallerButton(option.text, { optionClicked(option) })
+            val optionButton = game.buttons.smallerButton(option.text, { optionClicked(option) })
 
             optionButton.label.setWrap(true)
 
@@ -122,6 +143,24 @@ class QuestScreen(private val game: QuestGame) : Screen {
     private fun setNextNode(targetId: String?, actionResult: String?) {
         val nextId = targetId ?: actionResult
         game.globals.currentQuestNode = game.globals.questNodes[nextId] ?: game.globals.defaultQuestNode
+    }
+
+    private fun toHome() {
+        game.screen = MainMenuScreen(game)
+    }
+
+    private var settingsClicked = false
+
+    private fun toggleSettings() {
+        settingsClicked = !settingsClicked
+
+        if (settingsClicked) {
+            diaryButton.isVisible = true
+            homeButton.isVisible = true
+        } else {
+            diaryButton.isVisible = false
+            homeButton.isVisible = false
+        }
     }
 
 

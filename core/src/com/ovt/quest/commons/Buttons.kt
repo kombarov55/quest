@@ -14,7 +14,7 @@ import com.ovt.quest.commons.ButtonSize.*
 /**
  * Created by nikolay on 08/01/2018.
  */
-class ButtonFactory(
+class Buttons(
         private val game: QuestGame,
         private val skin: Skin
 ) {
