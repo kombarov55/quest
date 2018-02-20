@@ -19,13 +19,15 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
     private val viewport = StretchViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
 
-    val settingsButton = game.buttons.imgButton("img/settings.png", { toggleSettings() })
-    val diaryButton = game.buttons.imgButton("img/diary.png")
-    val homeButton = game.buttons.imgButton("img/home.png", { toHome() })
+    private val settingsButton = game.buttons.imgButton("img/settings.png", { toggleSettings() })
+    private val diaryButton = game.buttons.imgButton("img/diary.png", { showDiary() })
+    private val homeButton = game.buttons.imgButton("img/home.png", { toHome() })
+
+    private val diaryTable = DiaryTable(game, { hideDiary() })
 
     private val settingsTable = Table()
 
-    private val BUTTON_SIDE_SIZE = 50f
+    private val BUTTON_SIDE_SIZE = 40f
 
     private val stage = object : Stage(viewport) {
         override fun keyDown(keyCode: Int): Boolean =
@@ -69,7 +71,6 @@ class QuestScreen(private val game: QuestGame) : Screen {
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
 
-
         table.add(settingsTable).left()
         settingsTable.defaults()
                 .expandX()
@@ -95,6 +96,9 @@ class QuestScreen(private val game: QuestGame) : Screen {
         table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.1f)
 
         stage.addActor(table)
+
+        stage.addActor(diaryTable)
+        diaryTable.isVisible = false
     }
 
     private fun displayNode(node: QuestNode) {
@@ -161,6 +165,14 @@ class QuestScreen(private val game: QuestGame) : Screen {
             diaryButton.isVisible = false
             homeButton.isVisible = false
         }
+    }
+
+    private fun showDiary() {
+        diaryTable.isVisible = true
+    }
+
+    private fun hideDiary() {
+        diaryTable.isVisible = false
     }
 
 
