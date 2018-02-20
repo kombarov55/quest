@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.XmlReader
 
 object QuestlineLoader {
 
-    fun loadQuestNodes(): List<QuestNode> {
+    fun loadQuestNodes(): Map<String, QuestNode> {
 
         val root = XmlReader().parse(Gdx.files.internal("data/quest-nodes.xml"))
 
@@ -27,7 +27,7 @@ object QuestlineLoader {
             val options = node.getChildByName("Options").getChildrenByName("Option").map { optionNode ->
 
                 Option(
-                        targetId = optionNode.getAttribute("targetId"),
+                        targetId = optionNode.getOptionAttribute("targetId"),
                         text = optionNode.getAttribute("text"),
                         action = optionNode.getOptionAttribute("action")
                 )
@@ -38,8 +38,8 @@ object QuestlineLoader {
 
             questNode.options = options
 
-            questNode
-        }
+            questNode.id to questNode
+        }.toMap()
 
         return questNodes
     }

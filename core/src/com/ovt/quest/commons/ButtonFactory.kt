@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.ovt.quest.commons.ButtonSize.*
 
 /**
  * Created by nikolay on 08/01/2018.
@@ -18,25 +19,29 @@ class ButtonFactory(
         private val skin: Skin
 ) {
 
-    fun biggerButton(text: String, callback: () -> Unit = { }): TextButton {
-        switchFontBug(game.bigFont)
-        return SoundButton(text, biggerStyle, game.buttonClickSound, callback)
-    }
+    fun biggerButton(text: String, callback: () -> Unit = { }) = createButton(BIGGER, text, callback)
+    fun normalButton(text: String, callback: () -> Unit = { }) = createButton(NORMAL, text, callback)
+    fun smallerButton(text: String, callback: () -> Unit = { }) = createButton(SMALLER, text, callback)
+    fun tinyButton(text: String, callback: () -> Unit = { }) = createButton(TINY, text, callback)
 
-    fun normalButton(text: String, callback: () -> Unit = { }): TextButton {
-        switchFontBug(game.normalFont)
-        return SoundButton(text, normalStyle, game.buttonClickSound, callback)
-    }
+    private fun createButton(size: ButtonSize, text: String, callback: () -> Unit = { }): TextButton {
+        val chosenFont = when (size) {
+            BIGGER -> game.bigFont
+            NORMAL -> game.normalFont
+            SMALLER -> game.smallerFont
+            TINY -> game.tinyFont
+        }
 
+        val chosenStyle = when(size) {
+            BIGGER -> biggerStyle
+            NORMAL -> normalStyle
+            SMALLER -> smallerStyle
+            TINY -> tinyStyle
+        }
 
-    fun smallerButton(text: String, callback: () -> Unit = { }): TextButton {
-        switchFontBug(game.smallerFont)
-        return SoundButton(text, smallerStyle, game.buttonClickSound, callback)
-    }
+        switchFontBug(chosenFont)
 
-    fun tinyButton(text: String, callback: () -> Unit = { }): TextButton {
-        switchFontBug(game.tinyFont)
-        return SoundButton(text, tinyStyle, game.buttonClickSound, callback)
+        return SoundButton(text, chosenStyle, game.buttonClickSound, callback)
     }
 
     fun imgButton(src: String, callback: () -> Unit = { }): ImageButton {
@@ -67,4 +72,8 @@ class ButtonFactory(
     }
 
 
+}
+
+enum class ButtonSize {
+    BIGGER, NORMAL, SMALLER, TINY
 }

@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.main_menu_screens.TableTestScreen
+import com.ovt.quest.quest.Globals
 
 class QuestGame : Game() {
 
@@ -28,6 +30,7 @@ class QuestGame : Game() {
     lateinit var buttonFactory: ButtonFactory
     lateinit var labelFactory: LabelFactory
 
+    lateinit var globals: Globals
 
     internal lateinit var bigFont: BitmapFont
     internal lateinit var normalFont: BitmapFont
@@ -37,18 +40,27 @@ class QuestGame : Game() {
     private lateinit var textButtonSkin: Skin
 
     override fun create() {
+        initializeVariables()
+
+        setScreen(MainMenuScreen(this))
+//        setScreen(TableTestScreen(this))
+    }
+
+    private fun initializeVariables() {
         batch = SpriteBatch()
 
-        bigFont = createFont(92)
-        normalFont = createFont(50)
-        smallerFont = createFont(32)
-        tinyFont = createFont(20)
+        bigFont = createFont(Gdx.graphics.height * 0.07f)
+        normalFont = createFont(Gdx.graphics.height * 0.03f)
+        smallerFont = createFont(Gdx.graphics.height * 0.02f)
+        tinyFont = createFont(Gdx.graphics.height * 0.008f)
 
 
         textButtonSkin = Skin(Gdx.files.internal("skin/cloud-form-ui.json"))
 
         buttonFactory = ButtonFactory(this, textButtonSkin)
         labelFactory = LabelFactory(this)
+
+        globals = Globals()
 
         titleLabelStyle = LabelStyle(bigFont, Color.BLACK)
         descriptionStyle = LabelStyle(smallerFont, Color.BLACK)
@@ -58,8 +70,6 @@ class QuestGame : Game() {
         buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/ButtonClick.mp3"))
 
         Gdx.input.isCatchBackKey = true
-
-        setScreen(MainMenuScreen(this))
     }
 
     private fun createFont(size: Int): BitmapFont {
@@ -73,6 +83,8 @@ class QuestGame : Game() {
 
         return bf
     }
+
+    private fun createFont(size: Float): BitmapFont = createFont(size.toInt())
 
     override fun dispose() {
         batch.dispose()

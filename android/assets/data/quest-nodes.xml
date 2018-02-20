@@ -12,11 +12,11 @@
 
     <QuestNode id="1" content="Куда желаете отправиться, граф?">
         <Options>
-            <Option targetId="2" text="Конюшни" />
-            <Option targetId="3" text="Бордель" />
-            <Option targetId="4" text="Стрельбище" />
-            <Option targetId="5" text="Лаборатория" />
-            <Option targetId="6" text="Погулять по улице" />
+            <Option targetId="2" action="hide2" text="Конюшни" />
+            <Option targetId="3" action="hide3" text="Бордель" />
+            <Option targetId="4" action="hide4" text="Стрельбище" />
+            <Option targetId="5" action="hide5" text="Лаборатория" />
+            <Option targetId="6" action="hide6" text="Погулять по улице" />
             <Option targetId="glava1" text="Отправиться в поместье к другу" />
         </Options>
     </QuestNode>
@@ -56,7 +56,7 @@
 
     <QuestNode id="3" bg="bordel1.png" content="Прекрасного дня, юный граф! Желаете приятно провести время?">
         <Options>
-            <Option targetId="?" action="bordelVine" text="Для начала не отказался бы от вина" />
+            <Option action="bordelVine" text="Для начала не отказался бы от вина" />
             <Option targetId="3.1" action="showBordelPortraits" openDiaryNode="портрет" text="Я осмотрюсь." />
             <Option targetId="3.3" text="Происходило ли что-нибудь интересное?" />
             <Option targetId="3.1" action="bordel" text="Да, отдых бы мне не помешал" />
@@ -64,7 +64,7 @@
         </Options>
     </QuestNode>
 
-    <QuestNode id="3.0" action="screamer1" openDiaryNote="красные глаза" content="">
+    <QuestNode id="3.0" action="screamer1" openDiaryNote="красные глаза" content="Продолжитьы">
         <Options>
             <Option targetId="3.1" text="Что это было? Ох, и крепкое вино сегодня." />
         </Options>
@@ -108,7 +108,7 @@
         </Options>
     </QuestNode>
 
-    <QuestNode id="3.0.1" action="screamer1" openDiaryNote="красные глаза" content="">
+    <QuestNode id="3.0.1" action="screamer1" openDiaryNote="красные глаза" content="Продолжить">
         <Options>
             <Option targetId="3.4" text="Что это было? Ох, и крепкое вино сегодня." />
         </Options>
@@ -188,7 +188,7 @@
 
     <QuestNode id="6.2" content="Вы предпочли не лезть не в свое дело. Постепенно крики становились все тише, а Вы удалялись все дальше. ">
         <Options>
-            <Option targetId="1" text="" />
+            <Option targetId="1" text="Продолжить" />
         </Options>
     </QuestNode>
 
@@ -217,13 +217,13 @@
 
     <QuestNode id="6.6" content="Я знаю кто Вы, граф. Я и сестры слышали о Вашей достойной семье. Если честно, я искала встречи с Вами. ">
         <Options>
-            <Option targetId="6.9" text="" />
+            <Option targetId="6.9" text="Продолжить" />
         </Options>
     </QuestNode>
 
     <QuestNode id="6.7" content="Шкатулка это то, что привело меня сюда. Я знала, она поможет мне найти Вас.">
         <Options>
-            <Option targetId="6.9" text="" />
+            <Option targetId="6.9" text="Продолжить" />
         </Options>
     </QuestNode>
 
@@ -236,7 +236,7 @@
 
     <QuestNode id="6.9" openDiaryNote="странный подарок" content="Я проделала долгий путь из лесов Оссилора, виной тому – древнее пророчество о великом зле, проникшем в наш мир через разлом. Но я опоздала, духи мрачных миров уже здесь, скоро они уничтожат весь наш мир. Пророчество гласит, что лишь наследник дома Лонгренов обладает силой, способной навсегда запечатать разлом и уничтожить этих тварей. Знаки привели меня сюда… Граф, прошу, не перебивайте меня. Я отвечу на все Ваши вопросы позже и не здесь. В моей шкатулке есть то, что необходимо для спасения мира… или для его скорейшего уничтожения. Откройте ее, когда придет время.">
         <Options>
-            <Option targetId="6.10" text="" />
+            <Option targetId="6.10" text="Продолжить" />
         </Options>
     </QuestNode>
 

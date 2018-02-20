@@ -19,6 +19,7 @@ class SoundButton(text: String,
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 clickingSound.play()
                 Gdx.input.vibrate(25)
+
                 return true
             }
 

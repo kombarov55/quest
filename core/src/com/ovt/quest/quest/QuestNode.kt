@@ -10,5 +10,6 @@ data class QuestNode(
         val content: String,
         var options: List<Option> = mutableListOf(),
         val openDiaryNote: String?,
-        val action: String?
+        val action: String?,
+        var hidden: Boolean = false
 )

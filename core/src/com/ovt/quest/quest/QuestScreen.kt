@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.StretchViewport
+import com.ovt.quest.commons.ButtonSize
 import com.ovt.quest.commons.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 
@@ -29,13 +30,10 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
                     else -> super.keyDown(keyCode)
                 }
-
     }
 
     private val optionsTable = Table()
-
     private val titleLabel = game.labelFactory.biggerLabel("")
-
     private val contentLabel = game.labelFactory.smallerLabel("")
     init {
         contentLabel.setWrap(true)
@@ -43,17 +41,6 @@ class QuestScreen(private val game: QuestGame) : Screen {
     }
 
     override fun show() {
-        initScreen()
-
-        if (Globals.questNodes.isEmpty()) {
-            Globals.questNodes = QuestlineLoader.loadQuestNodes()
-            Globals.currentQuestNode = Globals.questNodes.first()
-        }
-
-        displayNode(Globals.currentQuestNode ?: Globals.questNodes.first())
-    }
-
-    private fun initScreen() {
         Gdx.input.inputProcessor = stage
         Gdx.input.isCatchBackKey = true
 
@@ -61,18 +48,17 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
         addWidgets()
 
-        Globals.questNodes = QuestlineLoader.loadQuestNodes()
-
-        displayNode(Globals.questNodes.first())
-
+        displayNode(game.globals.currentQuestNode)
     }
+
+
 
     private fun addWidgets() {
         val table = Table()
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
-        val toHomeButton = game.buttonFactory.imgButton("img/home.png", {
+        val toHomeButton = game.buttonFactory.imgButton("img/settings.png", {
             game.screen = MainMenuScreen(game)
         })
 
@@ -97,13 +83,11 @@ class QuestScreen(private val game: QuestGame) : Screen {
         optionsTable.clear()
 
         //TODO: переиспользовать старые кнопки
-        node.options.map { option ->
+        node.options
+                .filter { game.globals.questNodes[it.targetId]?.hidden == false }
+                .map { option ->
 
-            val optionButton = game.buttonFactory.smallerButton(option.text, {
-                Globals.currentQuestNode = Globals.questNodes.find { it.id == option.targetId } ?: Globals.questNodes.first()
-
-                displayNode(Globals.currentQuestNode ?: Globals.questNodes.first())
-            })
+            val optionButton = game.buttonFactory.smallerButton(option.text, { optionClicked(option) })
 
             optionButton.label.setWrap(true)
 
@@ -120,6 +104,24 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
         }
 
+    }
+
+    private fun optionClicked(option: Option) {
+        val actionResult = executeAction(option.action)
+
+        setNextNode(option.targetId, actionResult)
+
+        displayNode(game.globals.currentQuestNode)
+    }
+
+    private fun executeAction(actionName: String?): String? =
+        if (actionName != null)
+            QuestActions.actions[actionName]?.invoke(game) else
+            null
+
+    private fun setNextNode(targetId: String?, actionResult: String?) {
+        val nextId = targetId ?: actionResult
+        game.globals.currentQuestNode = game.globals.questNodes[nextId] ?: game.globals.defaultQuestNode
     }
 
 
