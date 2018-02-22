@@ -1,4 +1,4 @@
-package com.ovt.quest.quest
+package com.ovt.quest.quest.commons
 
 import com.ovt.quest.commons.QuestGame
 

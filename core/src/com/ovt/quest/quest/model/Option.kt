@@ -1,4 +1,4 @@
-package com.ovt.quest.quest
+package com.ovt.quest.quest.model
 
 /**
  * Created by nikolay on 07/01/2018.

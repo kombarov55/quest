@@ -1,4 +1,4 @@
-package com.ovt.quest.quest
+package com.ovt.quest.quest.layout
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture

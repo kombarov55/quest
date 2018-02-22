@@ -1,7 +1,9 @@
-package com.ovt.quest.quest
+package com.ovt.quest.quest.commons
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.XmlReader
+import com.ovt.quest.quest.model.Option
+import com.ovt.quest.quest.model.QuestNode
 
 
 /**

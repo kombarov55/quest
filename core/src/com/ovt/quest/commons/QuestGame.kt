@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ovt.quest.main_menu_screens.MainMenuScreen
-import com.ovt.quest.quest.Globals
+import com.ovt.quest.quest.commons.Globals
 
 class QuestGame : Game() {
 
@@ -72,7 +72,8 @@ class QuestGame : Game() {
     }
 
     private fun createFont(size: Int): BitmapFont {
-        val generator = FreeTypeFontGenerator(Gdx.files.internal("font/bankir-retro.ttf"))
+//        val generator = FreeTypeFontGenerator(Gdx.files.internal("font/bankir-retro.ttf"))
+        val generator = FreeTypeFontGenerator(Gdx.files.internal("font/v_digital_strip.ttf"))
         val parameter = FreeTypeFontGenerator.FreeTypeFontParameter()
         parameter.characters = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>"
         parameter.size = size

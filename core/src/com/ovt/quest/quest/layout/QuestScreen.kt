@@ -1,4 +1,4 @@
-package com.ovt.quest.quest
+package com.ovt.quest.quest.layout
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -10,6 +10,9 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import com.ovt.quest.commons.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.quest.model.Option
+import com.ovt.quest.quest.commons.QuestActions
+import com.ovt.quest.quest.model.QuestNode
 
 /**
  * Created by kombarov_na on 26.12.2017.

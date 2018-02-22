@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Timer
 import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.quest.layout.QuestScreen
 
 /**
  * Created by kombarov_na on 21.12.2017.
@@ -23,7 +24,7 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
 
         stage.addActor(game.background)
 
-        val playButton = game.buttons.biggerButton("Играть", { game.screen = com.ovt.quest.quest.QuestScreen(game) })
+        val playButton = game.buttons.biggerButton("Играть", { game.screen = QuestScreen(game) })
 
 //        val minigames = game.buttons.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
 
