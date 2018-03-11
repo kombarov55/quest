@@ -116,15 +116,16 @@ class QuestStage(private val game: QuestGame) : Stage() {
         game.screen = MainMenuScreen(game)
     }
 
-    override fun keyDown(keyCode: Int): Boolean =
-            when (keyCode) {
-                Input.Keys.BACK -> {
-                    game.screen = MainMenuScreen(game)
-                    true
-                }
-
-                else -> super.keyDown(keyCode)
+    override fun keyDown(keyCode: Int): Boolean {
+        return when (keyCode) {
+            Input.Keys.BACK -> {
+                game.screen = MainMenuScreen(game)
+                true
             }
+
+            else -> super.keyDown(keyCode)
+        }
+    }
 
 
 }
