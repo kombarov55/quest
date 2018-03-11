@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 /**
  * Created by nikolay on 10/01/2018.
  */
-class SoundImgButton(pic: TextureRegionDrawable, sound: Sound, callback: () -> Unit = { }) : ImageButton(pic) {
+class SoundImgButton(pic: TextureRegionDrawable, sound: Sound, var callback: (() -> Unit)? = { }) : ImageButton(pic) {
 
     init {
         addListener(object: ClickListener() {
@@ -21,8 +21,10 @@ class SoundImgButton(pic: TextureRegionDrawable, sound: Sound, callback: () -> U
                 return true
             }
 
-            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) =
-                    callback.invoke()
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                callback?.invoke()
+            }
+
         })
     }
 

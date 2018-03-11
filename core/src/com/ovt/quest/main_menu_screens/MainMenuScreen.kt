@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.ovt.quest.commons.QuestGame
-import com.ovt.quest.quest.layout.QuestScreen
+import com.ovt.quest.quest.QuestScreen
 
 /**
  * Created by kombarov_na on 21.12.2017.

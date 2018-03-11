@@ -13,15 +13,15 @@ class LabelFactory(private val game: QuestGame) {
     private val smallerLabelStyle = LabelStyle(game.smallerFont, Color.BLACK)
     private val normalLabelStyle = LabelStyle(game.normalFont, Color.BLACK)
 
-    fun biggerLabel(text: String): Label {
+    fun biggerLabel(text: String = ""): Label {
         return Label(text, biggerLabelStyle)
     }
 
-    fun normalLabel(text: String): Label {
+    fun normalLabel(text: String = ""): Label {
         return Label(text, normalLabelStyle)
     }
 
-    fun smallerLabel(text: String): Label {
+    fun smallerLabel(text: String = ""): Label {
         return Label(text, smallerLabelStyle)
     }
 

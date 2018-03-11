@@ -19,12 +19,12 @@ class Buttons(
         private val skin: Skin
 ) {
 
-    fun biggerButton(text: String, callback: () -> Unit = { }) = createButton(BIGGER, text, callback)
-    fun normalButton(text: String, callback: () -> Unit = { }) = createButton(NORMAL, text, callback)
-    fun smallerButton(text: String, callback: () -> Unit = { }) = createButton(SMALLER, text, callback)
-    fun tinyButton(text: String, callback: () -> Unit = { }) = createButton(TINY, text, callback)
+    fun biggerButton(text: String, callback: (() -> Unit)? = { }) = createButton(BIGGER, text, callback)
+    fun normalButton(text: String, callback: (() -> Unit)? = { }) = createButton(NORMAL, text, callback)
+    fun smallerButton(text: String, callback: (() -> Unit)? = { }) = createButton(SMALLER, text, callback)
+    fun tinyButton(text: String, callback: (() -> Unit)? = { }) = createButton(TINY, text, callback)
 
-    private fun createButton(size: ButtonSize, text: String, callback: () -> Unit = { }): TextButton {
+    private fun createButton(size: ButtonSize, text: String, callback: (() -> Unit)? = { }): TextButton {
         val chosenFont = when (size) {
             BIGGER -> game.bigFont
             NORMAL -> game.normalFont
@@ -44,7 +44,7 @@ class Buttons(
         return SoundButton(text, chosenStyle, game.buttonClickSound, callback)
     }
 
-    fun imgButton(src: String, callback: () -> Unit = { }): ImageButton {
+    fun imgButton(src: String, callback: (() -> Unit)? = { }): ImageButton {
         val pic = TextureRegionDrawable(TextureRegion(Texture(Gdx.files.internal(src))))
 
         val b = SoundImgButton(pic, game.buttonClickSound, callback)
