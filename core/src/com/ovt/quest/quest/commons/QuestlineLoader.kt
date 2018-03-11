@@ -23,8 +23,9 @@ object QuestlineLoader {
                     id = node.getString("id"),
                     title = node.getNullableString("title"),
                     text = node.getString("text"),
+                    background = node.getNullableString("background"),
                     options = mapOptions(node["options"]),
-                    events = mapEvent(node["event"]))
+                    events = mapEvent(node["events"]))
         }
     }
 
@@ -34,7 +35,7 @@ object QuestlineLoader {
     private fun mapEvent(jsonObj: JsonValue?): QuestEvent? =
             if (jsonObj == null)
                 null else
-                QuestEvent(jsonObj.getNullableString("setBackground"), jsonObj.getNullableString("openDiaryNote"), jsonObj.getNullableString("hideNote"))
+                QuestEvent(diaryNoteId = jsonObj.getNullableString("openDiaryNote"), hideNoteId = jsonObj.getNullableString("hideNode"))
 
     private fun JsonValue.getNullableString(name: String): String? {
         try {

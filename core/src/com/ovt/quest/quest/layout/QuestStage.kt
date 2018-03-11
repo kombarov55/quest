@@ -2,7 +2,9 @@ package com.ovt.quest.quest.layout
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.ovt.quest.commons.QuestGame
@@ -23,10 +25,12 @@ class QuestStage(private val game: QuestGame) : Stage() {
     private val diaryButton = game.buttons.imgButton("img/diary.png", ::showDiary)
     private val homeButton = game.buttons.imgButton("img/home.png", ::toHome)
 
+    private var background: Image = game.background
+
     private val BUTTON_SIDE_SIZE = 40f
 
     init {
-        addActor(game.background)
+        addActor(background)
 
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
@@ -83,6 +87,17 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     fun clearOptions() {
         optionsTable.clear()
+    }
+
+    fun notifyDiaryNote(noteTitle: String) {
+        println("Открыта запись в дневнике: $noteTitle")
+    }
+
+    fun setBackground(imgname: String) {
+        actors.removeValue(background, false)
+        background = Image(Texture(Gdx.files.internal("img/" + imgname)))
+        addActor(background)
+        actors.sort({a1, a2 -> if (a1 is Image) -1 else if (a2 is Image) 1 else 0})
     }
 
     var onOptionClickListener: ((String) -> Unit)? = null

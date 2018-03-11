@@ -8,6 +8,7 @@ data class QuestNode(
         val id: String,
         val title: String?,
         val text: String,
+        val background: String?,
         var options: List<Option>? = mutableListOf(),
         val events: QuestEvent? = null,
         var hidden: Boolean = false

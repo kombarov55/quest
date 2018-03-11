@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.commons.QuestGame
 import com.ovt.quest.quest.model.Option
 import com.ovt.quest.quest.layout.QuestStage
+import com.ovt.quest.quest.model.QuestEvent
 import com.ovt.quest.quest.model.QuestNode
 
 /**
@@ -26,13 +27,11 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
 
     private fun displayNode(node: QuestNode) {
-
         questStage.titleLabel.setText(node.title)
         questStage.contentLabel.setText(node.text)
 
         questStage.clearOptions()
         questStage.addOptions(node.options?.filter { nonHidden(it) }?.map { it.text })
-
     }
 
     private fun nonHidden(option: Option): Boolean =
@@ -46,11 +45,19 @@ class QuestScreen(private val game: QuestGame) : Screen {
         val nextNode = game.globals.questNodes[nextNodeId] ?: game.globals.defaultQuestNode
         game.globals.currentQuestNode = nextNode
 
+        executeEvents(nextNode.events)
+
         displayNode(nextNode)
     }
 
-
-
+    private fun executeEvents(events: QuestEvent?) {
+        if (events == null) return
+        if (events.newBackground != null) questStage.setBackground(events.newBackground)
+        if (events.hideNoteId != null) game.globals.questNodes[events.hideNoteId]?.hidden = true
+        if (events.diaryNoteId != null) {
+            questStage.notifyDiaryNote(events.diaryNoteId)
+        }
+    }
 
 
     override fun render(delta: Float) {
