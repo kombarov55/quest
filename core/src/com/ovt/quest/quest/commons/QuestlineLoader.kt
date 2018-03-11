@@ -1,51 +1,46 @@
 package com.ovt.quest.quest.commons
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.JsonReader
+import com.badlogic.gdx.utils.JsonValue
 import com.badlogic.gdx.utils.XmlReader
 import com.ovt.quest.quest.model.Option
+import com.ovt.quest.quest.model.QuestEvent
 import com.ovt.quest.quest.model.QuestNode
 
 
 /**
  * Created by nikolay on 05/01/2018.
  */
-
 object QuestlineLoader {
 
-    fun loadQuestNodes(): Map<String, QuestNode> {
+    private val reader = JsonReader()
 
-        val root = XmlReader().parse(Gdx.files.internal("data/quest-nodes.xml"))
-
-        val questNodes = root.getChildrenByName("QuestNode").map { node ->
-
-            val questNode = QuestNode(
-                    id = node.getAttribute("id"),
-                    title = node.getOptionAttribute("title"),
-                    content = node.getAttribute("content"),
-                    openDiaryNote = node.getOptionAttribute("openDiaryNote"),
-                    action = node.getOptionAttribute("action")
-            )
-
-            val options = node.getChildByName("Options").getChildrenByName("Option").map { optionNode ->
-
-                Option(
-                        targetId = optionNode.getOptionAttribute("targetId"),
-                        text = optionNode.getAttribute("text"),
-                        action = optionNode.getOptionAttribute("action")
-                )
-
-            }
-
-
-
-            questNode.options = options
-
-            questNode.id to questNode
-        }.toMap()
-
-        return questNodes
+    fun loadQuestNodes(): List<QuestNode> {
+        val root = reader.parse(Gdx.files.internal("data/quest-nodes.json"))
+        return root["questNodes"].map { node ->
+            QuestNode(
+                    id = node.getString("id"),
+                    title = node.getNullableString("title"),
+                    text = node.getString("text"),
+                    options = mapOptions(node["options"]),
+                    events = mapEvent(node["event"]))
+        }
     }
 
-    private fun XmlReader.Element.getOptionAttribute(key: String): String? =
-            attributes.find { it.key == key }?.value
+    private fun mapOptions(jsonArray: JsonValue?): List<Option>? = jsonArray?.map { Option(it.getString("targetId"), it.getString("text")) }
+
+
+    private fun mapEvent(jsonObj: JsonValue?): QuestEvent? =
+            if (jsonObj == null)
+                null else
+                QuestEvent(jsonObj.getNullableString("setBackground"), jsonObj.getNullableString("openDiaryNote"), jsonObj.getNullableString("hideNote"))
+
+    private fun JsonValue.getNullableString(name: String): String? {
+        try {
+            return this.getString(name)
+        } catch (e: Exception) {
+            return null
+        }
+    }
 }

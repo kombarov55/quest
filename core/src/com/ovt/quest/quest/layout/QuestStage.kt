@@ -16,28 +16,6 @@ class QuestStage(private val game: QuestGame) : Stage() {
     val titleLabel = game.labelFactory.biggerLabel()
     val contentLabel = game.labelFactory.smallerLabel()
 
-    fun addOptions(options: List<String>?) {
-        options?.map { option ->
-            val button = game.buttons.smallerButton(option, { onOptionClickListener?.invoke(option) })
-            button.label.setWrap(true)
-            button
-        }?.forEach { button ->
-            val width = Gdx.graphics.width * 0.75f
-            val height = Gdx.graphics.height * 0.05f
-            val pad = Gdx.graphics.width * 0.005f
-
-            optionsTable.add(button).width(width).minHeight(height).pad(pad)
-            optionsTable.row()
-        }
-    }
-
-    fun clearOptions() {
-        optionsTable.clear()
-    }
-
-    var onOptionClickListener: ((String) -> Unit)? = null
-
-
     private val diaryTable = DiaryTable(game, { hideDiary() })
     private val settingsTable = Table()
     private val optionsTable = Table()
@@ -88,6 +66,26 @@ class QuestStage(private val game: QuestGame) : Stage() {
         diaryTable.isVisible = false
     }
 
+    fun addOptions(options: List<String>?) {
+        options?.map { option ->
+            val button = game.buttons.smallerButton(option, { onOptionClickListener?.invoke(option) })
+            button.label.setWrap(true)
+            button
+        }?.forEach { button ->
+            val width = Gdx.graphics.width * 0.75f
+            val height = Gdx.graphics.height * 0.05f
+            val pad = Gdx.graphics.width * 0.005f
+
+            optionsTable.add(button).width(width).minHeight(height).pad(pad)
+            optionsTable.row()
+        }
+    }
+
+    fun clearOptions() {
+        optionsTable.clear()
+    }
+
+    var onOptionClickListener: ((String) -> Unit)? = null
 
     private var settingsClicked = false
 

@@ -7,9 +7,8 @@ package com.ovt.quest.quest.model
 data class QuestNode(
         val id: String,
         val title: String?,
-        val content: String,
-        var options: List<Option> = mutableListOf(),
-        val openDiaryNote: String?,
-        val action: String?,
+        val text: String,
+        var options: List<Option>? = mutableListOf(),
+        val events: QuestEvent? = null,
         var hidden: Boolean = false
 )

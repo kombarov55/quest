@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.commons.QuestGame
-import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.model.Option
-import com.ovt.quest.quest.commons.QuestActions
 import com.ovt.quest.quest.layout.QuestStage
 import com.ovt.quest.quest.model.QuestNode
 
@@ -30,10 +28,10 @@ class QuestScreen(private val game: QuestGame) : Screen {
     private fun displayNode(node: QuestNode) {
 
         questStage.titleLabel.setText(node.title)
-        questStage.contentLabel.setText(node.content)
+        questStage.contentLabel.setText(node.text)
 
         questStage.clearOptions()
-        questStage.addOptions(node.options.filter { nonHidden(it) }.map { it.text })
+        questStage.addOptions(node.options?.filter { nonHidden(it) }?.map { it.text })
 
     }
 
@@ -43,7 +41,7 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
     val onOptionClicked = { optionText: String ->
         val nextNodeId = game.globals.currentQuestNode.options
-                .find { it.text == optionText }
+                ?.find { it.text == optionText }
                 ?.targetId
         val nextNode = game.globals.questNodes[nextNodeId] ?: game.globals.defaultQuestNode
         game.globals.currentQuestNode = nextNode
