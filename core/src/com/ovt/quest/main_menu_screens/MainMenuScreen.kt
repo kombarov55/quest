@@ -25,7 +25,11 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
 
         stage.addActor(game.background)
 
-        val playButton = game.buttons.biggerButton("Играть", { game.screen = QuestScreen(game) })
+        val startButton = game.buttons.biggerButton("Начать", {
+            clearGameProgress()
+            game.screen = QuestScreen(game)
+        })
+        val continueButton = game.buttons.biggerButton("Продолжить", { game.screen = QuestScreen(game) })
 
         val exitButton = game.buttons.biggerButton("Выход", { Gdx.app.exit() })
 
@@ -33,11 +37,18 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
         table.setFillParent(true)
         table.defaults().width(Gdx.graphics.width * 0.8f).pad(h * 0.008f)
 
-        table.add(playButton)
+        table.add(startButton)
+        table.row()
+        table.add(continueButton)
         table.row()
         table.add(exitButton)
 
         stage.addActor(table)
+    }
+
+    private fun clearGameProgress() {
+        game.globals.currentQuestNode = game.globals.defaultQuestNode
+        game.globals.questNodes.forEach { it.value.hidden = false }
     }
 
     override fun render(delta: Float) {

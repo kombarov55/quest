@@ -48,7 +48,7 @@ class QuestGame : Game() {
     private fun initializeVariables() {
         batch = SpriteBatch()
 
-        bigFont = createFont(Gdx.graphics.height * 0.07f)
+        bigFont = createFont(Gdx.graphics.height * 0.06f)
         normalFont = createFont(Gdx.graphics.height * 0.03f)
         smallerFont = createFont(Gdx.graphics.height * 0.02f)
         tinyFont = createFont(Gdx.graphics.height * 0.008f)
