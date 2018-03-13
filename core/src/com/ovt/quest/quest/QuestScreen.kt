@@ -27,11 +27,14 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
 
     private fun displayNode(node: QuestNode) {
+        if (node.background != null) questStage.setBackground(node.background)
+
         questStage.titleLabel.setText(node.title)
         questStage.contentLabel.setText(node.text)
 
         questStage.clearOptions()
         questStage.addOptions(node.options?.filter { nonHidden(it) }?.map { it.text })
+
     }
 
     private fun nonHidden(option: Option): Boolean =
@@ -52,7 +55,6 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
     private fun executeEvents(events: QuestEvent?) {
         if (events == null) return
-        if (events.newBackground != null) questStage.setBackground(events.newBackground)
         if (events.hideNoteId != null) game.globals.questNodes[events.hideNoteId]?.hidden = true
         if (events.diaryNoteId != null) {
             questStage.notifyDiaryNote(events.diaryNoteId)
@@ -61,7 +63,7 @@ class QuestScreen(private val game: QuestGame) : Screen {
 
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
+        Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         questStage.draw()
