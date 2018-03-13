@@ -31,6 +31,8 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
         })
         val continueButton = game.buttons.biggerButton("Продолжить", { game.screen = QuestScreen(game) })
 
+        val minigamesButton = game.buttons.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
+
         val exitButton = game.buttons.biggerButton("Выход", { Gdx.app.exit() })
 
         val table = Table()
@@ -40,6 +42,8 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
         table.add(startButton)
         table.row()
         table.add(continueButton)
+        table.row()
+        table.add(minigamesButton)
         table.row()
         table.add(exitButton)
 
