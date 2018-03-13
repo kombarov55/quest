@@ -19,10 +19,10 @@ class Buttons(
         private val skin: Skin
 ) {
 
-    fun biggerButton(text: String, callback: (() -> Unit)? = { }) = createButton(BIGGER, text, callback)
-    fun normalButton(text: String, callback: (() -> Unit)? = { }) = createButton(NORMAL, text, callback)
-    fun smallerButton(text: String, callback: (() -> Unit)? = { }) = createButton(SMALLER, text, callback)
-    fun tinyButton(text: String, callback: (() -> Unit)? = { }) = createButton(TINY, text, callback)
+    fun biggerButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(BIGGER, text, callback)
+    fun normalButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(NORMAL, text, callback)
+    fun smallerButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(SMALLER, text, callback)
+    fun tinyButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(TINY, text, callback)
 
     private fun createButton(size: ButtonSize, text: String, callback: (() -> Unit)? = { }): TextButton {
         val chosenFont = when (size) {
