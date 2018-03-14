@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.ovt.quest.commons.ButtonSize.*
+import com.ovt.quest.commons.Buttons.ButtonSize.*
 
 /**
  * Created by nikolay on 08/01/2018.
@@ -71,9 +74,17 @@ class Buttons(
         stub.style.font = font
     }
 
+    enum class ButtonSize {
+        BIGGER, NORMAL, SMALLER, TINY
+    }
 
 }
 
-enum class ButtonSize {
-    BIGGER, NORMAL, SMALLER, TINY
+fun Button.addClickListener(f: () -> Unit) {
+    addListener(object : ClickListener() {
+        override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+            f.invoke()
+            return super.touchDown(event, x, y, pointer, button)
+        }
+    })
 }
