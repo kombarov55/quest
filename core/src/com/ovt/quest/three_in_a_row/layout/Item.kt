@@ -9,25 +9,35 @@ import com.ovt.quest.commons.addClickListener
 /**
  * Created by nikolay on 15.03.18.
  */
-class Item(row: Int, column: Int, private val texture: Texture, callback: (Int, Int) -> Unit) : Actor() {
+class Item(val column: Int, val row: Int, private val texture: Texture, callback: (Item) -> Unit) : Actor() {
     init {
-        val (x, y) = coords(row, column)
+        val (x, y) = coords(column, row)
         this.x = x
         this.y = y
         width = itemWidth
         height = itemHeight
 
         addClickListener {
-            callback.invoke(row, column)
+            callback.invoke(this)
         }
+    }
+
+    fun moveTo(row: Int, column: Int) {
+        val (newX, newY) = coords(row, column)
+        this.x = newX
+        this.y = newY
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         batch.draw(texture, x, y, width, height)
     }
 
-    private fun coords(row: Int, column: Int): Pair<Float, Float> {
-        return tablePadLeft + itemPad + (row * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + column * (itemWidth + (itemPad * 2))
+    private fun coords(column: Int, row: Int): Pair<Float, Float> {
+        return tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + row * (itemWidth + (itemPad * 2))
+    }
+
+    override fun toString(): String {
+        return "{$column $row}"
     }
 
     companion object {
