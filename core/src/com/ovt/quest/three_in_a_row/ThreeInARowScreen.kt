@@ -22,6 +22,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         Gdx.input.inputProcessor = stage
 
+        stage.act()
         stage.draw()
     }
 

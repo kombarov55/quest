@@ -2,8 +2,11 @@ package com.ovt.quest.three_in_a_row.layout
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.*
 import com.ovt.quest.QuestGame
 import com.ovt.quest.three_in_a_row.Matrix
 
@@ -33,7 +36,8 @@ class ThreeInARowStage(game: QuestGame) : Stage() {
     }
 
     private fun onItemClick(item: Item) {
-        if (selectedItem == null) {
+        if (selectedItem == null || selectedItem == item) {
+            item.pop()
             selectedItem = item
         } else {
             if (areNeighbours(selectedItem!!, item)) {
