@@ -9,9 +9,9 @@ import com.ovt.quest.commons.addClickListener
 /**
  * Created by nikolay on 15.03.18.
  */
-class Item(val column: Int, val row: Int, private val texture: Texture, callback: (Item) -> Unit) : Actor() {
+class Item(var column: Int, var row: Int, private val texture: Texture, callback: (Item) -> Unit) : Actor() {
     init {
-        val (x, y) = coords(column, row)
+        val (x, y) = coords()
         this.x = x
         this.y = y
         width = itemWidth
@@ -22,8 +22,12 @@ class Item(val column: Int, val row: Int, private val texture: Texture, callback
         }
     }
 
-    fun moveTo(row: Int, column: Int) {
-        val (newX, newY) = coords(row, column)
+    fun moveTo(column: Int, row: Int) {
+        this.column = column
+        this.row = row
+
+        val (newX, newY) = coords()
+
         this.x = newX
         this.y = newY
     }
@@ -32,7 +36,7 @@ class Item(val column: Int, val row: Int, private val texture: Texture, callback
         batch.draw(texture, x, y, width, height)
     }
 
-    private fun coords(column: Int, row: Int): Pair<Float, Float> {
+    private fun coords(): Pair<Float, Float> {
         return tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + row * (itemWidth + (itemPad * 2))
     }
 

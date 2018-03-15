@@ -24,9 +24,6 @@ class ThreeInARowStage(game: QuestGame) : Stage() {
     init {
         for (row in 0..9) {
             for (column in 0..9) {
-                val shouldSpawn = MathUtils.random() < 0.9f
-                if (!shouldSpawn) continue
-
                 val t = allTextures[MathUtils.random(allTextures.size - 1)]
                 val item = Item(column, row, t, ::onItemClick)
                 addActor(item)
@@ -36,8 +33,15 @@ class ThreeInARowStage(game: QuestGame) : Stage() {
     }
 
     private fun onItemClick(item: Item) {
-        selectedItem = item
-        println("$selectedItem")
+        if (selectedItem == null) {
+            selectedItem = item
+        } else {
+            val (selCol, selRow) = selectedItem!!.column to selectedItem!!.row
+            selectedItem!!.moveTo(item.column, item.row)
+            item.moveTo(selCol, selRow)
+
+            selectedItem = null
+        }
     }
 
     override fun dispose() {
