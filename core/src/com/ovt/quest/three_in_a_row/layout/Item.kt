@@ -45,8 +45,10 @@ class Item(var column: Int, var row: Int, private val texture: Texture) : Actor(
         addAction(SequenceAction(Actions.moveTo(newX, newY, moveDuration), CallbackAction(callback)))
     }
 
-    private val moveInActionX = scaleAmount * width * -0.5f
-    private val moveInActionY = scaleAmount * height * -0.5f
+    private val moveInActionX = moveForScale(scaleAmount, width, height).first //scaleAmount * width * -0.5f
+    private val moveInActionY = moveForScale(scaleAmount, width, height).second //scaleAmount * height * -0.5f
+    private val dissapearMovementX = moveForScale(dissapearScale, width, height).first
+    private val dissapearMovementY = moveForScale(dissapearScale, width, height).second
 
     fun scaleUp() {
         val scaleOut = ParallelAction(
@@ -72,6 +74,16 @@ class Item(var column: Int, var row: Int, private val texture: Texture) : Actor(
                 Actions.moveBy(-moveInActionX, -moveInActionY, scaleDuration))
 
         addAction(SequenceAction(scaleOut, scaleIn))
+    }
+
+    fun dissapear() {
+        val scale = Actions.scaleBy(dissapearScale, dissapearScale, dissapearDuration)
+        val move = Actions.moveBy(dissapearMovementX, dissapearMovementY, dissapearDuration)
+        addAction(ParallelAction(scale, move))
+    }
+
+    fun comeOut() {
+
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
@@ -111,5 +123,13 @@ class Item(var column: Int, var row: Int, private val texture: Texture) : Actor(
         private val scaleAmount = 0.15f
 
         private val moveDuration = 0.07f
+
+        private val dissapearScale = -1f
+        private val dissapearDuration = 0.3f
+
+        //private val moveInActionX = scaleAmount * width * -0.5f
+        private fun moveForScale(scale: Float, width: Float, height: Float): Pair<Float, Float> {
+            return scale * width * -0.5f to scale * height * -0.5f
+        }
     }
 }

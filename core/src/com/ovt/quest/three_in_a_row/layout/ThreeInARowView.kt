@@ -10,7 +10,23 @@ import com.ovt.quest.three_in_a_row.Matrix
 /**
  * Created by nikolay on 14.03.18.
  */
-class ThreeInARowStage(game: QuestGame) : Stage() {
+class ThreeInARowView(game: QuestGame) : Stage() {
+
+    fun addItem(i: Item) {
+        addActor(i)
+        i.comeOut()
+        matrix.add(i, i.column, i.row)
+    }
+
+    fun remove(i: Item) {
+        i.dissapear()
+        matrix.remove(i.column, i.row)
+    }
+
+    var onSwap: ((Item, Item) -> Unit)? = { i1, i2 ->
+        remove(i1)
+    }
+
 
     private val itemBlueTexture = Texture(Gdx.files.internal("img/item_blue.png"))
     private val itemRedTexture = Texture(Gdx.files.internal("img/item_red.png"))
@@ -19,6 +35,8 @@ class ThreeInARowStage(game: QuestGame) : Stage() {
     private val allTextures = listOf(itemBlueTexture, itemRedTexture, itemYellowTexture)
 
     private var selectedItem: Item? = null
+    private var swappedItems: Pair<Item, Item>? = null
+
     private val matrix = Matrix<Item>(10, 10)
 
     init {
@@ -67,12 +85,12 @@ class ThreeInARowStage(game: QuestGame) : Stage() {
                 clickedItem.popup()
             } else {
                 if (selectedItem == clickedItem) {
-//                    clickedItem.scaleDown()
-                    selectedItem = null
+                    clickedItem.popup()
                 } else {
                     if (areNeighbours(selectedItem!!, clickedItem)) {
-//                        selectedItem?.scaleDown()
                         swap(selectedItem!!, clickedItem)
+                        selectedItem = null
+                    } else {
                         selectedItem = null
                     }
                 }
@@ -111,13 +129,18 @@ class ThreeInARowStage(game: QuestGame) : Stage() {
     private fun swap(i1: Item, i2: Item) {
         val (selCol, selRow) = i1.column to i1.row
         i1.moveTo(i2.column, i2.row)
-        i2.moveTo(selCol, selRow, ::afterSwap)
+        i2.moveTo(selCol, selRow, ::onSwap)
 
+        swappedItems = i1 to i2
         matrix.swap(i1.column, i1.row, i2.column, i2.row)
     }
 
-    private fun afterSwap() {
-        println("swap ended!")
+    private fun onSwap() {
+        if (swappedItems != null) {
+            onSwap?.invoke(swappedItems!!.first, swappedItems!!.second)
+        }
+
+        swappedItems = null
     }
 
     override fun dispose() {
