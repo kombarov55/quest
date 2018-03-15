@@ -18,7 +18,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     override fun show() {
         val item = Item(5, 5, Texture(Gdx.files.internal("img/item_red.png")))
 
-        view.addItem(item)
+//        view.addItem(item)
     }
 
     override fun render(delta: Float) {

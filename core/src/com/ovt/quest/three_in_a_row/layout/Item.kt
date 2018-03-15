@@ -4,13 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 
 /**
  * Created by nikolay on 15.03.18.
@@ -79,14 +76,17 @@ class Item(var column: Int, var row: Int, private val texture: Texture) : Actor(
     fun dissapear() {
         val scale = Actions.scaleBy(dissapearScale, dissapearScale, dissapearDuration)
         val move = Actions.moveBy(dissapearMovementX, dissapearMovementY, dissapearDuration)
-        addAction(ParallelAction(scale, move))
+        val fade = Actions.fadeOut(dissapearDuration)
+        addAction(ParallelAction(fade, scale, move))
     }
 
     fun comeOut() {
-
+        val fade = Actions.fadeIn(dissapearDuration)
+        addAction(fade)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
+        batch.setColor(color.r, color.g, color.b, parentAlpha * color.a)
         batch.draw(textureRegion, x, y, 0f, 0f, width, height, scaleX, scaleY, rotation)
     }
 
