@@ -14,7 +14,13 @@ class Matrix<T>(width: Int, height: Int) {
     }
 
 
-    fun get(column: Int, row: Int): T? = matrix[row][column]
+    fun get(column: Int, row: Int): T? {
+        try {
+            return matrix[row][column]
+        } catch (e: IndexOutOfBoundsException) {
+            return null
+        }
+    }
 
     fun swap(col1: Int, row1: Int, col2: Int, row2: Int) {
         val x = matrix[row1][col1]

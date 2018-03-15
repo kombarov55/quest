@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -26,7 +27,6 @@ class Item(var column: Int, var row: Int, private val texture: Texture) : Actor(
     }
 
 
-
     fun moveTo(column: Int, row: Int) {
         this.column = column
         this.row = row
@@ -36,8 +36,31 @@ class Item(var column: Int, var row: Int, private val texture: Texture) : Actor(
         addAction(Actions.moveTo(newX, newY, moveDuration))
     }
 
+    fun moveTo(column: Int, row: Int, callback: () -> Unit) {
+        this.column = column
+        this.row = row
+
+        val (newX, newY) = coords()
+
+        addAction(SequenceAction(Actions.moveTo(newX, newY, moveDuration), CallbackAction(callback)))
+    }
+
     private val moveInActionX = scaleAmount * width * -0.5f
     private val moveInActionY = scaleAmount * height * -0.5f
+
+    fun scaleUp() {
+        val scaleOut = ParallelAction(
+                Actions.scaleBy(scaleAmount, scaleAmount, scaleDuration),
+                Actions.moveBy(moveInActionX, moveInActionY, scaleDuration))
+        addAction(scaleOut)
+    }
+
+    fun scaleDown() {
+        val scaleDown = ParallelAction(
+                Actions.scaleBy(-scaleAmount, -scaleAmount, scaleDuration),
+                Actions.moveBy(-moveInActionX, -moveInActionY, scaleDuration))
+        addAction(scaleDown)
+    }
 
     fun popup() {
         val scaleOut = ParallelAction(
