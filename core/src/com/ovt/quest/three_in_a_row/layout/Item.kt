@@ -32,21 +32,20 @@ class Item(var column: Int, var row: Int, private val texture: Texture, callback
 
         val (newX, newY) = coords()
 
-        this.x = newX
-        this.y = newY
+        addAction(Actions.moveTo(newX, newY, moveDuration))
     }
 
-    private val moveInActionX = actionAmount * width * -0.5f
-    private val moveInActionY = actionAmount * height * -0.5f
+    private val moveInActionX = scaleAmount * width * -0.5f
+    private val moveInActionY = scaleAmount * height * -0.5f
 
     fun pop() {
         val scaleOut = ParallelAction(
-                Actions.scaleBy(actionAmount, actionAmount, actionDuration),
-                Actions.moveBy(moveInActionX, moveInActionY, actionDuration)
+                Actions.scaleBy(scaleAmount, scaleAmount, scaleDuration),
+                Actions.moveBy(moveInActionX, moveInActionY, scaleDuration)
         )
         val scaleIn = ParallelAction(
-                Actions.scaleBy(-actionAmount, -actionAmount, actionDuration),
-                Actions.moveBy(-moveInActionX, -moveInActionY, actionDuration))
+                Actions.scaleBy(-scaleAmount, -scaleAmount, scaleDuration),
+                Actions.moveBy(-moveInActionX, -moveInActionY, scaleDuration))
 
         addAction(SequenceAction(scaleOut, scaleIn))
     }
@@ -81,7 +80,9 @@ class Item(var column: Int, var row: Int, private val texture: Texture, callback
         private val itemWidth = ((w - tablePadLeft * 2) / 10) - (itemPad * 2)
         private val itemHeight = itemWidth
 
-        private val actionDuration = 0.05f
-        private val actionAmount = 0.15f
+        private val scaleDuration = 0.05f
+        private val scaleAmount = 0.15f
+
+        private val moveDuration = 0.07f
     }
 }
