@@ -3,10 +3,7 @@ package com.ovt.quest.main_menu_screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.ui.Button
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.main_menu_screens.layout.MinigamesStage
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen

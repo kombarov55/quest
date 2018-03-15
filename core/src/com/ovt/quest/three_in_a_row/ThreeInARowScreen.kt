@@ -3,7 +3,7 @@ package com.ovt.quest.three_in_a_row
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
-import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.QuestGame
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 
 /**

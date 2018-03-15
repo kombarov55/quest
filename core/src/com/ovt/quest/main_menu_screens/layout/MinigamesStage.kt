@@ -3,7 +3,7 @@ package com.ovt.quest.main_menu_screens.layout
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.QuestGame
 
 /**
  * Created by nikolay on 14.03.18.

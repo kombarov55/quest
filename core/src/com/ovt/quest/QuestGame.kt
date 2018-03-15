@@ -1,4 +1,4 @@
-package com.ovt.quest.commons
+package com.ovt.quest
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
@@ -11,8 +11,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.ovt.quest.commons.Buttons
+import com.ovt.quest.commons.LabelFactory
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Globals
+import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 
 class QuestGame : Game() {
 
@@ -41,7 +44,7 @@ class QuestGame : Game() {
     override fun create() {
         initializeVariables()
 
-        setScreen(MainMenuScreen(this))
+        setScreen(ThreeInARowScreen(this))
 //        setScreen(TableTestScreen(this))
     }
 

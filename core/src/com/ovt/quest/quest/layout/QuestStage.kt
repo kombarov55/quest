@@ -2,12 +2,11 @@ package com.ovt.quest.quest.layout
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
-import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 
 /**

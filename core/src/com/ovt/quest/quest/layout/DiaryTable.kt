@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.QuestGame
 
 /**
  * Created by nikolay on 21/02/2018.

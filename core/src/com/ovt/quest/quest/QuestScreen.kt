@@ -3,7 +3,7 @@ package com.ovt.quest.quest
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
-import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.QuestGame
 import com.ovt.quest.quest.model.Option
 import com.ovt.quest.quest.layout.QuestStage
 import com.ovt.quest.quest.model.QuestEvent

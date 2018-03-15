@@ -1,6 +1,6 @@
 package com.ovt.quest.quest.commons
 
-import com.ovt.quest.commons.QuestGame
+import com.ovt.quest.QuestGame
 
 /**
  * Created by nikolay on 14/01/2018.
