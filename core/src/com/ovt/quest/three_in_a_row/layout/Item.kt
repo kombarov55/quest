@@ -5,13 +5,16 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.actions.*
-import com.ovt.quest.commons.addClickListener
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 
 /**
  * Created by nikolay on 15.03.18.
  */
-class Item(var column: Int, var row: Int, private val texture: Texture, callback: (Item) -> Unit) : Actor() {
+class Item(var column: Int, var row: Int, private val texture: Texture) : Actor() {
     val textureRegion = TextureRegion(texture, 0, 0, texture.width, texture.height)
 
     init {
@@ -20,11 +23,9 @@ class Item(var column: Int, var row: Int, private val texture: Texture, callback
         this.y = y
         width = itemWidth
         height = itemHeight
-
-        addClickListener {
-            callback.invoke(this)
-        }
     }
+
+
 
     fun moveTo(column: Int, row: Int) {
         this.column = column
@@ -38,7 +39,7 @@ class Item(var column: Int, var row: Int, private val texture: Texture, callback
     private val moveInActionX = scaleAmount * width * -0.5f
     private val moveInActionY = scaleAmount * height * -0.5f
 
-    fun pop() {
+    fun popup() {
         val scaleOut = ParallelAction(
                 Actions.scaleBy(scaleAmount, scaleAmount, scaleDuration),
                 Actions.moveBy(moveInActionX, moveInActionY, scaleDuration)
@@ -73,12 +74,15 @@ class Item(var column: Int, var row: Int, private val texture: Texture, callback
         private val h = Gdx.graphics.height
         private val w = Gdx.graphics.width
 
-        private val tablePadBottom = h * 0.1f
-        private val tablePadLeft = w * 0.05f
+        val tablePadBottom = h * 0.1f
+        val tablePadLeft = w * 0.05f
         private val itemPad = w * 0.005f
 
         private val itemWidth = ((w - tablePadLeft * 2) / 10) - (itemPad * 2)
         private val itemHeight = itemWidth
+
+        val fullItemWidth = itemWidth + itemPad * 2
+        val fullItemHeight = itemHeight + itemPad * 2
 
         private val scaleDuration = 0.05f
         private val scaleAmount = 0.15f
