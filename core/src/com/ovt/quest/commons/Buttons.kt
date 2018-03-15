@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
@@ -79,13 +80,4 @@ class Buttons(
         BIGGER, NORMAL, SMALLER, TINY
     }
 
-}
-
-fun Button.addClickListener(f: () -> Unit) {
-    addListener(object : ClickListener() {
-        override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-            f.invoke()
-            return super.touchDown(event, x, y, pointer, button)
-        }
-    })
 }

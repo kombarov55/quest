@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
-import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Globals
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 
