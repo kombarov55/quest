@@ -36,15 +36,27 @@ class ThreeInARowStage(game: QuestGame) : Stage() {
         if (selectedItem == null) {
             selectedItem = item
         } else {
-            val (selCol, selRow) = selectedItem!!.column to selectedItem!!.row
-            selectedItem!!.moveTo(item.column, item.row)
-            item.moveTo(selCol, selRow)
-
+            if (areNeighbours(selectedItem!!, item)) {
+                swap(selectedItem!!, item)
+            }
             selectedItem = null
         }
+    }
+
+    private fun areNeighbours(i1: Item, i2: Item): Boolean {
+        return (i1.column == i2.column && toPos(i1.row - i2.row) in 0..1) ||
+                (i1.row == i2.row && toPos(i1.row - i2.row) in 0..1)
+    }
+
+    private fun swap(i1: Item, i2: Item) {
+        val (selCol, selRow) = i1.column to i1.row
+        i1.moveTo(i2.column, i2.row)
+        i2.moveTo(selCol, selRow)
     }
 
     override fun dispose() {
         allTextures.forEach { it.dispose() }
     }
+
+    private infix fun toPos(x: Int): Int = if (x < 0) -x else x
 }
