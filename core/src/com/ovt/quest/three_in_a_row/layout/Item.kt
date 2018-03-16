@@ -12,8 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 /**
  * Created by nikolay on 15.03.18.
  */
-class Item(var column: Int, var row: Int, private val texture: Texture) : Actor() {
+class Item(var column: Int, var row: Int, private val texture: Texture, val type: Type) : Actor() {
     val textureRegion = TextureRegion(texture, 0, 0, texture.width, texture.height)
+
+    enum class Type {
+        Red, Blue, Yellow
+    }
 
     init {
         val (x, y) = coords()

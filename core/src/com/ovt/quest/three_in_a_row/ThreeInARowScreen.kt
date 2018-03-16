@@ -3,9 +3,7 @@ package com.ovt.quest.three_in_a_row
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.ovt.quest.QuestGame
-import com.ovt.quest.three_in_a_row.layout.Item
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowView
 
 /**
@@ -14,9 +12,15 @@ import com.ovt.quest.three_in_a_row.layout.ThreeInARowView
 class ThreeInARowScreen(game: QuestGame) : Screen {
 
     private val view = ThreeInARowView(game)
+    private val items = Items()
 
     override fun show() {
-        val item = Item(5, 5, Texture(Gdx.files.internal("img/item_red.png")))
+
+        for (row in 0..9) {
+            for (column in 0..9) {
+                view.addItem(items.rand(column, row))
+            }
+        }
 
 //        view.addItem(item)
     }
@@ -47,6 +51,6 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     }
 
     override fun dispose() {
-
+        items.allTextures.forEach { it.dispose() }
     }
 }

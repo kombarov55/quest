@@ -28,26 +28,13 @@ class ThreeInARowView(game: QuestGame) : Stage() {
     }
 
 
-    private val itemBlueTexture = Texture(Gdx.files.internal("img/item_blue.png"))
-    private val itemRedTexture = Texture(Gdx.files.internal("img/item_red.png"))
-    private val itemYellowTexture = Texture(Gdx.files.internal("img/item_yellow.png"))
-
-    private val allTextures = listOf(itemBlueTexture, itemRedTexture, itemYellowTexture)
-
     private var selectedItem: Item? = null
     private var swappedItems: Pair<Item, Item>? = null
 
     private val matrix = Matrix(10, 10)
 
     init {
-        for (row in 0..9) {
-            for (column in 0..9) {
-                val t = allTextures[MathUtils.random(allTextures.size - 1)]
-                val item = Item(column, row, t)
-                addActor(item)
-                matrix.add(item)
-            }
-        }
+
     }
 
     private var touchStartX: Int? = null
@@ -184,10 +171,6 @@ class ThreeInARowView(game: QuestGame) : Stage() {
         }
 
         swappedItems = null
-    }
-
-    override fun dispose() {
-        allTextures.forEach { it.dispose() }
     }
 
     private infix fun positive(x: Int): Int = if (x < 0) -x else x
