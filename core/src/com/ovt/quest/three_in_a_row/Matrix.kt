@@ -1,26 +1,34 @@
 package com.ovt.quest.three_in_a_row
 
+import com.ovt.quest.three_in_a_row.layout.Item
+
 /**
  * Created by nikolay on 15.03.18.
  */
-class Matrix<T>(width: Int, height: Int) {
-    private var matrix: MutableList<MutableList<T?>> = MutableList(height, {
-        MutableList<T?>(width, { null })
+class Matrix(width: Int, height: Int) {
+    private var matrix: MutableList<MutableList<Item?>> = MutableList(height, {
+        MutableList<Item?>(width, { null })
     })
 
 
-    fun add(item: T, column: Int, row: Int) {
-        matrix[row][column] = item
+    fun add(item: Item) {
+        matrix[item.row][item.column] = item
     }
 
 
-    fun get(column: Int, row: Int): T? {
+    fun get(column: Int, row: Int): Item? {
         try {
             return matrix[row][column]
         } catch (e: IndexOutOfBoundsException) {
             return null
         }
     }
+
+    fun below(i: Item) = get(i.column, i.row - 1)
+    fun leftOf(i: Item) = get(i.column - 1, i.row)
+    fun rightOf(i: Item) = get(i.column + 1, i.row)
+    fun upper(i: Item) = get(i.column, i.row + 1)
+
 
     fun remove(column: Int, row: Int) {
         matrix[row][column] = null

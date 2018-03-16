@@ -15,7 +15,7 @@ class ThreeInARowView(game: QuestGame) : Stage() {
     fun addItem(i: Item) {
         addActor(i)
         i.comeOut()
-        matrix.add(i, i.column, i.row)
+        matrix.add(i)
     }
 
     fun remove(i: Item) {
@@ -37,7 +37,7 @@ class ThreeInARowView(game: QuestGame) : Stage() {
     private var selectedItem: Item? = null
     private var swappedItems: Pair<Item, Item>? = null
 
-    private val matrix = Matrix<Item>(10, 10)
+    private val matrix = Matrix(10, 10)
 
     init {
         for (row in 0..9) {
@@ -45,7 +45,7 @@ class ThreeInARowView(game: QuestGame) : Stage() {
                 val t = allTextures[MathUtils.random(allTextures.size - 1)]
                 val item = Item(column, row, t)
                 addActor(item)
-                matrix.add(item, column, row)
+                matrix.add(item)
             }
         }
     }
@@ -78,6 +78,37 @@ class ThreeInARowView(game: QuestGame) : Stage() {
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        dragTouchDown(screenX, screenY)
+//        val clickedItem = resolveItem(screenX, screenY)
+//        if (clickedItem != null) {
+//            if (selectedItem == null) {
+//                selectedItem = clickedItem
+//                clickedItem.popup()
+//            } else {
+//                if (selectedItem == clickedItem) {
+//                    clickedItem.popup()
+//                } else {
+//                    if (areNeighbours(selectedItem!!, clickedItem)) {
+//                        swap(selectedItem!!, clickedItem)
+//                        selectedItem = null
+//                    } else {
+//                        selectedItem = null
+//                    }
+//                }
+//
+//            }
+//        }
+        return super.touchDown(screenX, screenY, pointer, button)
+    }
+
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        drawTouchUp(screenX, screenY)
+        return super.touchUp(screenX, screenY, pointer, button)
+    }
+
+
+
+    private fun twoClickTouchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val clickedItem = resolveItem(screenX, screenY)
         if (clickedItem != null) {
             if (selectedItem == null) {
@@ -98,17 +129,29 @@ class ThreeInARowView(game: QuestGame) : Stage() {
             }
         }
 
-        return super.touchDown(screenX, screenY, pointer, button)
+        return true
     }
 
-//    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-//        println("DRAG")
-//        return super.touchDragged(screenX, screenY, pointer)
-//    }
+    private fun dragTouchDown(screenX: Int, screenY: Int) {
+        touchStartX = screenX
+        touchStartY = screenY
 
-    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        selectedItem = resolveItem(touchStartX!!, touchStartY!!)
+    }
 
-        return super.touchUp(screenX, screenY, pointer, button)
+    private fun drawTouchUp(screenX: Int, screenY: Int) {
+        if (selectedItem == null) return
+        val direction = resolveDirection(touchStartX ?: 0, touchStartY ?: 0, screenX, screenY)
+        val i = when (direction) {
+            Direction.UP -> matrix.upper(selectedItem!!)
+            Direction.RIGHT -> matrix.rightOf(selectedItem!!)
+            Direction.DOWN -> matrix.below(selectedItem!!)
+            Direction.LEFT -> matrix.leftOf(selectedItem!!)
+        }
+
+        if (i != null) {
+            swap(selectedItem!!, i)
+        }
     }
 
     private fun resolveItem(x: Int, y: Int): Item? {
