@@ -1,49 +1,70 @@
 package com.ovt.quest.three_in_a_row.layout
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.ovt.quest.QuestGame
-import com.ovt.quest.three_in_a_row.Matrix
+import com.ovt.quest.three_in_a_row.model.Item
+import com.ovt.quest.three_in_a_row.toPositive
 
 /**
  * Created by nikolay on 14.03.18.
  */
-class ThreeInARowView(game: QuestGame) : Stage() {
+class ThreeInARowView(game: QuestGame): Stage() {
 
-    fun addItem(i: Item) {
-        addActor(i)
-        i.comeOut()
-        matrix.add(i)
+    var onSwap: ((Pair<Int, Int>, Pair<Int, Int>) -> Unit)? = { p1, p2 ->
+        println("swap $p1 + $p2")
     }
 
-    fun remove(i: Item) {
-        i.dissapear()
-        matrix.remove(i.column, i.row)
-    }
-
-    var onSwap: ((Item, Item) -> Unit)? = { i1, i2 ->
-        remove(i1)
-    }
-
-
-    private var selectedItem: Item? = null
-    private var swappedItems: Pair<Item, Item>? = null
-
-    private val matrix = Matrix(10, 10)
 
     init {
+        val h = Gdx.graphics.height
+        val w = Gdx.graphics.width
 
+        val b = game.buttons.biggerButton("press me", {
+        })
+
+        b.width = w * 0.8f
+        b.height = h * 0.1f
+        b.x = (w - b.width) / 2
+        b.y = h * 0.7f
+
+        addActor(b)
+
+        val bb = game.buttons.biggerButton("delete row", {
+        })
+
+        bb.width = b.width
+        bb.height =  b.height
+        bb.x = b.x
+        bb.y = b.y + b.height + h * 0.01f
+
+        addActor(bb)
     }
 
-    private var touchStartX: Int? = null
-    private var touchStartY: Int? = null
+    private var selectedItemLogicCoords: Pair<Int, Int>? = null
 
-    private fun registerTouchDown(screenX: Int, screenY: Int) {
-        println("touch down: $screenX, $screenY")
-        touchStartX = screenX
-        touchStartY = screenY
+    private var touchStart: Pair<Int, Int>? =  null
+
+    private fun dragTouchDown(screenX: Int, screenY: Int) {
+        touchStart = screenX to screenY
+
+        selectedItemLogicCoords = resolveLogicCoords(touchStart!!)
+    }
+
+    private fun dragTouchUp(screenX: Int, screenY: Int) {
+        if (selectedItemLogicCoords == null) return
+        val direction = resolveDirection(touchStart?.first ?: 0, touchStart?.second ?: 0, screenX, screenY)
+
+        val (selectedColumn, selectedRow) = selectedItemLogicCoords!!
+
+        val i2LogicCoords = when (direction) {
+            Direction.UP -> selectedItemLogicCoords?.copy(second = selectedRow + 1)
+            Direction.RIGHT -> selectedItemLogicCoords?.copy(first = selectedColumn + 1)
+            Direction.DOWN -> selectedItemLogicCoords?.copy(first = selectedRow - 1)
+            Direction.LEFT -> selectedItemLogicCoords?.copy(second = selectedColumn - 1)
+        }
+
+        onSwap?.invoke(selectedItemLogicCoords!!, i2LogicCoords!!)
     }
 
     enum class Direction {
@@ -55,7 +76,7 @@ class ThreeInARowView(game: QuestGame) : Stage() {
         val yDiff = endY - startY
 
         // Горизонтальное движение
-        if (positive(xDiff) > positive(yDiff)) {
+        if (toPositive(xDiff) > toPositive(yDiff)) {
             return if (xDiff > 0) Direction.RIGHT else Direction.LEFT
         }
         // Вертикальное
@@ -66,112 +87,23 @@ class ThreeInARowView(game: QuestGame) : Stage() {
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         dragTouchDown(screenX, screenY)
-//        val clickedItem = resolveItem(screenX, screenY)
-//        if (clickedItem != null) {
-//            if (selectedItem == null) {
-//                selectedItem = clickedItem
-//                clickedItem.popup()
-//            } else {
-//                if (selectedItem == clickedItem) {
-//                    clickedItem.popup()
-//                } else {
-//                    if (areNeighbours(selectedItem!!, clickedItem)) {
-//                        swap(selectedItem!!, clickedItem)
-//                        selectedItem = null
-//                    } else {
-//                        selectedItem = null
-//                    }
-//                }
-//
-//            }
-//        }
         return super.touchDown(screenX, screenY, pointer, button)
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        drawTouchUp(screenX, screenY)
+        dragTouchUp(screenX, screenY)
         return super.touchUp(screenX, screenY, pointer, button)
     }
 
+    private fun resolveLogicCoords(coords: Pair<Int, Int>): Pair<Int, Int>? {
+        val (x, y) = coords
 
+        val xFromMatrixStart = x - Item.tablePadLeft
+        val yFromMatrixStart = (Gdx.graphics.height - y) - Item.tablePadBottom
 
-    private fun twoClickTouchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        val clickedItem = resolveItem(screenX, screenY)
-        if (clickedItem != null) {
-            if (selectedItem == null) {
-                selectedItem = clickedItem
-                clickedItem.popup()
-            } else {
-                if (selectedItem == clickedItem) {
-                    clickedItem.popup()
-                } else {
-                    if (areNeighbours(selectedItem!!, clickedItem)) {
-                        swap(selectedItem!!, clickedItem)
-                        selectedItem = null
-                    } else {
-                        selectedItem = null
-                    }
-                }
+        val column = (xFromMatrixStart / Item.fullItemWidth).toInt()
+        val row = (yFromMatrixStart / Item.fullItemHeight).toInt()
 
-            }
-        }
-
-        return true
+        return column to row
     }
-
-    private fun dragTouchDown(screenX: Int, screenY: Int) {
-        touchStartX = screenX
-        touchStartY = screenY
-
-        selectedItem = resolveItem(touchStartX!!, touchStartY!!)
-    }
-
-    private fun drawTouchUp(screenX: Int, screenY: Int) {
-        if (selectedItem == null) return
-        val direction = resolveDirection(touchStartX ?: 0, touchStartY ?: 0, screenX, screenY)
-        val i = when (direction) {
-            Direction.UP -> matrix.upper(selectedItem!!)
-            Direction.RIGHT -> matrix.rightOf(selectedItem!!)
-            Direction.DOWN -> matrix.below(selectedItem!!)
-            Direction.LEFT -> matrix.leftOf(selectedItem!!)
-        }
-
-        if (i != null) {
-            swap(selectedItem!!, i)
-        }
-    }
-
-    private fun resolveItem(x: Int, y: Int): Item? {
-        val xFromStart = x - Item.tablePadLeft
-        val yFromStart = (Gdx.graphics.height - y) - Item.tablePadBottom
-
-        val column = (xFromStart / Item.fullItemWidth).toInt()
-        val row = (yFromStart / Item.fullItemHeight).toInt()
-
-        return matrix.get(column, row)
-    }
-
-    private fun areNeighbours(i1: Item, i2: Item): Boolean {
-        return (i1.column == i2.column && positive(i1.row - i2.row) in 0..1) ||
-                (i1.row == i2.row && positive(i1.column - i2.column) in 0..1)
-    }
-
-    private fun swap(i1: Item, i2: Item) {
-        val (selCol, selRow) = i1.column to i1.row
-        i1.moveTo(i2.column, i2.row)
-        i2.moveTo(selCol, selRow, ::onSwap)
-
-        swappedItems = i1 to i2
-        matrix.swap(i1.column, i1.row, i2.column, i2.row)
-    }
-
-    private fun onSwap() {
-        if (swappedItems != null) {
-            onSwap?.invoke(swappedItems!!.first, swappedItems!!.second)
-        }
-
-        swappedItems = null
-    }
-
-    private infix fun positive(x: Int): Int = if (x < 0) -x else x
 }

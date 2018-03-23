@@ -1,4 +1,4 @@
-package com.ovt.quest.three_in_a_row.layout
+package com.ovt.quest.three_in_a_row.model
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
@@ -8,18 +8,28 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.ovt.quest.three_in_a_row.layout.CallbackAction
+import com.ovt.quest.three_in_a_row.toPositive
 
 /**
  * Created by nikolay on 15.03.18.
  */
-class Item(var column: Int, var row: Int, private val texture: Texture, val type: Type) : Actor() {
-    val textureRegion = TextureRegion(texture, 0, 0, texture.width, texture.height)
+class Item internal constructor (
+        var column: Int,
+        var row: Int,
+        texture: Texture,
+        val type: Type,
+        private val matrix: Matrix
+) : Actor() {
+
+    private val textureRegion = TextureRegion(texture, 0, 0, texture.width, texture.height)
 
     enum class Type {
         Red, Blue, Yellow
     }
 
     init {
+        matrix.put(this, column, row)
         val (x, y) = coords()
         this.x = x
         this.y = y
@@ -27,17 +37,29 @@ class Item(var column: Int, var row: Int, private val texture: Texture, val type
         height = itemHeight
     }
 
+    fun left(): Item? = matrix.get(column - 1, row)
+    fun up(): Item? = matrix.get(column, row + 1)
+    fun right(): Item? = matrix.get(column + 1, row)
+    fun down(): Item? = matrix.get(column, row - 1)
+
+    //TODO: разве разница in 0..1, а не == 1?
+    fun isNeighbourTo(i: Item): Boolean =
+            (column == i.column && toPositive(row - i.row) in 0..1) ||
+            (row == i.row && toPositive(column - i.column) in 0..1)
 
     fun moveTo(column: Int, row: Int) {
+        matrix.remove(this.column, this.row)
+        matrix.put(this, column, row)
         this.column = column
         this.row = row
-
         val (newX, newY) = coords()
 
         addAction(Actions.moveTo(newX, newY, moveDuration))
     }
 
     fun moveTo(column: Int, row: Int, callback: () -> Unit) {
+        matrix.remove(this.column, this.row)
+        matrix.put(this, column, row)
         this.column = column
         this.row = row
 
@@ -89,13 +111,13 @@ class Item(var column: Int, var row: Int, private val texture: Texture, val type
         addAction(fade)
     }
 
+    private fun coords(): Pair<Float, Float> {
+        return tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + row * (itemWidth + (itemPad * 2))
+    }
+
     override fun draw(batch: Batch, parentAlpha: Float) {
         batch.setColor(color.r, color.g, color.b, parentAlpha * color.a)
         batch.draw(textureRegion, x, y, 0f, 0f, width, height, scaleX, scaleY, rotation)
-    }
-
-    private fun coords(): Pair<Float, Float> {
-        return tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + row * (itemWidth + (itemPad * 2))
     }
 
     override fun toString(): String {
