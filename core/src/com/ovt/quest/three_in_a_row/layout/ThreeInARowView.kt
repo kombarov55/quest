@@ -59,9 +59,9 @@ class ThreeInARowView(game: QuestGame): Stage() {
 
         val i2LogicCoords = when (direction) {
             Direction.UP -> selectedItemLogicCoords?.copy(second = selectedRow + 1)
+            Direction.DOWN -> selectedItemLogicCoords?.copy(second = selectedRow - 1)
             Direction.RIGHT -> selectedItemLogicCoords?.copy(first = selectedColumn + 1)
-            Direction.DOWN -> selectedItemLogicCoords?.copy(first = selectedRow - 1)
-            Direction.LEFT -> selectedItemLogicCoords?.copy(second = selectedColumn - 1)
+            Direction.LEFT -> selectedItemLogicCoords?.copy(first = selectedColumn - 1)
         }
 
         onSwap?.invoke(selectedItemLogicCoords!!, i2LogicCoords!!)

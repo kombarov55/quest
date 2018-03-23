@@ -7,19 +7,28 @@ import com.ovt.quest.QuestGame
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowView
 import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.model.Items
+import com.ovt.quest.three_in_a_row.model.Matrix
 
 /**
  * Created by nikolay on 14.03.18.
  */
 class ThreeInARowScreen(game: QuestGame) : Screen {
 
-    private val stage = ThreeInARowView(game)
+    private val maxRows = 10
+    private val maxColumns = 10
 
-    private val items = Items(10, 10)
+    private val stage = ThreeInARowView(game)
+    private val matrix = Matrix(maxColumns, maxRows)
+
+
+
+    private val items = Items()
 
     override fun show() {
+        addInitialItems()
         Gdx.input.inputProcessor = stage
-        initScreen()
+        stage.onSwap = ::onSwap
+
         /*
         Начать обработку эвентов
         При свапе:
@@ -78,18 +87,48 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
          */
     }
 
-    private fun onSwap(i1: Item, i2: Item) {
+    private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
+        val (i1X, i1Y) = i1LogicCoords
+        val (i2X, i2Y) = i2LogicCoords
 
+        val i1 = matrix.get(i1X, i1Y)
+        val i2 = matrix.get(i2X, i2Y)
+
+        if (i1 != null && i2 != null) {
+            i1.moveForSwap(i2X, i2Y)
+            i2.moveForSwap(i1X, i1Y)
+        }
     }
 
-    private fun initScreen() {
+    private fun addInitialItems() {
         for (row in 0..9) {
             for (column in 0..9) {
                 val i = items.rand(column, row)
-                stage.addActor(i)
-                i.comeOut()
+                matrix.put(i, column, row)
             }
         }
+
+        println(findMatches())
+        matrix.forEach { stage.addActor(it) }
+    }
+
+    private fun findMatches(): MutableList<List<Item>> {
+        val matches = mutableListOf<List<Item>>()
+        for (row in 0 until maxRows) {
+            for (column in 0 until maxColumns - 3) {
+                val curr = matrix.get(column, row)!!
+                val right1 = matrix.get(column + 1, row)!!
+                val right2 = matrix.get(column + 2, row)!!
+                if (curr.type == right1.type && curr.type == right2.type) {
+                    matches.add(listOf(curr, right1, right2))
+//                    matrix.put(items.rand(curr.column, curr.row))
+//                    matrix.put(items.rand(right1.column, right1.row))
+//                    matrix.put(items.rand(right2.column, right2.row))
+                }
+            }
+        }
+
+        return matches
     }
 
 
