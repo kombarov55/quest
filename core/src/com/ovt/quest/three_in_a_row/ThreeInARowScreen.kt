@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.QuestGame
-import com.ovt.quest.three_in_a_row.layout.ThreeInARowView
+import com.ovt.quest.commons.addClickListener
+import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.model.Items
+import com.ovt.quest.three_in_a_row.model.MatchResolver
 import com.ovt.quest.three_in_a_row.model.Matrix
 
 /**
@@ -17,7 +19,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     private val maxRows = 10
     private val maxColumns = 10
 
-    private val stage = ThreeInARowView(game)
+    private val stage = ThreeInARowStage(game)
     private val matrix = Matrix(maxColumns, maxRows)
 
 
@@ -28,75 +30,30 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         addInitialItems()
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
-
-        /*
-        Начать обработку эвентов
-        При свапе:
-          проверить карту есть ли что нибудь в ряд:
-            есть:
-               сдвинуть вниз
-               проверить и снести порядки
-            пока не осталось больше упорядоченных
-
-            нет:
-             Свапнуть обратно
-         */
-
-
-        /*
-        Что делает stage:
-        Хранит матрицу и делает над ней операции
-        Вызывает экшны у ячеек
-        Обрабатывает нажатия, резолвит направления, определяет на что нажали
-        Эмитит эвенты: сейчас только эвент после свапа
-
-        Что делает Item:
-        Хранит и рисует текстуру
-        Хранит координаты x/y
-        Хранит колонку и ряд
-        Хранит свой тип
-        Воспроизводит экшны
-
-        Что делает матрица:
-        Хранит в себе все Item-ы
-        Получить, вставить Item
-        Получить Item левее, правее, выше, ниже
-
-        Как должно быть:
-          Матрица (Логическое положение Item-ов):
-            Хранить Item-ы
-            Получить Item по колонке и ряду, получить Item левее и правее
-            Отдавать колонку и ряд Item по его ссылке (так как при изменении координат объекта нужно это их менять так же в матрице)
-          Item:
-            Хранить свой тип
-            Показать или изменить свою колонку и ряд через матрицу
-            Хранить ItemActor:
-              ItemActor:
-                Хранить x/y
-                Рисовать себя
-                воспроизводить экшны
-         View:
-           Обрабатывать ввод
-           Вызывать эвенты при определённом вводе
-           Рендерить все Item (как подкласс State)
-           Хранить и давать доступ к UI.
-         Screen:
-           Логика при эвентах
-
-
-         */
+        stage.pressMe.addClickListener {
+            MatchResolver.resolveMatches(matrix).flatten().forEach {
+                it.popup()
+            }
+        }
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
-        val (i1X, i1Y) = i1LogicCoords
-        val (i2X, i2Y) = i2LogicCoords
+        val (i1c, i1r) = i1LogicCoords
+        val (i2c, i2r) = i2LogicCoords
 
-        val i1 = matrix.get(i1X, i1Y)
-        val i2 = matrix.get(i2X, i2Y)
+        val i1 = matrix.get(i1c, i1r)
+        val i2 = matrix.get(i2c, i2r)
 
         if (i1 != null && i2 != null) {
-            i1.moveForSwap(i2X, i2Y)
-            i2.moveForSwap(i1X, i1Y)
+            i1.moveTo(i2c, i2r)
+            i1.column = i2c
+            i1.row = i2r
+            matrix.put(i1)
+
+            i2.moveTo(i1c, i1r)
+            i2.column = i1c
+            i2.row = i1r
+            matrix.put(i2)
         }
     }
 
@@ -121,12 +78,30 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
                 val right2 = matrix.get(column + 2, row)!!
                 if (curr.type == right1.type && curr.type == right2.type) {
                     matches.add(listOf(curr, right1, right2))
-//                    matrix.put(items.rand(curr.column, curr.row))
-//                    matrix.put(items.rand(right1.column, right1.row))
-//                    matrix.put(items.rand(right2.column, right2.row))
                 }
             }
         }
+
+        return matches
+    }
+
+    private fun findMatches(row: List<Item>): List<List<Item>> {
+
+        fun findNextMatch(requiredType: Item.Type, remainingRow: List<Item>, result: MutableList<Item>): List<Item> {
+            val next = remainingRow.firstOrNull()
+
+            if (next != null && next.type == requiredType) {
+                result.add(next)
+                return findNextMatch(requiredType, remainingRow.subList(1,remainingRow.size), result)
+            } else {
+                return result
+            }
+
+        }
+
+        val matches = mutableListOf<List<Item>>()
+
+
 
         return matches
     }

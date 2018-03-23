@@ -8,7 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
-import com.ovt.quest.three_in_a_row.layout.CallbackAction
+import com.ovt.quest.three_in_a_row.Direction
+import com.ovt.quest.three_in_a_row.Direction.*
 import com.ovt.quest.three_in_a_row.toPositive
 
 /**
@@ -35,17 +36,24 @@ class Item internal constructor (
         height = itemHeight
     }
 
-//    fun left(): Item? = matrix.get(column - 1, row)
-//    fun up(): Item? = matrix.get(column, row + 1)
-//    fun right(): Item? = matrix.get(column + 1, row)
-//    fun down(): Item? = matrix.get(column, row - 1)
+    fun leftOfSelf(matrix: Matrix): Item? = matrix.get(column - 1, row)
+    fun upOfSelf(matrix: Matrix): Item? = matrix.get(column, row + 1)
+    fun rightOfSelf(matrix: Matrix): Item? = matrix.get(column + 1, row)
+    fun downOfSelf(matrix: Matrix): Item? = matrix.get(column, row - 1)
+
+    fun getNext(direction: Direction, matrix: Matrix): Item? = when(direction) {
+        Up -> upOfSelf(matrix)
+        Right -> rightOfSelf(matrix)
+        Down -> downOfSelf(matrix)
+        Left -> leftOfSelf(matrix)
+    }
 
     //TODO: разве разница in 0..1, а не == 1?
     fun isNeighbourTo(i: Item): Boolean =
             (column == i.column && toPositive(row - i.row) in 0..1) ||
             (row == i.row && toPositive(column - i.column) in 0..1)
 
-    fun moveForSwap(column: Int, row: Int) {
+    fun moveTo(column: Int, row: Int) {
         val (newX, newY) = coords(column, row)
 
         addAction(Actions.moveTo(newX, newY, moveDuration))
@@ -128,7 +136,7 @@ class Item internal constructor (
         val fullItemWidth = itemWidth + itemPad * 2
         val fullItemHeight = itemHeight + itemPad * 2
 
-        private val scaleDuration = 0.05f
+        private val scaleDuration = 0.5f
         private val scaleAmount = 0.15f
 
         private val moveDuration = 0.07f

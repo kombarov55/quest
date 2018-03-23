@@ -2,43 +2,36 @@ package com.ovt.quest.three_in_a_row.layout
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.ovt.quest.QuestGame
+import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.toPositive
 
 /**
  * Created by nikolay on 14.03.18.
  */
-class ThreeInARowView(game: QuestGame): Stage() {
+class ThreeInARowStage(game: QuestGame): Stage() {
 
     var onSwap: ((Pair<Int, Int>, Pair<Int, Int>) -> Unit)? = { p1, p2 ->
         println("swap $p1 + $p2")
     }
+
+    lateinit var pressMe: Button
 
 
     init {
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
-        val b = game.buttons.biggerButton("press me", {
-        })
+        pressMe = game.buttons.biggerButton("press me")
 
-        b.width = w * 0.8f
-        b.height = h * 0.1f
-        b.x = (w - b.width) / 2
-        b.y = h * 0.7f
+        pressMe.width = w * 0.8f
+        pressMe.height = h * 0.1f
+        pressMe.x = (w - pressMe.width) / 2
+        pressMe.y = h * 0.7f
 
-        addActor(b)
-
-        val bb = game.buttons.biggerButton("delete row", {
-        })
-
-        bb.width = b.width
-        bb.height =  b.height
-        bb.x = b.x
-        bb.y = b.y + b.height + h * 0.01f
-
-        addActor(bb)
+        addActor(pressMe)
     }
 
     private var selectedItemLogicCoords: Pair<Int, Int>? = null
@@ -58,17 +51,13 @@ class ThreeInARowView(game: QuestGame): Stage() {
         val (selectedColumn, selectedRow) = selectedItemLogicCoords!!
 
         val i2LogicCoords = when (direction) {
-            Direction.UP -> selectedItemLogicCoords?.copy(second = selectedRow + 1)
-            Direction.DOWN -> selectedItemLogicCoords?.copy(second = selectedRow - 1)
-            Direction.RIGHT -> selectedItemLogicCoords?.copy(first = selectedColumn + 1)
-            Direction.LEFT -> selectedItemLogicCoords?.copy(first = selectedColumn - 1)
+            Direction.Up -> selectedItemLogicCoords?.copy(second = selectedRow + 1)
+            Direction.Down -> selectedItemLogicCoords?.copy(second = selectedRow - 1)
+            Direction.Right -> selectedItemLogicCoords?.copy(first = selectedColumn + 1)
+            Direction.Left -> selectedItemLogicCoords?.copy(first = selectedColumn - 1)
         }
 
         onSwap?.invoke(selectedItemLogicCoords!!, i2LogicCoords!!)
-    }
-
-    enum class Direction {
-        UP, RIGHT, DOWN, LEFT
     }
 
     private fun resolveDirection(startX: Int, startY: Int, endX: Int, endY: Int): Direction {
@@ -77,11 +66,11 @@ class ThreeInARowView(game: QuestGame): Stage() {
 
         // Горизонтальное движение
         if (toPositive(xDiff) > toPositive(yDiff)) {
-            return if (xDiff > 0) Direction.RIGHT else Direction.LEFT
+            return if (xDiff > 0) Direction.Right else Direction.Left
         }
         // Вертикальное
         else {
-            return if (yDiff < 0) Direction.UP else Direction.DOWN
+            return if (yDiff < 0) Direction.Up else Direction.Down
         }
     }
 

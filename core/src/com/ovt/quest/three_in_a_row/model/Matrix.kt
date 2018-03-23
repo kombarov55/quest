@@ -3,9 +3,9 @@ package com.ovt.quest.three_in_a_row.model
 /**
  * Created by nikolay on 15.03.18.
  */
-class Matrix(private val width: Int, private val height: Int) {
-    private var matrix: MutableList<MutableList<Item?>> = MutableList(height, {
-        MutableList<Item?>(width, { null })
+class Matrix(val maxColumns: Int, val maxRows: Int) {
+    private var matrix: MutableList<MutableList<Item?>> = MutableList(maxRows, {
+        MutableList<Item?>(maxColumns, { null })
     })
 
     fun put(item: Item, column: Int, row: Int) {
@@ -31,5 +31,9 @@ class Matrix(private val width: Int, private val height: Int) {
     fun forEach(f: (Item?) -> Unit) {
         matrix.flatten().forEach(f)
     }
+
+    fun getRow(rownum: Int): List<Item?> = matrix.map { column -> column.first() }
+
+    fun getColumn(colnum: Int): List<Item?> = matrix[colnum]
 
 }
