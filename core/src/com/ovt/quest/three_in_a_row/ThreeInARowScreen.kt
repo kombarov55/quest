@@ -3,6 +3,7 @@ package com.ovt.quest.three_in_a_row
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
@@ -22,7 +23,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
 
 
-    private val items = Items()
+    private val itemFactory = ItemFactory()
 
     override fun show() {
         addInitialItems()
@@ -33,49 +34,80 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
                 item.dissapear(then = {
                     item.remove()
                     matrix.remove(item.column, item.row)
-                    matrix.put(items.hole(item.column, item.row))
+                    matrix.put(itemFactory.hole(item.column, item.row))
                 })
             }
         }
 
         stage.pressMe.addClickListener {
-            ItemFall.executeFallDown(matrix, items)
+            ItemFall.executeFallDown(matrix, itemFactory)
         }
 
         stage.pressMe3.addClickListener {
-            for (row in 0 until maxRows) {
-                for (column in 0 until maxColumns) {
-                    val i = matrix.get(column, row)!!
-                    if (i.type == Hole) {
-                        val ii = items.rand(i.column, i.row)
-                        matrix.put(ii)
-                        stage.addActor(ii)
-                        ii.comeOut()
-                    }
-                }
-            }
+
         }
 
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
-        val (i1c, i1r) = i1LogicCoords
-        val (i2c, i2r) = i2LogicCoords
 
-        val i1 = matrix.get(i1c, i1r)
-        val i2 = matrix.get(i2c, i2r)
+        val i1 = matrix.get(i1LogicCoords)
+        val i2 = matrix.get(i2LogicCoords)
 
-        if (i1 != null && i2 != null) {
-            i1.fastMoveTo(i2c, i2r)
-            matrix.put(i1)
+        if (i1 == null || i2 == null) return
+        swap(i1, i2, then = {
+            val matches: List<List<Item>> = MatchResolver.resolveMatches(matrix)
 
-            i2.fastMoveTo(i1c, i1r)
-            matrix.put(i2)
+            if (matches.isNotEmpty()) {
+                removeMatchesLoop(matches, matrix)
+
+            } else {
+                swap(i1, i2)
+            }
+        })
+    }
+
+    private fun removeMatchesLoop(matches: List<List<Item>>, matrix: Matrix) {
+        Thread({
+            removeMatches(matches, then = {
+                ItemFall.executeFallDown(matrix, itemFactory, then = {
+                    val matches = MatchResolver.resolveMatches(matrix)
+                    if (matches.isNotEmpty()) {
+                        removeMatchesLoop(matches, matrix)
+                    }
+                    replaceHoles(matrix, itemFactory, stage)
+                })
+            })
+
+        }).start()
+
+    }
+
+    private fun removeMatches(matches: List<List<Item>>, then: () -> Unit = {  }) {
+        matches.flatten().forEach {
+            it.remove()
+            matrix.remove(it.column, it.row)
+            matrix.put(itemFactory.hole(it.column, it.row))
         }
+
+        Thread.sleep((Item.dissapearDuration * 1000).toLong())
+        then.invoke()
+    }
+
+
+
+    private fun swap(i1: Item, i2: Item, then: () -> Unit = { }) {
+        val (i1col, i1row) = i1.column to i1.row
+
+        i1.fastMoveTo(i2.column, i2.row)
+        matrix.put(i1)
+
+        i2.fastMoveTo(i1col, i1row, then)
+        matrix.put(i2)
     }
 
     private fun findNonMatchingItem(column: Int, row: Int, matrix: Matrix): Item {
-        val chosenType = items.randType()
+        val chosenType = itemFactory.randType()
 
         val left1 = matrix.get(column - 1, row)
         val left2 = matrix.get(column - 2, row)
@@ -87,7 +119,21 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
                 down1?.type == chosenType && down2?.type == chosenType) {
             return findNonMatchingItem(column, row, matrix)
         } else {
-            return items.byType(chosenType, column, row)
+            return itemFactory.byType(chosenType, column, row)
+        }
+    }
+
+    private fun replaceHoles(matrix: Matrix, itemFactory: ItemFactory, stage: Stage) {
+        for (row in 0 until matrix.maxRows) {
+            for (column in 0 until matrix.maxColumns) {
+                val i = matrix.get(column, row)!!
+                if (i.type == Hole) {
+                    val ii = itemFactory.rand(i.column, i.row)
+                    matrix.put(ii)
+                    stage.addActor(ii)
+                    ii.comeOut()
+                }
+            }
         }
     }
 
@@ -95,12 +141,10 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         for (row in 0..9) {
             for (column in 0..9) {
                 val i = findNonMatchingItem(column, row, matrix)
-
                 matrix.put(i, column, row)
+                stage.addActor(i)
             }
         }
-
-        matrix.forEach { stage.addActor(it) }
     }
 
     override fun render(delta: Float) {
@@ -128,6 +172,6 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     }
 
     override fun dispose() {
-        items.allTextures.forEach { it.dispose() }
+        itemFactory.allTextures.forEach { it.dispose() }
     }
 }

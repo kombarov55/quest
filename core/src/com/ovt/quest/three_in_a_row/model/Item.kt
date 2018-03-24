@@ -1,5 +1,4 @@
 package com.ovt.quest.three_in_a_row.model
-
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -58,13 +57,16 @@ class Item internal constructor (
             (column == i.column && toPositive(row - i.row) in 0..1) ||
             (row == i.row && toPositive(column - i.column) in 0..1)
 
-    fun fastMoveTo(column: Int, row: Int) {
+    fun fastMoveTo(column: Int, row: Int, then: () -> Unit = {  }) {
         this.column = column
         this.row = row
 
         val (newX, newY) = coords(column, row)
 
-        addAction(Actions.moveTo(newX, newY, swapDuration))
+        addAction(
+                SequenceAction(
+                        Actions.moveTo(newX, newY, swapDuration),
+                        CallbackAction(then)))
     }
 
     fun slowMoveTo(column: Int, row: Int) {
@@ -140,14 +142,14 @@ class Item internal constructor (
         val fullItemWidth = itemWidth + itemPad * 2
         val fullItemHeight = itemHeight + itemPad * 2
 
-        private val scaleDuration = 0.5f
+        val scaleDuration = 0.5f
         private val scaleAmount = 0.15f
 
         private val swapDuration = 0.15f
-        private val fallDuration = 0.8f
+        val fallDuration = 0.8f
 
-        private val dissapearDuration = 0.3f
+        val dissapearDuration = 0.3f
 
-        private val comeOutDuration = 0.6f
+        val comeOutDuration = 0.6f
     }
 }

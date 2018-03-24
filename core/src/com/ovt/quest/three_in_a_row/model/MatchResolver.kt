@@ -11,7 +11,7 @@ object MatchResolver {
 
     private var state: State = DirectionSearch
 
-    val allMatches = mutableListOf<MutableList<Item>>()
+    var allMatches = mutableListOf<MutableList<Item>>()
     var currentMatch = mutableListOf<Item>()
 
     fun resolveMatches(matrix: Matrix): List<List<Item>> {
@@ -28,7 +28,10 @@ object MatchResolver {
             }
         }
 
-        return allMatches
+        val result = allMatches
+        allMatches = mutableListOf()
+
+        return result
     }
 
     fun directionSearch(curr: Item, matrix: Matrix) {

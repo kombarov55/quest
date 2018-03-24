@@ -9,7 +9,7 @@ import com.ovt.quest.three_in_a_row.model.Item.Type.*
 /**
  * Created by nikolay on 23/03/2018.
  */
-class Items {
+class ItemFactory {
 
     private val nonHoleTypes = Item.Type.values().filter { it != Hole }
 

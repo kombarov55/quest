@@ -24,6 +24,8 @@ class Matrix(val maxColumns: Int, val maxRows: Int) {
         }
     }
 
+    fun get(coords: Pair<Int, Int>): Item? = get(coords.first, coords.second)
+
     fun remove(column: Int, row: Int) {
         matrix[column][row] = null
     }
