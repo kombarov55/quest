@@ -17,7 +17,8 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         println("swap $p1 + $p2")
     }
 
-    lateinit var pressMe: Button
+    var pressMe: Button
+    var pressMe2: Button
 
 
     init {
@@ -32,6 +33,14 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         pressMe.y = h * 0.7f
 
         addActor(pressMe)
+
+        pressMe2 = game.buttons.biggerButton("press me2")
+        pressMe2.width = pressMe.width
+        pressMe2.height = pressMe.height
+        pressMe2.x = pressMe.x
+        pressMe2.y = pressMe.y + pressMe.height + h * 0.05f
+
+        addActor(pressMe2)
     }
 
     private var selectedItemLogicCoords: Pair<Int, Int>? = null

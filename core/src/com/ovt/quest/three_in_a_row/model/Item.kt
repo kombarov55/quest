@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.Direction.*
+import com.ovt.quest.three_in_a_row.layout.CallbackAction
 import com.ovt.quest.three_in_a_row.toPositive
 
 /**
@@ -25,7 +26,7 @@ class Item internal constructor (
     private val textureRegion = TextureRegion(texture, 0, 0, texture.width, texture.height)
 
     enum class Type {
-        Red, Blue, Yellow, Hole
+        Red, Blue, Yellow
     }
 
     init {
@@ -78,7 +79,7 @@ class Item internal constructor (
         addAction(scaleDown)
     }
 
-    fun popup() {
+    fun popup(then: () -> Unit = { }) {
         val scaleOut = ParallelAction(
                 Actions.scaleBy(scaleAmount, scaleAmount, scaleDuration),
                 Actions.moveBy(moveInActionX, moveInActionY, scaleDuration)
@@ -87,7 +88,7 @@ class Item internal constructor (
                 Actions.scaleBy(-scaleAmount, -scaleAmount, scaleDuration),
                 Actions.moveBy(-moveInActionX, -moveInActionY, scaleDuration))
 
-        addAction(SequenceAction(scaleOut, scaleIn))
+        addAction(SequenceAction(scaleOut, scaleIn, CallbackAction(then)))
     }
 
     fun dissapear() {

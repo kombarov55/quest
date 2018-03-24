@@ -27,4 +27,10 @@ class Items {
         else -> red(column, row)
     }
 
+    fun byType(type: Item.Type, column: Int, row: Int) = when(type) {
+        Red -> red(column ,row)
+        Blue -> blue(column, row)
+        Yellow -> yellow(column, row)
+    }
+
 }

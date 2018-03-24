@@ -3,6 +3,7 @@ package com.ovt.quest.three_in_a_row
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.MathUtils
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
@@ -30,9 +31,26 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         addInitialItems()
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
-        stage.pressMe.addClickListener {
+        stage.pressMe2.addClickListener {
             MatchResolver.resolveMatches(matrix).flatten().forEach {
-                it.popup()
+                it.popup(then = {
+                    it.dissapear()
+                    matrix.remove(it.column, it.row)
+                    it.remove()
+                })
+            }
+        }
+
+        stage.pressMe.addClickListener {
+            for (row in 0 until maxRows) {
+                for (column in 0 until maxColumns) {
+                    val i = matrix.get(column ,row)
+                    if (i == null) {
+                        val ii = items.rand(column, row)
+                        matrix.put(ii)
+                        stage.addActor(ii)
+                    }
+                }
             }
         }
     }
@@ -58,9 +76,27 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     }
 
     private fun addInitialItems() {
+        fun findNonMatchingItem(column: Int, row: Int, matrix: Matrix): Item {
+            val chosenType = Item.Type.values()[MathUtils.random(Item.Type.values().size - 1)]
+
+            val left1 = matrix.get(column - 1, row)
+            val left2 = matrix.get(column - 2, row)
+
+            val down1 = matrix.get(column, row - 1)
+            val down2 = matrix.get(column, row - 2)
+
+            if (left1?.type == chosenType && left2?.type == chosenType ||
+                    down1?.type == chosenType && down2?.type == chosenType) {
+                return findNonMatchingItem(column, row, matrix)
+            } else {
+                return items.byType(chosenType, column, row)
+            }
+        }
+
         for (row in 0..9) {
             for (column in 0..9) {
-                val i = items.rand(column, row)
+                val i = findNonMatchingItem(column, row, matrix)
+
                 matrix.put(i, column, row)
             }
         }
