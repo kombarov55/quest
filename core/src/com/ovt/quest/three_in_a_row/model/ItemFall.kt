@@ -14,7 +14,7 @@ object ItemFall {
 
     private var holeCount = 0
 
-    fun executeFallDown(matrix: Matrix, itemFactory: ItemFactory, then: () -> Unit = {  }) {
+    fun executeFallDown(matrix: Matrix, itemFactory: ItemFactory, then: () -> Unit = { println("after fall down!") }) {
         for (column in 0 until matrix.maxColumns) {
             for (row in 0 until matrix.maxRows) {
                 val item = matrix.get(column, row)!!

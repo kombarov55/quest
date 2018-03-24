@@ -34,10 +34,12 @@ class Matrix(val maxColumns: Int, val maxRows: Int) {
         matrix.flatten().forEach(f)
     }
 
+    fun flatten() = matrix.flatten()
+
     fun print() {
         for (row in maxRows - 1 downTo 0) {
             for (column in 0 until maxColumns) {
-                print("${get(column, row)?.type?.name?.subSequence(0, 3)}\t")
+                print("${get(column, row)?.type?.name?.take(3)}\t")
             }
             println()
         }

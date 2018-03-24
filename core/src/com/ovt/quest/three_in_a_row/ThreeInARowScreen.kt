@@ -30,13 +30,8 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
         stage.pressMe2.addClickListener {
-            MatchResolver.resolveMatches(matrix).flatten().forEach {item ->
-                item.dissapear(then = {
-                    item.remove()
-                    matrix.remove(item.column, item.row)
-                    matrix.put(itemFactory.hole(item.column, item.row))
-                })
-            }
+            val matches = MatchResolver.resolveMatches(matrix)
+            removeMatches(matches)
         }
 
         stage.pressMe.addClickListener {
@@ -44,7 +39,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         }
 
         stage.pressMe3.addClickListener {
-
+            replaceHoles(matrix, itemFactory, stage)
         }
 
     }
@@ -56,14 +51,14 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
-            val matches: List<List<Item>> = MatchResolver.resolveMatches(matrix)
-
-            if (matches.isNotEmpty()) {
-                removeMatchesLoop(matches, matrix)
-
-            } else {
-                swap(i1, i2)
-            }
+//            val matches: List<List<Item>> = MatchResolver.resolveMatches(matrix)
+//
+//            if (matches.isNotEmpty()) {
+//                removeMatchesLoop(matches, matrix)
+//
+//            } else {
+//                swap(i1, i2)
+//            }
         })
     }
 
@@ -83,20 +78,34 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
     }
 
-    private fun removeMatches(matches: List<List<Item>>, then: () -> Unit = {  }) {
-        matches.flatten().forEach {
+
+
+    private fun removeMatches(matches: List<List<Item>>, then: () -> Unit = { println("After match remove") }) {
+        fun remove(it: Item) {
             it.remove()
             matrix.remove(it.column, it.row)
             matrix.put(itemFactory.hole(it.column, it.row))
         }
 
-        Thread.sleep((Item.dissapearDuration * 1000).toLong())
-        then.invoke()
+        val flattened = matches.flatten()
+
+        flattened.take(flattened.size - 1).forEach {
+            it.dissapear(then = {
+                remove(it)
+            })
+        }
+
+        flattened.last().let { first ->
+            first.dissapear({
+                remove(first)
+                then.invoke()
+            })
+        }
     }
 
 
 
-    private fun swap(i1: Item, i2: Item, then: () -> Unit = { }) {
+    private fun swap(i1: Item, i2: Item, then: () -> Unit = { println("After swap!") }) {
         val (i1col, i1row) = i1.column to i1.row
 
         i1.fastMoveTo(i2.column, i2.row)
@@ -123,17 +132,24 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         }
     }
 
-    private fun replaceHoles(matrix: Matrix, itemFactory: ItemFactory, stage: Stage) {
-        for (row in 0 until matrix.maxRows) {
-            for (column in 0 until matrix.maxColumns) {
-                val i = matrix.get(column, row)!!
-                if (i.type == Hole) {
-                    val ii = itemFactory.rand(i.column, i.row)
-                    matrix.put(ii)
-                    stage.addActor(ii)
-                    ii.comeOut()
-                }
-            }
+    private fun replaceHoles(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = { println("after replace!") }) {
+
+        fun addNew(item: Item) {
+            val ii = itemFactory.rand(item.column, item.row)
+            matrix.put(ii)
+            stage.addActor(ii)
+            ii.comeOut()
+        }
+
+        val holes = matrix.flatten().filter { it?.type == Hole }
+
+        holes.take(holes.size - 1).forEach { item ->
+            addNew(item!!)
+        }
+
+        holes.last().let { item ->
+            addNew(item!!)
+            then.invoke()
         }
     }
 
