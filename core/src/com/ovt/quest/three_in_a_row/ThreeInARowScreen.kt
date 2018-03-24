@@ -29,13 +29,11 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
         stage.pressMe2.addClickListener {
-            MatchResolver.resolveMatches(matrix).flatten().forEach {
-                it.popup(then = {
-                    it.dissapear()
-                    matrix.remove(it.column, it.row)
-                    it.remove()
-
-                    matrix.put(items.hole(it.column, it.row))
+            MatchResolver.resolveMatches(matrix).flatten().forEach {item ->
+                item.dissapear(then = {
+                    item.remove()
+                    matrix.remove(item.column, item.row)
+                    matrix.put(items.hole(item.column, item.row))
                 })
             }
         }
@@ -68,10 +66,10 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         val i2 = matrix.get(i2c, i2r)
 
         if (i1 != null && i2 != null) {
-            i1.moveTo(i2c, i2r)
+            i1.fastMoveTo(i2c, i2r)
             matrix.put(i1)
 
-            i2.moveTo(i1c, i1r)
+            i2.fastMoveTo(i1c, i1r)
             matrix.put(i2)
         }
     }

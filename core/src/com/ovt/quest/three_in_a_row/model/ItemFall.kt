@@ -51,7 +51,7 @@ object ItemFall {
         if (item.type != Hole) {
             matrix.put(items.hole(item.column, item.row))
             matrix.put(item, item.column, item.row - holeCount)
-            item.moveTo(item.column, item.row - holeCount)
+            item.slowMoveTo(item.column, item.row - holeCount)
         } else {
             state = CountHolesInARow
             holeCount += 1

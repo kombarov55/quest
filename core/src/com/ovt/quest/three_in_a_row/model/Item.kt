@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
-import com.badlogic.gdx.utils.Align
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.Direction.*
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
@@ -37,7 +37,8 @@ class Item internal constructor (
         width = itemWidth
         height = itemHeight
 
-        setOrigin(Align.center)
+        originX = width / 2f
+        originY = height / 2f
     }
 
     fun leftOfSelf(matrix: Matrix): Item? = matrix.get(column - 1, row)
@@ -57,57 +58,52 @@ class Item internal constructor (
             (column == i.column && toPositive(row - i.row) in 0..1) ||
             (row == i.row && toPositive(column - i.column) in 0..1)
 
-    fun moveTo(column: Int, row: Int) {
+    fun fastMoveTo(column: Int, row: Int) {
         this.column = column
         this.row = row
 
         val (newX, newY) = coords(column, row)
 
-        addAction(Actions.moveTo(newX, newY, moveDuration))
+        addAction(Actions.moveTo(newX, newY, swapDuration))
     }
 
-    private val moveInActionX = moveForScale(scaleAmount, width, height).first //scaleAmount * width * -0.5f
-    private val moveInActionY = moveForScale(scaleAmount, width, height).second //scaleAmount * height * -0.5f
-    private val dissapearMovementX = moveForScale(dissapearScale, width, height).first
-    private val dissapearMovementY = moveForScale(dissapearScale, width, height).second
+    fun slowMoveTo(column: Int, row: Int) {
+        this.column = column
+        this.row = row
+
+        val (newX, newY) = coords(column, row)
+        addAction(Actions.moveTo(newX, newY, fallDuration, Interpolation.pow2))
+    }
 
     fun scaleUp() {
-        val scaleOut = ParallelAction(
-                Actions.scaleBy(scaleAmount, scaleAmount, scaleDuration),
-                Actions.moveBy(moveInActionX, moveInActionY, scaleDuration))
-        addAction(scaleOut)
+        addAction(Actions.scaleBy(scaleAmount, scaleAmount, scaleDuration))
     }
 
     fun scaleDown() {
-        val scaleDown = ParallelAction(
-                Actions.scaleBy(-scaleAmount, -scaleAmount, scaleDuration),
-                Actions.moveBy(-moveInActionX, -moveInActionY, scaleDuration))
-        addAction(scaleDown)
+        addAction(Actions.scaleBy(-scaleAmount, -scaleAmount, scaleDuration))
     }
 
     fun popup(then: () -> Unit = { }) {
-        val scaleOut = ParallelAction(
+        addAction(SequenceAction(
                 Actions.scaleBy(scaleAmount, scaleAmount, scaleDuration),
-                Actions.moveBy(moveInActionX, moveInActionY, scaleDuration)
-        )
-        val scaleIn = ParallelAction(
                 Actions.scaleBy(-scaleAmount, -scaleAmount, scaleDuration),
-                Actions.moveBy(-moveInActionX, -moveInActionY, scaleDuration))
-
-        addAction(SequenceAction(scaleOut, scaleIn, CallbackAction(then)))
+                CallbackAction(then)))
     }
 
-    fun dissapear() {
-        val scale = Actions.scaleBy(dissapearScale, dissapearScale, dissapearDuration)
-        val move = Actions.moveBy(dissapearMovementX, dissapearMovementY, dissapearDuration)
-        val fade = Actions.fadeOut(dissapearDuration)
-        addAction(ParallelAction(fade, scale, move))
+    fun dissapear(then: () -> Unit) {
+        addAction(
+                SequenceAction(
+                        ParallelAction(
+                                Actions.scaleTo(0.1f, 0.1f, dissapearDuration),
+                                Actions.fadeOut(dissapearDuration)),
+                        CallbackAction(then)))
     }
 
     fun comeOut() {
-//        this.setScale(0.1f, 0.81f)
-        val rotate = Actions.rotateBy(360f, comeOutDuration)
-        addAction(ParallelAction(rotate))
+        this.setScale(0.1f, 0.1f)
+        val rotate = Actions.rotateBy(360f * 1, comeOutDuration)
+        val scaleUp = Actions.scaleTo(1f, 1f, comeOutDuration)
+        addAction(ParallelAction(rotate, scaleUp))
     }
 
     private fun coords(column: Int, row: Int): Pair<Float, Float> {
@@ -116,7 +112,7 @@ class Item internal constructor (
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         batch.setColor(color.r, color.g, color.b, parentAlpha * color.a)
-        batch.draw(textureRegion, x, y, 0f, 0f, width, height, scaleX, scaleY, rotation)
+        batch.draw(textureRegion, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
     }
 
     override fun toString(): String {
@@ -147,16 +143,11 @@ class Item internal constructor (
         private val scaleDuration = 0.5f
         private val scaleAmount = 0.15f
 
-        private val moveDuration = 0.07f
+        private val swapDuration = 0.15f
+        private val fallDuration = 0.8f
 
-        private val dissapearScale = -1f
         private val dissapearDuration = 0.3f
 
-        private val comeOutDuration = 1.5f
-
-        //private val moveInActionX = scaleAmount * width * -0.5f
-        private fun moveForScale(scale: Float, width: Float, height: Float): Pair<Float, Float> {
-            return scale * width * -0.5f to scale * height * -0.5f
-        }
+        private val comeOutDuration = 0.6f
     }
 }
