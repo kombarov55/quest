@@ -26,12 +26,7 @@ class Items {
     fun yellow(column: Int, row: Int) = Item(column, row, yellowTexture, Yellow)
     fun pink(column: Int, row: Int) = Item(column, row, pinkTexture, Pink)
     fun hole(column: Int, row: Int) = Item(column, row, holeTexture, Hole)
-    fun rand(column: Int, row: Int) = when (MathUtils.random(0, 2)) {
-        0 -> red(column, row)
-        1 -> blue(column, row)
-        2 -> yellow(column, row)
-        else -> red(column, row)
-    }
+    fun rand(column: Int, row: Int) = byType(randType(), column, row)
 
     fun randType(): Item.Type = nonHoleTypes[MathUtils.random(nonHoleTypes.size - 1)]
 
