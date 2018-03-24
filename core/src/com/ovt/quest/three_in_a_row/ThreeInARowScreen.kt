@@ -3,11 +3,11 @@ package com.ovt.quest.three_in_a_row
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.math.MathUtils
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 import com.ovt.quest.three_in_a_row.model.*
+import com.ovt.quest.three_in_a_row.model.Item.Type.*
 
 /**
  * Created by nikolay on 14.03.18.
@@ -45,8 +45,19 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         }
 
         stage.pressMe3.addClickListener {
-            matrix.print()
+            for (row in 0 until maxRows) {
+                for (column in 0 until maxColumns) {
+                    val i = matrix.get(column, row)!!
+                    if (i.type == Hole) {
+                        val ii = items.rand(i.column, i.row)
+                        matrix.put(ii)
+                        stage.addActor(ii)
+                        ii.comeOut()
+                    }
+                }
+            }
         }
+
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {

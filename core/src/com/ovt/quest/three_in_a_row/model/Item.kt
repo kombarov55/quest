@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.badlogic.gdx.utils.Align
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.Direction.*
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
@@ -35,6 +36,8 @@ class Item internal constructor (
         this.y = y
         width = itemWidth
         height = itemHeight
+
+        setOrigin(Align.center)
     }
 
     fun leftOfSelf(matrix: Matrix): Item? = matrix.get(column - 1, row)
@@ -102,8 +105,9 @@ class Item internal constructor (
     }
 
     fun comeOut() {
-        val fade = Actions.fadeIn(dissapearDuration)
-        addAction(fade)
+//        this.setScale(0.1f, 0.81f)
+        val rotate = Actions.rotateBy(360f, comeOutDuration)
+        addAction(ParallelAction(rotate))
     }
 
     private fun coords(column: Int, row: Int): Pair<Float, Float> {
@@ -147,6 +151,8 @@ class Item internal constructor (
 
         private val dissapearScale = -1f
         private val dissapearDuration = 0.3f
+
+        private val comeOutDuration = 1.5f
 
         //private val moveInActionX = scaleAmount * width * -0.5f
         private fun moveForScale(scale: Float, width: Float, height: Float): Pair<Float, Float> {

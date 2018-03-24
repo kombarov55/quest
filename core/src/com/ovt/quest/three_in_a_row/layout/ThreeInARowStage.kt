@@ -26,16 +26,16 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
-        pressMe = game.buttons.biggerButton("press me")
+        pressMe = game.buttons.normalButton("press me")
 
         pressMe.width = w * 0.8f
-        pressMe.height = h * 0.1f
+        pressMe.height = h * 0.05f
         pressMe.x = (w - pressMe.width) / 2
         pressMe.y = h * 0.65f
 
         addActor(pressMe)
 
-        pressMe2 = game.buttons.biggerButton("press me2")
+        pressMe2 = game.buttons.normalButton("press me2")
         pressMe2.width = pressMe.width
         pressMe2.height = pressMe.height
         pressMe2.x = pressMe.x
@@ -43,7 +43,7 @@ class ThreeInARowStage(game: QuestGame): Stage() {
 
         addActor(pressMe2)
 
-        pressMe3 = game.buttons.biggerButton("press me3")
+        pressMe3 = game.buttons.normalButton("press me3")
         pressMe3.width = pressMe.width
         pressMe3.height = pressMe.height
         pressMe3.x = pressMe.x
