@@ -34,7 +34,7 @@ object ItemFall {
         if (item.type == Hole) {
             state = CountHolesInARow
 
-            holeCount += 1
+            holeCount = 1
         }
     }
 
@@ -48,7 +48,13 @@ object ItemFall {
     }
 
     private fun fallingItems(item: Item, matrix: Matrix, items: Items) {
-        matrix.put(items.hole(item.column, item.row))
-        item.moveTo(item.column, item.row - holeCount)
+        if (item.type != Hole) {
+            matrix.put(items.hole(item.column, item.row))
+            matrix.put(item, item.column, item.row - holeCount)
+            item.moveTo(item.column, item.row - holeCount)
+        } else {
+            state = CountHolesInARow
+            holeCount += 1
+        }
     }
 }

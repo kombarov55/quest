@@ -32,6 +32,15 @@ class Matrix(val maxColumns: Int, val maxRows: Int) {
         matrix.flatten().forEach(f)
     }
 
+    fun print() {
+        for (row in maxRows - 1 downTo 0) {
+            for (column in 0 until maxColumns) {
+                print("${get(column, row)?.type?.name?.subSequence(0, 3)}\t")
+            }
+            println()
+        }
+    }
+
     fun getRow(rownum: Int): List<Item?> = matrix.map { column -> column.first() }
 
     fun getColumn(colnum: Int): List<Item?> = matrix[colnum]

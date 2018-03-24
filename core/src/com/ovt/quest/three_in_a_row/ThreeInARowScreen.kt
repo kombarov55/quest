@@ -43,6 +43,10 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         stage.pressMe.addClickListener {
             ItemFall.executeFallDown(matrix, items)
         }
+
+        stage.pressMe3.addClickListener {
+            matrix.print()
+        }
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
@@ -54,13 +58,9 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
         if (i1 != null && i2 != null) {
             i1.moveTo(i2c, i2r)
-            i1.column = i2c
-            i1.row = i2r
             matrix.put(i1)
 
             i2.moveTo(i1c, i1r)
-            i2.column = i1c
-            i2.row = i1r
             matrix.put(i2)
         }
     }

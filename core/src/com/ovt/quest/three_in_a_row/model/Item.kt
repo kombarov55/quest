@@ -55,6 +55,9 @@ class Item internal constructor (
             (row == i.row && toPositive(column - i.column) in 0..1)
 
     fun moveTo(column: Int, row: Int) {
+        this.column = column
+        this.row = row
+
         val (newX, newY) = coords(column, row)
 
         addAction(Actions.moveTo(newX, newY, moveDuration))
@@ -104,7 +107,7 @@ class Item internal constructor (
     }
 
     private fun coords(column: Int, row: Int): Pair<Float, Float> {
-        return tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + row * (itemWidth + (itemPad * 2))
+        return tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + (row * (itemWidth + (itemPad * 2)))
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
