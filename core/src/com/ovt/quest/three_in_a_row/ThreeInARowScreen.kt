@@ -7,10 +7,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
-import com.ovt.quest.three_in_a_row.model.Item
-import com.ovt.quest.three_in_a_row.model.Items
-import com.ovt.quest.three_in_a_row.model.MatchResolver
-import com.ovt.quest.three_in_a_row.model.Matrix
+import com.ovt.quest.three_in_a_row.model.*
 
 /**
  * Created by nikolay on 14.03.18.
@@ -44,16 +41,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         }
 
         stage.pressMe.addClickListener {
-            for (row in 0 until maxRows) {
-                for (column in 0 until maxColumns) {
-                    val i = matrix.get(column ,row)
-                    if (i?.type == Item.Type.Hole) {
-                        val ii = items.rand(column, row)
-                        matrix.put(ii)
-                        stage.addActor(ii)
-                    }
-                }
-            }
+            ItemFall.executeFallDown(matrix, items)
         }
     }
 
