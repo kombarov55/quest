@@ -26,7 +26,7 @@ class Item internal constructor (
     private val textureRegion = TextureRegion(texture, 0, 0, texture.width, texture.height)
 
     enum class Type {
-        Red, Blue, Yellow
+        Red, Blue, Yellow, Pink, Hole
     }
 
     init {

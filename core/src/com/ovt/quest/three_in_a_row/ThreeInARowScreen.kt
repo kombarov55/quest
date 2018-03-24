@@ -37,6 +37,8 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
                     it.dissapear()
                     matrix.remove(it.column, it.row)
                     it.remove()
+
+                    matrix.put(items.hole(it.column, it.row))
                 })
             }
         }
@@ -45,7 +47,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
             for (row in 0 until maxRows) {
                 for (column in 0 until maxColumns) {
                     val i = matrix.get(column ,row)
-                    if (i == null) {
+                    if (i?.type == Item.Type.Hole) {
                         val ii = items.rand(column, row)
                         matrix.put(ii)
                         stage.addActor(ii)
@@ -75,24 +77,24 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         }
     }
 
-    private fun addInitialItems() {
-        fun findNonMatchingItem(column: Int, row: Int, matrix: Matrix): Item {
-            val chosenType = Item.Type.values()[MathUtils.random(Item.Type.values().size - 1)]
+    private fun findNonMatchingItem(column: Int, row: Int, matrix: Matrix): Item {
+        val chosenType = items.randType()
 
-            val left1 = matrix.get(column - 1, row)
-            val left2 = matrix.get(column - 2, row)
+        val left1 = matrix.get(column - 1, row)
+        val left2 = matrix.get(column - 2, row)
 
-            val down1 = matrix.get(column, row - 1)
-            val down2 = matrix.get(column, row - 2)
+        val down1 = matrix.get(column, row - 1)
+        val down2 = matrix.get(column, row - 2)
 
-            if (left1?.type == chosenType && left2?.type == chosenType ||
-                    down1?.type == chosenType && down2?.type == chosenType) {
-                return findNonMatchingItem(column, row, matrix)
-            } else {
-                return items.byType(chosenType, column, row)
-            }
+        if (left1?.type == chosenType && left2?.type == chosenType ||
+                down1?.type == chosenType && down2?.type == chosenType) {
+            return findNonMatchingItem(column, row, matrix)
+        } else {
+            return items.byType(chosenType, column, row)
         }
+    }
 
+    private fun addInitialItems() {
         for (row in 0..9) {
             for (column in 0..9) {
                 val i = findNonMatchingItem(column, row, matrix)
@@ -101,48 +103,8 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
             }
         }
 
-        println(findMatches())
         matrix.forEach { stage.addActor(it) }
     }
-
-    private fun findMatches(): MutableList<List<Item>> {
-        val matches = mutableListOf<List<Item>>()
-        for (row in 0 until maxRows) {
-            for (column in 0 until maxColumns - 3) {
-                val curr = matrix.get(column, row)!!
-                val right1 = matrix.get(column + 1, row)!!
-                val right2 = matrix.get(column + 2, row)!!
-                if (curr.type == right1.type && curr.type == right2.type) {
-                    matches.add(listOf(curr, right1, right2))
-                }
-            }
-        }
-
-        return matches
-    }
-
-    private fun findMatches(row: List<Item>): List<List<Item>> {
-
-        fun findNextMatch(requiredType: Item.Type, remainingRow: List<Item>, result: MutableList<Item>): List<Item> {
-            val next = remainingRow.firstOrNull()
-
-            if (next != null && next.type == requiredType) {
-                result.add(next)
-                return findNextMatch(requiredType, remainingRow.subList(1,remainingRow.size), result)
-            } else {
-                return result
-            }
-
-        }
-
-        val matches = mutableListOf<List<Item>>()
-
-
-
-        return matches
-    }
-
-
 
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
