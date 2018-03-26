@@ -63,33 +63,30 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
-            println("After swap: ")
-            matrix.print()
             val matches = MatchResolver.resolveMatches(matrix)
             if (matches.isNotEmpty()) {
-                println("matches: $matches")
-                removeMatches(matches, then = {
-                    println("after matches removed")
-                    matrix.print()
-                    ItemFall.executeFallDown(matrix, itemFactory, then = {
-                        println("after fall")
-                        matrix.print()
-                        replaceHoles(matrix, itemFactory, stage)
-                    })
-                })
+                removeLoop(matches, matrix, itemFactory, stage)
             } else {
                 swap(i1, i2)
             }
         })
     }
 
+    private fun removeLoop(matches: List<List<Item>>, matrix: Matrix, itemFactory: ItemFactory, stage: Stage) {
+        removeMatches(matches, then = {
+            ItemFall.executeFallDown(matrix, itemFactory, then = {
+                replaceHoles(matrix, itemFactory, stage)
+                val newMatches = MatchResolver.resolveMatches(matrix)
+                if (newMatches.isNotEmpty()) {
+                    removeLoop(newMatches, matrix, itemFactory, stage)
+                }
+            })
+        })
+    }
+
 
 
     private fun removeMatches(matches: List<List<Item>>, then: () -> Unit = { println("After match remove") }) {
-        fun remove(it: Item) {
-
-        }
-
         val flattened = matches.flatten()
 
         flattened.dropLast(1).forEach {
@@ -138,7 +135,6 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     }
 
     private fun replaceHoles(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
-
         fun addNew(item: Item) {
             val ii = findNonMatchingItem(item.column, item.row, matrix)
             matrix.put(ii)
