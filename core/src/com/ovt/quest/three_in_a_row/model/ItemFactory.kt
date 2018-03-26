@@ -19,7 +19,7 @@ class ItemFactory {
     private val pinkTexture = Texture(Gdx.files.internal("img/item_pink.png"))
     private val holeTexture = Texture(Gdx.files.internal("img/sasha.jpg"))
 
-    val allTextures = listOf(blueTexture, redTexture, yellowTexture)
+    val allTextures = listOf(blueTexture, redTexture, yellowTexture, pinkTexture)
 
     fun red(column: Int, row: Int) = Item(column, row, redTexture, Red)
     fun blue(column: Int, row: Int) = Item(column, row, blueTexture, Blue)

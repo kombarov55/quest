@@ -69,12 +69,12 @@ class Item internal constructor (
                         CallbackAction(then)))
     }
 
-    fun slowMoveTo(column: Int, row: Int) {
+    fun slowMoveTo(column: Int, row: Int, then: () -> Unit = {  }) {
         this.column = column
         this.row = row
 
         val (newX, newY) = coords(column, row)
-        addAction(Actions.moveTo(newX, newY, fallDuration, Interpolation.pow2))
+        addAction(SequenceAction(Actions.moveTo(newX, newY, fallDuration, Interpolation.pow2), CallbackAction(then)))
     }
 
     fun scaleUp() {

@@ -39,10 +39,12 @@ class Matrix(val maxColumns: Int, val maxRows: Int) {
     fun print() {
         for (row in maxRows - 1 downTo 0) {
             for (column in 0 until maxColumns) {
-                print("${get(column, row)?.type?.name?.take(3)}\t")
+                val i = get(column, row)
+                print("${i?.type?.name?.let { name -> if (name.equals("Hole")) " " else name.first() }} {${i?.column}, ${i?.row}}\t")
             }
             println()
         }
+        println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     }
 
     fun getRow(rownum: Int): List<Item?> = matrix.map { column -> column.first() }
