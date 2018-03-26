@@ -31,7 +31,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         stage.onSwap = ::onSwap
         stage.pressMe2.addClickListener {
             val matches = MatchResolver.resolveMatches(matrix)
-            removeMatches(matches)
+            if (matches.isNotEmpty()) removeMatches(matches)
         }
 
         stage.pressMe.addClickListener {
@@ -89,14 +89,14 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
         val flattened = matches.flatten()
 
-        flattened.take(flattened.size - 1).forEach {
+        flattened.dropLast(1).forEach {
             it.dissapear(then = {
                 remove(it)
             })
         }
 
         flattened.last().let { first ->
-            first.dissapear({
+            first.dissapear(then = {
                 remove(first)
                 then.invoke()
             })
