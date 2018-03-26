@@ -45,7 +45,7 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
         table.row()
         table.add(minigamesButton)
         table.row()
-        table.add(exitButton)
+//        table.add(exitButton)
 
         stage.addActor(table)
     }

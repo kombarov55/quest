@@ -20,7 +20,6 @@ class ThreeInARowStage(game: QuestGame): Stage() {
     val pressMe: Button
     val pressMe2: Button
     val pressMe3: Button
-    val pressMe4: Button
 
 
     init {
@@ -32,7 +31,7 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         pressMe.width = w * 0.8f
         pressMe.height = h * 0.05f
         pressMe.x = (w - pressMe.width) / 2
-        pressMe.y = h * 0.65f
+        pressMe.y = h * 0.7f
 
         addActor(pressMe)
 
@@ -51,14 +50,6 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         pressMe3.y = pressMe2.y + pressMe2.height + h * 0.01f
 
         addActor(pressMe3)
-
-        pressMe4 = game.buttons.normalButton("press me4")
-        pressMe4.width = pressMe.width
-        pressMe4.height = pressMe.height
-        pressMe4.x = pressMe.x
-        pressMe4.y = pressMe3.y + pressMe3.height + h * 0.01f
-
-        addActor(pressMe4)
     }
 
     private var selectedItemLogicCoords: Pair<Int, Int>? = null

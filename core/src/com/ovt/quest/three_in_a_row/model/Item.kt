@@ -146,7 +146,7 @@ class Item internal constructor (
         private val scaleAmount = 0.15f
 
         private val swapDuration = 0.15f
-        val fallDuration = 0.8f
+        val fallDuration = 0.45f
 
         val dissapearDuration = 0.3f
 

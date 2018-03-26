@@ -33,25 +33,15 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
             val matches = MatchResolver.resolveMatches(matrix)
             if (matches.isNotEmpty()) {
                 removeMatches(matches)
-                println("after matches removed")
-                matrix.print()
             }
         }
 
         stage.pressMe.addClickListener {
             ItemFall.executeFallDown(matrix, itemFactory)
-            println("after fall")
-            matrix.print()
         }
 
         stage.pressMe3.addClickListener {
             replaceHoles(matrix, itemFactory, stage)
-            println("after replace!")
-            matrix.print()
-        }
-
-        stage.pressMe4.addClickListener {
-            matrix.print()
         }
 
     }
@@ -117,26 +107,9 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         matrix.put(i2)
     }
 
-    private fun findNonMatchingItem(column: Int, row: Int, matrix: Matrix): Item {
-        val chosenType = itemFactory.randType()
-
-        val left1 = matrix.get(column - 1, row)
-        val left2 = matrix.get(column - 2, row)
-
-        val down1 = matrix.get(column, row - 1)
-        val down2 = matrix.get(column, row - 2)
-
-        if (left1?.type == chosenType && left2?.type == chosenType ||
-                down1?.type == chosenType && down2?.type == chosenType) {
-            return findNonMatchingItem(column, row, matrix)
-        } else {
-            return itemFactory.byType(chosenType, column, row)
-        }
-    }
-
     private fun replaceHoles(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
         fun addNew(item: Item) {
-            val ii = findNonMatchingItem(item.column, item.row, matrix)
+            val ii = itemFactory.nonMatchingItem(item.column, item.row, matrix)
             matrix.put(ii)
             stage.addActor(ii)
             ii.comeOut()
@@ -160,7 +133,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     private fun addInitialItems() {
         for (row in 0..9) {
             for (column in 0..9) {
-                val i = findNonMatchingItem(column, row, matrix)
+                val i = itemFactory.nonMatchingItem(column, row, matrix)
                 matrix.put(i, column, row)
                 stage.addActor(i)
             }

@@ -38,4 +38,21 @@ class ItemFactory {
         Hole -> throw RuntimeException("Trying to create a hole")
     }
 
+    fun nonMatchingItem(column: Int, row: Int, matrix: Matrix): Item {
+        val chosenType = randType()
+
+        val left1 = matrix.get(column - 1, row)
+        val left2 = matrix.get(column - 2, row)
+
+        val down1 = matrix.get(column, row - 1)
+        val down2 = matrix.get(column, row - 2)
+
+        if (left1?.type == chosenType && left2?.type == chosenType ||
+                down1?.type == chosenType && down2?.type == chosenType) {
+            return nonMatchingItem(column, row, matrix)
+        } else {
+            return byType(chosenType, column, row)
+        }
+    }
+
 }

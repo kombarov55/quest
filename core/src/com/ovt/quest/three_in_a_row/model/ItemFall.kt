@@ -19,8 +19,6 @@ object ItemFall {
     fun executeFallDown(matrix: Matrix, itemFactory: ItemFactory, then: () -> Unit = { println("after fall down!") }) {
         thenCalled = false
 
-        matrix.print()
-
         for (column in 0 until matrix.maxColumns) {
             for (row in 0 until matrix.maxRows) {
                 val item = matrix.get(column, row)!!
@@ -34,6 +32,8 @@ object ItemFall {
             holeCount = 0
             state = SearchingHole
         }
+
+        if (!thenCalled) then.invoke()
     }
 
     private fun searchingHole(item: Item, matrix: Matrix, itemFactory: ItemFactory) {
