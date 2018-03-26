@@ -148,8 +148,8 @@ class Item internal constructor (
         private val swapDuration = 0.15f
         val fallDuration = 0.45f
 
-        val dissapearDuration = 0.3f
+        val dissapearDuration = 0.25f
 
-        val comeOutDuration = 0.6f
+        val comeOutDuration = 0.5f
     }
 }
