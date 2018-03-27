@@ -104,7 +104,7 @@ class Item internal constructor (
 
     fun comeOut() {
         this.setScale(0.1f, 0.1f)
-        val rotate = Actions.rotateBy(360f * 1, comeOutDuration)
+        val rotate = Actions.rotateBy(360f * -1, comeOutDuration)
         val scaleUp = Actions.scaleTo(1f, 1f, comeOutDuration)
         addAction(ParallelAction(rotate, scaleUp))
     }
@@ -151,6 +151,6 @@ class Item internal constructor (
 
         val dissapearDuration = 0.25f
 
-        val comeOutDuration = 0.5f
+        val comeOutDuration = 0.3f
     }
 }
