@@ -13,6 +13,8 @@ class MinigamesStage(private val game: QuestGame) : Stage() {
 
     val threeInARowGameButton = game.buttons.biggerButton("3 в ряд")
 
+    val archeryButton = game.buttons.biggerButton("Стрельба")
+
 
     init {
         val h = Gdx.graphics.height
@@ -21,7 +23,10 @@ class MinigamesStage(private val game: QuestGame) : Stage() {
         val table = Table()
         table.setFillParent(true)
         table.top().padTop(h * 0.1f)
-        table.add(threeInARowGameButton).width(w * 0.8f)
+        table.defaults().width(w * 0.8f)
+        table.add(threeInARowGameButton)
+        table.row()
+        table.add(archeryButton)
         table.row()
 
         addActor(table)
