@@ -52,9 +52,16 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         pressMe3.x = pressMe.x
         pressMe3.y = pressMe2.y + pressMe2.height + h * 0.01f
 
-        homeButton = game.buttons.imgButton("img/home.png")
-
         addActor(pressMe3)
+
+        homeButton = game.buttons.imgButton(src = "img/home.png")
+        homeButton.width = w * 0.06f
+        homeButton.height = homeButton.width
+        homeButton.x = w * 0.03f
+        homeButton.y = h - homeButton.height - homeButton.width
+        addActor(homeButton)
+
+
     }
 
     private var selectedItemLogicCoords: Pair<Int, Int>? = null

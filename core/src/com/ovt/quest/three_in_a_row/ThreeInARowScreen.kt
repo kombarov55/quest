@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
+import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.main_menu_screens.MinigamesScreen
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 import com.ovt.quest.three_in_a_row.model.*
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
@@ -13,7 +15,7 @@ import com.ovt.quest.three_in_a_row.model.Item.Type.*
 /**
  * Created by nikolay on 14.03.18.
  */
-class ThreeInARowScreen(game: QuestGame) : Screen {
+class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     companion object {
         var maxRows = 8
@@ -44,6 +46,10 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
         stage.pressMe3.addClickListener {
             addNewItems(matrix, itemFactory, stage)
+        }
+
+        stage.homeButton.addClickListener {
+            game.screen = MainMenuScreen(game)
         }
 
     }
