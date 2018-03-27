@@ -25,15 +25,15 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
 
         stage.addActor(game.background)
 
-        val startButton = game.buttons.biggerButton("Начать", {
+        val startButton = game.buttons.biggerButton("Начать", onClick = {
             clearGameProgress()
             game.screen = QuestScreen(game)
         })
-        val continueButton = game.buttons.biggerButton("Продолжить", { game.screen = QuestScreen(game) })
+        val continueButton = game.buttons.biggerButton("Продолжить", onClick = { game.screen = QuestScreen(game) })
 
-        val minigamesButton = game.buttons.biggerButton("Миниигры", { game.screen = MinigamesScreen(game) })
+        val minigamesButton = game.buttons.biggerButton("Миниигры", onClick = { game.screen = MinigamesScreen(game) })
 
-        val exitButton = game.buttons.biggerButton("Выход", { Gdx.app.exit() })
+        val exitButton = game.buttons.biggerButton("Выход", onClick = { Gdx.app.exit() })
 
         val table = Table()
         table.setFillParent(true)

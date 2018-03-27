@@ -3,6 +3,7 @@ package com.ovt.quest.three_in_a_row.layout
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.ovt.quest.QuestGame
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.model.Item
@@ -20,6 +21,8 @@ class ThreeInARowStage(game: QuestGame): Stage() {
     val pressMe: Button
     val pressMe2: Button
     val pressMe3: Button
+
+    val homeButton: ImageButton
 
 
     init {
@@ -48,6 +51,8 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         pressMe3.height = pressMe.height
         pressMe3.x = pressMe.x
         pressMe3.y = pressMe2.y + pressMe2.height + h * 0.01f
+
+        homeButton = game.buttons.imgButton("img/home.png")
 
         addActor(pressMe3)
     }

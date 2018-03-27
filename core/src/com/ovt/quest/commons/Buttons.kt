@@ -4,14 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.Buttons.ButtonSize.*
@@ -24,12 +20,12 @@ class Buttons(
         private val skin: Skin
 ) {
 
-    fun biggerButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(BIGGER, text, callback)
-    fun normalButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(NORMAL, text, callback)
-    fun smallerButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(SMALLER, text, callback)
-    fun tinyButton(text: String = "", callback: (() -> Unit)? = { }) = createButton(TINY, text, callback)
+    fun biggerButton(text: String = "", width: Float = 0f, height: Float = 0f, x: Float = 0f, y: Float = 0f, onClick: (() -> Unit)? = { }) = createButton(BIGGER, text, width, height, x, y ,onClick)
+    fun normalButton(text: String = "", width: Float = 0f, height: Float = 0f, x: Float = 0f, y: Float = 0f, onClick: (() -> Unit)? = { }) = createButton(NORMAL, text, width, height, x, y ,onClick)
+    fun smallerButton(text: String = "", width: Float = 0f, height: Float = 0f, x: Float = 0f, y: Float = 0f, onClick: (() -> Unit)? = { }) = createButton(SMALLER, text, width, height, x, y ,onClick)
+    fun tinyButton(text: String = "", width: Float = 0f, height: Float = 0f, x: Float = 0f, y: Float = 0f, onClick: (() -> Unit)? = { }) = createButton(TINY, text, width, height, x, y, onClick)
 
-    private fun createButton(size: ButtonSize, text: String, callback: (() -> Unit)? = { }): TextButton {
+    private fun createButton(size: ButtonSize, text: String, width: Float = 0f, height: Float = 0f, x: Float = 0f, y: Float = 0f, callback: (() -> Unit)? = { }): TextButton {
         val chosenFont = when (size) {
             BIGGER -> game.bigFont
             NORMAL -> game.normalFont
@@ -46,13 +42,17 @@ class Buttons(
 
         switchFontBug(chosenFont)
 
-        return SoundButton(text, chosenStyle, game.buttonClickSound, callback)
+        return SoundButton(text, chosenStyle, game.buttonClickSound, callback, width, height, x, y)
     }
 
-    fun imgButton(src: String, callback: (() -> Unit)? = { }): ImageButton {
+    fun imgButton(src: String, width: Float = 0f, height: Float = 0f, x: Float = 0f, y: Float = 0f, onClick: (() -> Unit)? = { }): ImageButton {
         val pic = TextureRegionDrawable(TextureRegion(Texture(Gdx.files.internal(src))))
 
-        val b = SoundImgButton(pic, game.buttonClickSound, callback)
+        val b = SoundImgButton(pic, game.buttonClickSound, onClick)
+        b.width = width
+        b.height = height
+        b.x = x
+        b.y = y
 
         return b
     }

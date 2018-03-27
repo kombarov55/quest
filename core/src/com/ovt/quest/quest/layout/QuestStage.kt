@@ -20,9 +20,9 @@ class QuestStage(private val game: QuestGame) : Stage() {
     private val diaryTable = DiaryTable(game, { hideDiary() })
     private val settingsTable = Table()
     private val optionsTable = Table()
-    private val settingsButton = game.buttons.imgButton("img/settings.png", ::toggleSettings)
-    private val diaryButton = game.buttons.imgButton("img/diary.png", ::showDiary)
-    private val homeButton = game.buttons.imgButton("img/home.png", ::toHome)
+    private val settingsButton = game.buttons.imgButton("img/settings.png", onClick = ::toggleSettings)
+    private val diaryButton = game.buttons.imgButton("img/diary.png", onClick = ::showDiary)
+    private val homeButton = game.buttons.imgButton("img/home.png", onClick = ::toHome)
 
     private var background: Image? = null
 
@@ -70,7 +70,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     fun addOptions(options: List<String>?) {
         options?.map { option ->
-            val button = game.buttons.smallerButton(option, { onOptionClickListener?.invoke(option) })
+            val button = game.buttons.smallerButton(option, onClick = { onOptionClickListener?.invoke(option) })
             button.label.setWrap(true)
             button
         }?.forEach { button ->

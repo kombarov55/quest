@@ -29,7 +29,7 @@ class DiaryTable(private val game: QuestGame, hideClicked: () -> Unit) : Table()
         defaults().expandX().pad(h * 0.025f).width(width * 0.8f)
         top()
 
-        add(game.buttons.imgButton("img/close.png", { hideClicked() }))
+        add(game.buttons.imgButton("img/close.png", onClick = { hideClicked() }))
                 .height(BUTTON_SIDE_SIZE).width(BUTTON_SIDE_SIZE).right()
 
         row()

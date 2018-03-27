@@ -11,9 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
  */
 class SoundButton(text: String,
                   style: TextButtonStyle,
-                  clickingSound: Sound, callback: (() -> Unit)? = { }) : TextButton(text, style) {
+                  clickingSound: Sound, callback: (() -> Unit)? = { }, width: Float, height: Float, x: Float, y: Float) : TextButton(text, style) {
 
     init {
+
+        this.width = width
+        this.height = height
+        this.x = x
+        this.y = y
+
         addListener(object: ClickListener() {
 
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {

@@ -17,7 +17,7 @@ class TableTestScreen(private val game: QuestGame) : Screen {
     private val stage = Stage()
     private val table = Table()
 
-    private val homeButton = game.buttons.normalButton("Главное меню", {
+    private val homeButton = game.buttons.normalButton("Главное меню", onClick = {
         stage.actors.removeValue(table, false)
     })
     private val settingsButton = game.buttons.normalButton("Настройки")
