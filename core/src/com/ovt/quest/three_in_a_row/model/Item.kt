@@ -94,6 +94,7 @@ class Item internal constructor (
     }
 
     fun dissapear(then: () -> Unit) {
+
         addAction(
                 SequenceAction(
                         ParallelAction(

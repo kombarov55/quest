@@ -25,7 +25,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private val stage = ThreeInARowStage(game)
     private val matrix = Matrix(maxColumns, maxRows)
 
-
+    private val sound = Gdx.audio.newSound(Gdx.files.internal("sounds/shot-and-reload.wav"))
 
     private val itemFactory = ItemFactory()
 
@@ -101,6 +101,8 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
                 then.invoke()
             })
         }
+
+         sound.play(0.1f)
     }
 
 
@@ -174,5 +176,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     override fun dispose() {
         itemFactory.allTextures.forEach { it.dispose() }
+        sound.dispose()
     }
 }
