@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.Direction.*
+import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
 import com.ovt.quest.three_in_a_row.toPositive
 
@@ -136,7 +137,7 @@ class Item internal constructor (
         val tablePadLeft = w * 0.05f
         private val itemPad = w * 0.005f
 
-        private val itemWidth = ((w - tablePadLeft * 2) / 10) - (itemPad * 2)
+        private val itemWidth = ((w - tablePadLeft * 2) / ThreeInARowScreen.maxColumns) - (itemPad * 2)
         private val itemHeight = itemWidth
 
         val fullItemWidth = itemWidth + itemPad * 2

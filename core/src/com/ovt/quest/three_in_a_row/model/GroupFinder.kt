@@ -1,20 +1,20 @@
 package com.ovt.quest.three_in_a_row.model
 
-import com.ovt.quest.three_in_a_row.model.MatchResolver.State.*
+import com.ovt.quest.three_in_a_row.model.GroupFinder.State.*
 
 /**
  * Created by nikolay on 23.03.18.
  */
-object MatchResolver {
+object GroupFinder {
 
     private enum class State { DirectionSearch, Up, Right, GoNext }
 
     private var state: State = DirectionSearch
 
-    var allMatches = mutableListOf<MutableList<Item>>()
-    var currentMatch = mutableListOf<Item>()
+    var allGroups = mutableListOf<MutableList<Item>>()
+    var currentGroup = mutableListOf<Item>()
 
-    fun resolveMatches(matrix: Matrix): List<List<Item>> {
+    fun resolveGroups(matrix: Matrix): List<List<Item>> {
         for (r in 0 until matrix.maxRows) {
             for (c in 0 until matrix.maxColumns) {
                 val curr = matrix.get(c, r)!!
@@ -28,8 +28,8 @@ object MatchResolver {
             }
         }
 
-        val result = allMatches
-        allMatches = mutableListOf()
+        val result = allGroups
+        allGroups = mutableListOf()
 
         return result
     }
@@ -39,11 +39,11 @@ object MatchResolver {
         val right = curr.rightOfSelf(matrix)
 
         if (right?.type == curr.type) {
-            currentMatch = mutableListOf(curr, right)
+            currentGroup = mutableListOf(curr, right)
 
             state = Right
         } else if (up?.type == curr.type) {
-            currentMatch = mutableListOf(curr, up)
+            currentGroup = mutableListOf(curr, up)
 
             state = Up
 
@@ -53,22 +53,22 @@ object MatchResolver {
     }
 
     private fun right(curr: Item, matrix: Matrix) {
-        val next = currentMatch.last().rightOfSelf(matrix)
+        val next = currentGroup.last().rightOfSelf(matrix)
         if (next?.type == curr.type) {
-            currentMatch.add(next)
+            currentGroup.add(next)
         } else {
-            if (currentMatch.size >= 3) allMatches.add(currentMatch)
+            if (currentGroup.size >= 3) allGroups.add(currentGroup)
 
             state = DirectionSearch
         }
     }
 
     private fun up(curr: Item, matrix: Matrix) {
-        val next = currentMatch.last().upOfSelf(matrix)
+        val next = currentGroup.last().upOfSelf(matrix)
         if (next?.type == curr.type) {
-            currentMatch.add(next)
+            currentGroup.add(next)
         } else {
-            if (currentMatch.size >= 3) allMatches.add(currentMatch)
+            if (currentGroup.size >= 3) allGroups.add(currentGroup)
 
             state = DirectionSearch
         }

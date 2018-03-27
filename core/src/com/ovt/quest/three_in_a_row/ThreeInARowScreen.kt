@@ -15,8 +15,10 @@ import com.ovt.quest.three_in_a_row.model.Item.Type.*
  */
 class ThreeInARowScreen(game: QuestGame) : Screen {
 
-    private val maxRows = 10
-    private val maxColumns = 10
+    companion object {
+        var maxRows = 8
+        var maxColumns = 8
+    }
 
     private val stage = ThreeInARowStage(game)
     private val matrix = Matrix(maxColumns, maxRows)
@@ -30,9 +32,9 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
         stage.pressMe2.addClickListener {
-            val matches = MatchResolver.resolveMatches(matrix)
-            if (matches.isNotEmpty()) {
-                removeMatches(matches)
+            val groups = GroupFinder.resolveGroups(matrix)
+            if (groups.isNotEmpty()) {
+                removeGroups(groups)
             }
         }
 
@@ -41,7 +43,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         }
 
         stage.pressMe3.addClickListener {
-            replaceHoles(matrix, itemFactory, stage)
+            addNewItems(matrix, itemFactory, stage)
         }
 
     }
@@ -53,9 +55,9 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
-            val matches = MatchResolver.resolveMatches(matrix)
-            if (matches.isNotEmpty()) {
-                removeLoop(matches, matrix, itemFactory, stage)
+            val groups = GroupFinder.resolveGroups(matrix)
+            if (groups.isNotEmpty()) {
+                removeLoop(groups, matrix, itemFactory, stage)
             } else {
                 swap(i1, i2)
             }
@@ -63,12 +65,12 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     }
 
     private fun removeLoop(matches: List<List<Item>>, matrix: Matrix, itemFactory: ItemFactory, stage: Stage) {
-        removeMatches(matches, then = {
+        removeGroups(matches, then = {
             ItemFall.executeFallDown(matrix, itemFactory, then = {
-                replaceHoles(matrix, itemFactory, stage)
-                val newMatches = MatchResolver.resolveMatches(matrix)
-                if (newMatches.isNotEmpty()) {
-                    removeLoop(newMatches, matrix, itemFactory, stage)
+                addNewItems(matrix, itemFactory, stage)
+                val newGroups = GroupFinder.resolveGroups(matrix)
+                if (newGroups.isNotEmpty()) {
+                    removeLoop(newGroups, matrix, itemFactory, stage)
                 }
             })
         })
@@ -76,7 +78,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
 
 
 
-    private fun removeMatches(matches: List<List<Item>>, then: () -> Unit = { println("After match remove") }) {
+    private fun removeGroups(matches: List<List<Item>>, then: () -> Unit = { println("After match remove") }) {
         val flattened = matches.flatten()
 
         flattened.dropLast(1).forEach {
@@ -107,7 +109,7 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
         matrix.put(i2)
     }
 
-    private fun replaceHoles(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
+    private fun addNewItems(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
         fun addNew(item: Item) {
             val ii = itemFactory.nonMatchingItem(item.column, item.row, matrix)
             matrix.put(ii)
@@ -131,8 +133,8 @@ class ThreeInARowScreen(game: QuestGame) : Screen {
     }
 
     private fun addInitialItems() {
-        for (row in 0..9) {
-            for (column in 0..9) {
+        for (row in 0 until maxRows) {
+            for (column in 0 until maxColumns) {
                 val i = itemFactory.nonMatchingItem(column, row, matrix)
                 matrix.put(i, column, row)
                 stage.addActor(i)
