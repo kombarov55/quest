@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.main_menu_screens.layout.MinigamesStage
+import com.ovt.quest.shooting.ShootingScreen
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 
 /**
@@ -19,6 +20,7 @@ class MinigamesScreen(private val game: QuestGame) : Screen {
     override fun show() {
         Gdx.input.inputProcessor = stage
         stage.threeInARowGameButton.addClickListener { game.screen = ThreeInARowScreen(game) }
+        stage.shootingButton.addClickListener { game.screen = ShootingScreen(game) }
 
     }
 
