@@ -25,7 +25,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private val stage = ThreeInARowStage(game)
     private val matrix = Matrix(maxColumns, maxRows)
 
-
+    private val sound = Gdx.audio.newSound(Gdx.files.internal("sounds/shot-and-reload.wav"))
 
     private val itemFactory = ItemFactory()
 
@@ -62,6 +62,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
             val groups = GroupFinder.resolveGroups(matrix)
+            updateCounters(groups)
             if (groups.isNotEmpty()) {
                 removeLoop(groups, matrix, itemFactory, stage)
             } else {
@@ -70,12 +71,30 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         })
     }
 
+    private fun updateCounters(groups: List<List<Item>>) {
+        for (group in groups) {
+            val label = when (group.first().type) {
+                Red -> stage.redCounter
+                Blue -> stage.blueCounter
+                Yellow -> stage.yellowCounter
+                Pink -> stage.pinkCounter
+                Hole -> throw RuntimeException("never gonna happen")
+            }
+
+            val prevValue = label.text.toString().drop(1).toInt()
+            val newValue = prevValue + group.size
+            label.setText("x$newValue")
+
+        }
+    }
+
     private fun removeLoop(matches: List<List<Item>>, matrix: Matrix, itemFactory: ItemFactory, stage: Stage) {
         removeGroups(matches, then = {
             ItemFall.executeFallDown(matrix, itemFactory, then = {
                 addNewItems(matrix, itemFactory, stage)
                 val newGroups = GroupFinder.resolveGroups(matrix)
                 if (newGroups.isNotEmpty()) {
+                    updateCounters(newGroups)
                     removeLoop(newGroups, matrix, itemFactory, stage)
                 }
             })
@@ -101,6 +120,8 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
                 then.invoke()
             })
         }
+
+         sound.play(0.4f)
     }
 
 
@@ -174,5 +195,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     override fun dispose() {
         itemFactory.allTextures.forEach { it.dispose() }
+        sound.dispose()
     }
 }

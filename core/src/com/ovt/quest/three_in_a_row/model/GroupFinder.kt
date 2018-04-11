@@ -1,6 +1,7 @@
 package com.ovt.quest.three_in_a_row.model
 
 import com.ovt.quest.three_in_a_row.model.GroupFinder.State.*
+import com.ovt.quest.three_in_a_row.model.Item.Type.Hole
 
 /**
  * Created by nikolay on 23.03.18.
@@ -38,11 +39,11 @@ object GroupFinder {
         val up = curr.upOfSelf(matrix)
         val right = curr.rightOfSelf(matrix)
 
-        if (right?.type == curr.type) {
+        if (right?.type == curr.type && curr.type != Hole) {
             currentGroup = mutableListOf(curr, right)
 
             state = Right
-        } else if (up?.type == curr.type) {
+        } else if (up?.type == curr.type && curr.type != Hole) {
             currentGroup = mutableListOf(curr, up)
 
             state = Up

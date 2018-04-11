@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.QuestGame
+import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.main_menu_screens.layout.MinigamesStage
 import com.ovt.quest.shooting.ShootingScreen
@@ -20,8 +21,7 @@ class MinigamesScreen(private val game: QuestGame) : Screen {
     override fun show() {
         Gdx.input.inputProcessor = stage
         stage.threeInARowGameButton.addClickListener { game.screen = ThreeInARowScreen(game) }
-        stage.shootingButton.addClickListener { game.screen = ShootingScreen(game) }
-
+        stage.archeryButton.addClickListener { game.screen = ArcheryScreen(game) }
     }
 
     override fun render(delta: Float) {
