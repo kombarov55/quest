@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
@@ -20,6 +21,7 @@ import com.ovt.quest.three_in_a_row.toPositive
 class Item internal constructor (
         var column: Int,
         var row: Int,
+        initialCoords: Vector2,
         texture: Texture,
         val type: Type
 ) : Actor() {
@@ -31,9 +33,8 @@ class Item internal constructor (
     }
 
     init {
-        val (x, y) = coords(column, row)
-        this.x = x
-        this.y = y
+        this.x = initialCoords.x
+        this.y = initialCoords.y
         width = itemWidth
         height = itemHeight
 
@@ -53,29 +54,23 @@ class Item internal constructor (
         Left -> leftOfSelf(matrix)
     }
 
-    //TODO: разве разница in 0..1, а не == 1?
-    fun isNeighbourTo(i: Item): Boolean =
-            (column == i.column && toPositive(row - i.row) in 0..1) ||
-            (row == i.row && toPositive(column - i.column) in 0..1)
-
-    fun fastMoveTo(column: Int, row: Int, then: () -> Unit = {  }) {
+    fun setLogicCoords(column: Int, row: Int) {
         this.column = column
         this.row = row
+    }
 
-        val (newX, newY) = coords(column, row)
-
+    fun fastMoveTo(coords: Vector2, then: () -> Unit = {  }) {
         addAction(
                 SequenceAction(
-                        Actions.moveTo(newX, newY, swapDuration),
+                        Actions.moveTo(coords.x, coords.y, swapDuration),
                         CallbackAction(then)))
     }
 
-    fun slowMoveTo(column: Int, row: Int, then: () -> Unit = {  }) {
-        this.column = column
-        this.row = row
-
-        val (newX, newY) = coords(column, row)
-        addAction(SequenceAction(Actions.moveTo(newX, newY, fallDuration, Interpolation.pow2), CallbackAction(then)))
+    fun slowMoveTo(coords: Vector2, then: () -> Unit = {  }) {
+        addAction(
+                SequenceAction(
+                        Actions.moveTo(coords.x, coords.y, fallDuration, Interpolation.pow2),
+                        CallbackAction(then)))
     }
 
     fun scaleUp() {

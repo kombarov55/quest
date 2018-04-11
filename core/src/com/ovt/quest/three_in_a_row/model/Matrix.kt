@@ -1,5 +1,8 @@
 package com.ovt.quest.three_in_a_row.model
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.Vector2
+
 /**
  * Created by nikolay on 15.03.18.
  */
@@ -7,6 +10,26 @@ class Matrix(val maxColumns: Int, val maxRows: Int) {
     private var matrix: MutableList<MutableList<Item?>> = MutableList(maxRows, {
         MutableList<Item?>(maxColumns, { null })
     })
+
+    private val h = Gdx.graphics.height
+    private val w = Gdx.graphics.width
+
+    val tablePadBottom = h * 0.1f
+    val tablePadLeft = w * 0.05f
+    private val itemPad = w * 0.005f
+
+    private val itemWidth = ((w - tablePadLeft * 2) / maxColumns) - (itemPad * 2)
+    private val itemHeight = itemWidth
+
+    val fullItemWidth = itemWidth + itemPad * 2
+    val fullItemHeight = itemHeight + itemPad * 2
+
+    fun translate(column: Int, row: Int): Vector2 {
+        return Vector2(
+                tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))),
+                tablePadBottom + itemPad + (row * (itemWidth + (itemPad * 2)))
+        )
+    }
 
     fun put(item: Item, column: Int, row: Int) {
         matrix[column][row] = item

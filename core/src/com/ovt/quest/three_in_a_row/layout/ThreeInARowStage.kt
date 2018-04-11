@@ -64,14 +64,6 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         addActor(pressMe3)
 
         homeButton = game.buttons.imgButton(src = "img/home.png")
-//        homeButton.width = w * 0.06f
-//        homeButton.height = homeButton.width
-//        homeButton.x = w * 0.03f
-//        homeButton.y = h - homeButton.height - homeButton.width
-//        addActor(homeButton)
-
-
-
 
         fun placeHorizontally(xs: List<Actor>, pad: Float, side: Float, marginX: Float, marginY: Float) {
             for (i in 0 until xs.size) {

@@ -24,10 +24,11 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     private val stage = ThreeInARowStage(game)
     private val matrix = Matrix(maxColumns, maxRows)
+    private val itemFactory = ItemFactory(matrix)
+    private val itemFall = ItemFall(matrix, itemFactory)
 
     private val sound = Gdx.audio.newSound(Gdx.files.internal("sounds/shot-and-reload.wav"))
 
-    private val itemFactory = ItemFactory()
 
     override fun show() {
         addInitialItems()
@@ -41,7 +42,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         }
 
         stage.pressMe.addClickListener {
-            ItemFall.executeFallDown(matrix, itemFactory)
+            itemFall.executeFallDown(matrix, itemFactory)
         }
 
         stage.pressMe3.addClickListener {
@@ -90,7 +91,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     private fun removeLoop(matches: List<List<Item>>, matrix: Matrix, itemFactory: ItemFactory, stage: Stage) {
         removeGroups(matches, then = {
-            ItemFall.executeFallDown(matrix, itemFactory, then = {
+            itemFall.executeFallDown(matrix, itemFactory, then = {
                 addNewItems(matrix, itemFactory, stage)
                 val newGroups = GroupFinder.resolveGroups(matrix)
                 if (newGroups.isNotEmpty()) {
@@ -129,10 +130,12 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private fun swap(i1: Item, i2: Item, then: () -> Unit = { println("After swap!") }) {
         val (i1col, i1row) = i1.column to i1.row
 
-        i1.fastMoveTo(i2.column, i2.row)
+        i1.fastMoveTo(matrix.translate(i2.column, i2.row))
         matrix.put(i1)
+        i1.setLogicCoords(i2.column, i2.row)
 
-        i2.fastMoveTo(i1col, i1row, then)
+        i2.fastMoveTo(matrix.translate(i1col, i1row), then)
+        i2.setLogicCoords(i1col, i1col)
         matrix.put(i2)
     }
 

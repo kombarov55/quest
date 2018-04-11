@@ -3,13 +3,14 @@ package com.ovt.quest.three_in_a_row.model
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
 
 /**
  * Created by nikolay on 23/03/2018.
  */
-class ItemFactory {
+class  ItemFactory(private val matrix: Matrix) {
 
     private val nonHoleTypes = Item.Type.values().filter { it != Hole }
 
@@ -21,11 +22,11 @@ class ItemFactory {
 
     val allTextures = listOf(blueTexture, redTexture, yellowTexture, pinkTexture)
 
-    fun red(column: Int, row: Int) = Item(column, row, redTexture, Red)
-    fun blue(column: Int, row: Int) = Item(column, row, blueTexture, Blue)
-    fun yellow(column: Int, row: Int) = Item(column, row, yellowTexture, Yellow)
-    fun pink(column: Int, row: Int) = Item(column, row, pinkTexture, Pink)
-    fun hole(column: Int, row: Int) = Item(column, row, holeTexture, Hole)
+    fun red(column: Int, row: Int) = Item(column, row, matrix.translate(column, row), redTexture, Red)
+    fun blue(column: Int, row: Int) = Item(column, row, matrix.translate(column, row), blueTexture, Blue)
+    fun yellow(column: Int, row: Int) = Item(column, row, matrix.translate(column, row), yellowTexture, Yellow)
+    fun pink(column: Int, row: Int) = Item(column, row, matrix.translate(column, row), pinkTexture, Pink)
+    fun hole(column: Int, row: Int) = Item(column, row, matrix.translate(column, row), holeTexture, Hole)
     fun rand(column: Int, row: Int) = byType(randType(), column, row)
 
     fun randType(): Item.Type = nonHoleTypes[MathUtils.random(nonHoleTypes.size - 1)]
@@ -54,5 +55,4 @@ class ItemFactory {
             return byType(chosenType, column, row)
         }
     }
-
 }
