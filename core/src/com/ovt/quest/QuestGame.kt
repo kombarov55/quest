@@ -16,6 +16,7 @@ import com.ovt.quest.commons.LabelFactory
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Globals
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen
+import com.ovt.test.ThreeInARow.runTests
 
 class QuestGame : Game() {
 
@@ -44,8 +45,12 @@ class QuestGame : Game() {
     override fun create() {
         initializeVariables()
 
+        runTests()
+        Gdx.app.exit()
+        System.exit(0)
+
 //        setScreen(ThreeInARowScreen(this))
-        setScreen(MainMenuScreen(this))
+//        setScreen(MainMenuScreen(this))
     }
 
     private fun initializeVariables() {

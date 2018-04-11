@@ -5,20 +5,18 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
 
-class RenderingItem(
-        column: Int,
-        row: Int,
+class ItemActor(
         initialCoords: Vector2,
         itemWidth: Float,
         itemHeight: Float,
-        texture: Texture,
-        type: Type
-): Item(column, row, type) {
+        texture: Texture
+): Actor() {
 
     private val textureRegion = TextureRegion(texture, 0, 0, texture.width, texture.height)
 

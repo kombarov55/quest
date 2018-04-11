@@ -9,7 +9,7 @@ import com.ovt.quest.three_in_a_row.model.Item.Type.*
 /**
  * Created by nikolay on 23/03/2018.
  */
-class  ItemFactory(private val matrix: Matrix) {
+class  ItemFactory(private val matrix: RenderingMatrix) {
 
     private val nonHoleTypes = Item.Type.values().filter { it != Hole }
 
@@ -21,11 +21,11 @@ class  ItemFactory(private val matrix: Matrix) {
 
     val allTextures = listOf(blueTexture, redTexture, yellowTexture, pinkTexture)
 
-    fun red(column: Int, row: Int) = Item(column, row, matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, redTexture, Red)
-    fun blue(column: Int, row: Int) = Item(column, row, matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, blueTexture, Blue)
-    fun yellow(column: Int, row: Int) = Item(column, row, matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, yellowTexture, Yellow)
-    fun pink(column: Int, row: Int) = Item(column, row, matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, pinkTexture, Pink)
-    fun hole(column: Int, row: Int) = Item(column, row, matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, holeTexture, Hole)
+    fun red(column: Int, row: Int) = Item(column, row, Red, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, redTexture))
+    fun blue(column: Int, row: Int) = Item(column, row, Blue, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, blueTexture))
+    fun yellow(column: Int, row: Int) = Item(column, row, Yellow, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, yellowTexture))
+    fun pink(column: Int, row: Int) = Item(column, row, Pink, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, pinkTexture))
+    fun hole(column: Int, row: Int) = Item(column, row, Hole, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, holeTexture))
     fun rand(column: Int, row: Int) = byType(randType(), column, row)
 
     fun randType(): Item.Type = nonHoleTypes[MathUtils.random(nonHoleTypes.size - 1)]

@@ -7,7 +7,7 @@ import com.ovt.quest.three_in_a_row.model.ItemFall.State.*
  * Created by nikolay on 24.03.18.
  */
 class ItemFall(
-        private val matrix: Matrix,
+        private val matrix: RenderingMatrix,
         private val itemFactory: ItemFactory
 ) {
 
@@ -19,7 +19,7 @@ class ItemFall(
 
     private var thenCalled = false
 
-    fun executeFallDown(matrix: Matrix, itemFactory: ItemFactory, then: () -> Unit = { println("after fall down!") }) {
+    fun executeFallDown(matrix: RenderingMatrix, itemFactory: ItemFactory, then: () -> Unit = { println("after fall down!") }) {
         thenCalled = false
 
         for (column in 0 until matrix.maxColumns) {
@@ -47,12 +47,12 @@ class ItemFall(
         }
     }
 
-    private fun countHolesInARow(item: Item, then: () -> Unit) {
-        if (item.type == Hole) {
+    private fun countHolesInARow(itemActor: Item, then: () -> Unit) {
+        if (itemActor.type == Hole) {
             holeCount += 1
         } else {
             state = FallingItems
-            fallingItems(item, then)
+            fallingItems(itemActor, then)
         }
     }
 
@@ -65,11 +65,11 @@ class ItemFall(
 
 
             if (!thenCalled) {
-                item.slowMoveTo(matrix.project(item.column, item.row - holeCount), then)
+                item.itemActor?.slowMoveTo(matrix.project(item.column, item.row - holeCount), then)
                 item.setLogicCoords(item.column, item.row - holeCount)
                 thenCalled = true
             } else {
-                item.slowMoveTo(matrix.project(item.column, item.row - holeCount))
+                item.itemActor?.slowMoveTo(matrix.project(item.column, item.row - holeCount))
                 item.setLogicCoords(item.column, item.row - holeCount)
             }
         } else {

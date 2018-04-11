@@ -21,7 +21,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         var maxColumns = 8
     }
 
-    private val matrix = Matrix(maxColumns, maxRows)
+    private val matrix = RenderingMatrix(maxColumns, maxRows)
     private val stage = ThreeInARowStage(game, matrix)
     private val itemFactory = ItemFactory(matrix)
     private val itemFall = ItemFall(matrix, itemFactory)
@@ -89,7 +89,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         }
     }
 
-    private fun removeLoop(matches: List<List<Item>>, matrix: Matrix, itemFactory: ItemFactory, stage: Stage) {
+    private fun removeLoop(matches: List<List<Item>>, matrix: RenderingMatrix, itemFactory: ItemFactory, stage: Stage) {
         removeGroups(matches, then = {
             itemFall.executeFallDown(matrix, itemFactory, then = {
                 addNewItems(matrix, itemFactory, stage)
@@ -109,14 +109,14 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
         flattened.dropLast(1).forEach {
             matrix.put(itemFactory.hole(it.column, it.row))
-            it.dissapear(then = {
+            it.itemActor?.dissapear(then = {
                 it.remove()
             })
         }
 
         flattened.last().let { first ->
             matrix.put(itemFactory.hole(first.column, first.row))
-            first.dissapear(then = {
+            first.itemActor?.dissapear(then = {
                 first.remove()
                 then.invoke()
             })
@@ -130,11 +130,11 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private fun swap(i1: Item, i2: Item, then: () -> Unit = { println("After swap!") }) {
         val (i1col, i1row) = i1.column to i1.row
 
-        i1.fastMoveTo(matrix.project(i2.column, i2.row))
+        i1.itemActor?.fastMoveTo(matrix.project(i2.column, i2.row))
         matrix.put(i1)
         i1.setLogicCoords(i2.column, i2.row)
 
-        i2.fastMoveTo(matrix.project(i1col, i1row), then)
+        i2.itemActor?.fastMoveTo(matrix.project(i1col, i1row), then)
         i2.setLogicCoords(i1col, i1row)
         matrix.put(i2)
     }
@@ -144,7 +144,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
             val ii = itemFactory.nonMatchingItem(item.column, item.row, matrix)
             matrix.put(ii)
             stage.addActor(ii)
-            ii.comeOut()
+            ii.itemActor?.comeOut()
         }
 
         val holes = matrix.flatten().filter { it?.type == Hole }

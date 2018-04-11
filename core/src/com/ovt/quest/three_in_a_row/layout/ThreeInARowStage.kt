@@ -13,6 +13,7 @@ import com.ovt.quest.QuestGame
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.model.Matrix
+import com.ovt.quest.three_in_a_row.model.RenderingMatrix
 import com.ovt.quest.three_in_a_row.toPositive
 
 /**
@@ -20,7 +21,7 @@ import com.ovt.quest.three_in_a_row.toPositive
  */
 class ThreeInARowStage(
         private val game: QuestGame,
-        private val matrix: Matrix
+        private val matrix: RenderingMatrix
 ): Stage() {
 
     var onSwap: ((Pair<Int, Int>, Pair<Int, Int>) -> Unit)? = { p1, p2 ->
