@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.main_menu_screens.MainMenuScreen
-import com.ovt.quest.main_menu_screens.MinigamesScreen
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 import com.ovt.quest.three_in_a_row.model.*
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
@@ -22,8 +21,8 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         var maxColumns = 8
     }
 
-    private val stage = ThreeInARowStage(game)
     private val matrix = Matrix(maxColumns, maxRows)
+    private val stage = ThreeInARowStage(game, matrix)
     private val itemFactory = ItemFactory(matrix)
     private val itemFall = ItemFall(matrix, itemFactory)
 
@@ -35,7 +34,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
         stage.pressMe2.addClickListener {
-            val groups = GroupFinder.resolveGroups(matrix)
+            val groups = GroupFinder.findGroups(matrix)
             if (groups.isNotEmpty()) {
                 removeGroups(groups)
             }
@@ -62,13 +61,14 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
-            val groups = GroupFinder.resolveGroups(matrix)
-            updateCounters(groups)
-            if (groups.isNotEmpty()) {
-                removeLoop(groups, matrix, itemFactory, stage)
-            } else {
-                swap(i1, i2)
-            }
+            swap(i1, i2)
+//            val groups = GroupFinder.findGroups(matrix)
+//            updateCounters(groups)
+//            if (groups.isNotEmpty()) {
+//                removeLoop(groups, matrix, itemFactory, stage)
+//            } else {
+//                swap(i1, i2)
+//            }
         })
     }
 
@@ -93,7 +93,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         removeGroups(matches, then = {
             itemFall.executeFallDown(matrix, itemFactory, then = {
                 addNewItems(matrix, itemFactory, stage)
-                val newGroups = GroupFinder.resolveGroups(matrix)
+                val newGroups = GroupFinder.findGroups(matrix)
                 if (newGroups.isNotEmpty()) {
                     updateCounters(newGroups)
                     removeLoop(newGroups, matrix, itemFactory, stage)
@@ -130,12 +130,12 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private fun swap(i1: Item, i2: Item, then: () -> Unit = { println("After swap!") }) {
         val (i1col, i1row) = i1.column to i1.row
 
-        i1.fastMoveTo(matrix.translate(i2.column, i2.row))
+        i1.fastMoveTo(matrix.project(i2.column, i2.row))
         matrix.put(i1)
         i1.setLogicCoords(i2.column, i2.row)
 
-        i2.fastMoveTo(matrix.translate(i1col, i1row), then)
-        i2.setLogicCoords(i1col, i1col)
+        i2.fastMoveTo(matrix.project(i1col, i1row), then)
+        i2.setLogicCoords(i1col, i1row)
         matrix.put(i2)
     }
 

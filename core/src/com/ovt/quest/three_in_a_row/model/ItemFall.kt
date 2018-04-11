@@ -61,12 +61,16 @@ class ItemFall(
             matrix.put(itemFactory.hole(item.column, item.row))
             matrix.put(item, item.column, item.row - holeCount)
 
-            val destRow = item.row - holeCount
+
+
+
             if (!thenCalled) {
-                item.slowMoveTo(matrix.translate(item.column, destRow), then)
+                item.slowMoveTo(matrix.project(item.column, item.row - holeCount), then)
+                item.setLogicCoords(item.column, item.row - holeCount)
                 thenCalled = true
             } else {
-                item.slowMoveTo(matrix.translate(item.column, destRow))
+                item.slowMoveTo(matrix.project(item.column, item.row - holeCount))
+                item.setLogicCoords(item.column, item.row - holeCount)
             }
         } else {
             state = CountHolesInARow

@@ -22,6 +22,8 @@ class Item internal constructor (
         var column: Int,
         var row: Int,
         initialCoords: Vector2,
+        itemWidth: Float,
+        itemHeight: Float,
         texture: Texture,
         val type: Type
 ) : Actor() {
@@ -105,10 +107,6 @@ class Item internal constructor (
         addAction(ParallelAction(rotate, scaleUp))
     }
 
-    private fun coords(column: Int, row: Int): Pair<Float, Float> {
-        return tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))) to tablePadBottom + itemPad + (row * (itemWidth + (itemPad * 2)))
-    }
-
     override fun draw(batch: Batch, parentAlpha: Float) {
         batch.setColor(color.r, color.g, color.b, parentAlpha * color.a)
         batch.draw(textureRegion, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
@@ -126,19 +124,6 @@ class Item internal constructor (
     }
 
     companion object {
-        private val h = Gdx.graphics.height
-        private val w = Gdx.graphics.width
-
-        val tablePadBottom = h * 0.1f
-        val tablePadLeft = w * 0.05f
-        private val itemPad = w * 0.005f
-
-        private val itemWidth = ((w - tablePadLeft * 2) / ThreeInARowScreen.maxColumns) - (itemPad * 2)
-        private val itemHeight = itemWidth
-
-        val fullItemWidth = itemWidth + itemPad * 2
-        val fullItemHeight = itemHeight + itemPad * 2
-
         val scaleDuration = 0.5f
         private val scaleAmount = 0.15f
 

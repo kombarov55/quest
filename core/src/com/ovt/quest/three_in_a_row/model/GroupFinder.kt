@@ -15,7 +15,7 @@ object GroupFinder {
     var allGroups = mutableListOf<MutableList<Item>>()
     var currentGroup = mutableListOf<Item>()
 
-    fun resolveGroups(matrix: Matrix): List<List<Item>> {
+    fun findGroups(matrix: Matrix): List<List<Item>> {
         for (r in 0 until matrix.maxRows) {
             for (c in 0 until matrix.maxColumns) {
                 val curr = matrix.get(c, r)!!

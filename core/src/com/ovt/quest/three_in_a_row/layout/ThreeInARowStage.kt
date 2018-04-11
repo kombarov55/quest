@@ -2,6 +2,7 @@ package com.ovt.quest.three_in_a_row.layout
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Button
@@ -11,12 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.ovt.quest.QuestGame
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.model.Item
+import com.ovt.quest.three_in_a_row.model.Matrix
 import com.ovt.quest.three_in_a_row.toPositive
 
 /**
  * Created by nikolay on 14.03.18.
  */
-class ThreeInARowStage(game: QuestGame): Stage() {
+class ThreeInARowStage(
+        private val game: QuestGame,
+        private val matrix: Matrix
+): Stage() {
 
     var onSwap: ((Pair<Int, Int>, Pair<Int, Int>) -> Unit)? = { p1, p2 ->
         println("swap $p1 + $p2")
@@ -91,17 +96,17 @@ class ThreeInARowStage(game: QuestGame): Stage() {
 
     private var selectedItemLogicCoords: Pair<Int, Int>? = null
 
-    private var touchStart: Pair<Int, Int>? =  null
+    private var touchStart: Vector2? =  null
 
     private fun dragTouchDown(screenX: Int, screenY: Int) {
-        touchStart = screenX to screenY
+        touchStart = Vector2(screenX.toFloat(), screenY.toFloat())
 
-        selectedItemLogicCoords = resolveLogicCoords(touchStart!!)
+        selectedItemLogicCoords = matrix.unproject(touchStart!!)
     }
 
     private fun dragTouchUp(screenX: Int, screenY: Int) {
         if (selectedItemLogicCoords == null) return
-        val direction = resolveDirection(touchStart?.first ?: 0, touchStart?.second ?: 0, screenX, screenY)
+        val direction = resolveDirection(touchStart?.x ?: 0f, touchStart?.y ?: 0f, screenX.toFloat(), screenY.toFloat())
 
         val (selectedColumn, selectedRow) = selectedItemLogicCoords!!
 
@@ -115,7 +120,7 @@ class ThreeInARowStage(game: QuestGame): Stage() {
         onSwap?.invoke(selectedItemLogicCoords!!, i2LogicCoords!!)
     }
 
-    private fun resolveDirection(startX: Int, startY: Int, endX: Int, endY: Int): Direction {
+    private fun resolveDirection(startX: Float, startY: Float, endX: Float, endY: Float): Direction {
         val xDiff = endX - startX
         val yDiff = endY - startY
 
@@ -137,17 +142,5 @@ class ThreeInARowStage(game: QuestGame): Stage() {
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         dragTouchUp(screenX, screenY)
         return super.touchUp(screenX, screenY, pointer, button)
-    }
-
-    private fun resolveLogicCoords(coords: Pair<Int, Int>): Pair<Int, Int>? {
-        val (x, y) = coords
-
-        val xFromMatrixStart = x - Item.tablePadLeft
-        val yFromMatrixStart = (Gdx.graphics.height - y) - Item.tablePadBottom
-
-        val column = (xFromMatrixStart / Item.fullItemWidth).toInt()
-        val row = (yFromMatrixStart / Item.fullItemHeight).toInt()
-
-        return column to row
     }
 }

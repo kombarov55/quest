@@ -1,6 +1,7 @@
 package com.ovt.quest.three_in_a_row.model
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector2
 
 /**
@@ -14,21 +15,38 @@ class Matrix(val maxColumns: Int, val maxRows: Int) {
     private val h = Gdx.graphics.height
     private val w = Gdx.graphics.width
 
-    val tablePadBottom = h * 0.1f
-    val tablePadLeft = w * 0.05f
-    private val itemPad = w * 0.005f
+    private val tableMarginBottom = h * 0.1f
+    private val tableMarginTop = h * 0.2f
+    private val tableMarginLeft = w * 0.3f
 
-    private val itemWidth = ((w - tablePadLeft * 2) / maxColumns) - (itemPad * 2)
-    private val itemHeight = itemWidth
+    private val tableHeight = (h - tableMarginBottom - tableMarginTop)
+    private val tableWidth = (w - tableMarginLeft * 2)
+    private val tableStart = Vector2(tableMarginLeft, tableMarginBottom)
 
-    val fullItemWidth = itemWidth + itemPad * 2
-    val fullItemHeight = itemHeight + itemPad * 2
+    private val itemPad = w  * 0.005f
 
-    fun translate(column: Int, row: Int): Vector2 {
+    val itemHeight = (tableHeight / maxRows) - (itemPad * 2)
+    val itemWidth = (tableWidth / maxColumns) - (itemPad * 2)
+
+    private val fullItemWidth = itemWidth + itemPad * 2
+    private val fullItemHeight = itemHeight + itemPad * 2
+
+    fun project(column: Int, row: Int): Vector2 {
         return Vector2(
-                tablePadLeft + itemPad + (column * (itemWidth + (itemPad * 2))),
-                tablePadBottom + itemPad + (row * (itemWidth + (itemPad * 2)))
+                tableStart.x + itemPad + (column * (itemWidth + (itemPad * 2))),
+                tableStart.y + itemPad + (row * (itemHeight + (itemPad * 2)))
         )
+    }
+
+    fun unproject(coords: Vector2): Pair<Int, Int>? {
+
+        val xFromMatrixStart = coords.x - tableMarginLeft
+        val yFromMatrixStart = (h - coords.y) - tableMarginBottom
+
+        val column = (xFromMatrixStart / fullItemWidth).toInt()
+        val row = (yFromMatrixStart / fullItemHeight).toInt()
+
+        return column to row
     }
 
     fun put(item: Item, column: Int, row: Int) {
