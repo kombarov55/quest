@@ -26,8 +26,7 @@ object GroupFinder {
                         curr = curr,
                         requiredType = curr.type,
                         matrix = matrix,
-                        mainDirection = Right,
-                        forkDirections = listOf(Up, Down)
+                        mainDirection = Right
                 )
 
                 if (groups.isEmpty()) {
@@ -35,8 +34,7 @@ object GroupFinder {
                             curr = curr,
                             requiredType = curr.type,
                             matrix = matrix,
-                            mainDirection = Up,
-                            forkDirections = listOf(Left, Right)
+                            mainDirection = Up
                     )
                 }
 
@@ -58,16 +56,16 @@ object GroupFinder {
             requiredType: Item.Type,
             matrix: Matrix,
             mainDirection: Direction,
-            forkDirections: List<Direction>,
             accum: MutableList<Item> = mutableListOf()
     ): List<Item> {
         if (curr == null || curr.type != requiredType) {
             return accum
         } else {
+            val forkDirections = Direction.values().filter { it != mainDirection && it != mainDirection.opposite() }
             for (forkDirection in forkDirections) {
                 val next = curr.getNext(forkDirection, matrix)
                 if (next?.type == requiredType) {
-                    accum += searchGroupSingleDirection(
+                    accum += searchGroupMultiDirection(
                             next,
                             requiredType,
                             matrix,
@@ -81,32 +79,31 @@ object GroupFinder {
                     requiredType,
                     matrix,
                     mainDirection,
-                    forkDirections,
                     accum
             )
         }
     }
 
-    private fun searchGroupSingleDirection(
-            curr: Item?,
-            requiredType: Item.Type,
-            matrix: Matrix,
-            direction: Direction,
-            accum: List<Item> = emptyList()
-    ): List<Item> {
-        if (curr == null || curr.type != requiredType) {
-            return accum
-        } else {
-            return searchGroupSingleDirection(
-                    curr.getNext(direction, matrix),
-                    requiredType,
-                    matrix,
-                    direction,
-                    (accum + curr)
-            )
-        }
-
-    }
+//    private fun searchGroupSingleDirection(
+//            curr: Item?,
+//            requiredType: Item.Type,
+//            matrix: Matrix,
+//            direction: Direction,
+//            accum: List<Item> = emptyList()
+//    ): List<Item> {
+//        if (curr == null || curr.type != requiredType) {
+//            return accum
+//        } else {
+//            return searchGroupSingleDirection(
+//                    curr.getNext(direction, matrix),
+//                    requiredType,
+//                    matrix,
+//                    direction,
+//                    (accum + curr)
+//            )
+//        }
+//
+//    }
 
     private fun searchGroup(type: Item.Type, item: Item?, matrix: Matrix, direction: Direction, accum: List<Item> = emptyList()): List<Item> {
         if (item == null || item.type != type) {
