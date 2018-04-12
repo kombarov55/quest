@@ -30,7 +30,9 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
 
     override fun show() {
-        addInitialItems()
+        matrix.fillWith(itemFactory)
+        matrix.forEach { stage.addActor(it?.itemActor) }
+
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
         stage.pressMe2.addClickListener {
@@ -61,7 +63,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
-            swap(i1, i2)
+//            swap(i1, i2)
 //            val groups = GroupFinder.findGroups(matrix)
 //            updateCounters(groups)
 //            if (groups.isNotEmpty()) {
@@ -158,16 +160,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
             holes.last().let { item ->
                 addNew(item!!)
                 then.invoke()
-            }
-        }
-    }
-
-    private fun addInitialItems() {
-        for (row in 0 until maxRows) {
-            for (column in 0 until maxColumns) {
-                val i = itemFactory.nonMatchingItem(column, row, matrix)
-                matrix.put(i, column, row)
-                stage.addActor(i)
             }
         }
     }

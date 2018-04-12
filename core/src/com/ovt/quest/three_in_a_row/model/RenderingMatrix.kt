@@ -2,7 +2,6 @@ package com.ovt.quest.three_in_a_row.model
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.max
 
 class RenderingMatrix(maxColumns: Int, maxRows: Int): Matrix(maxColumns, maxRows) {
 
@@ -15,6 +14,7 @@ class RenderingMatrix(maxColumns: Int, maxRows: Int): Matrix(maxColumns, maxRows
 
     private val tableHeight = (h - tableMarginBottom - tableMarginTop)
     private val tableWidth = (w - tableMarginLeft * 2)
+
     private val tableStart = Vector2(tableMarginLeft, tableMarginBottom)
 
     private val itemPad = w  * 0.005f

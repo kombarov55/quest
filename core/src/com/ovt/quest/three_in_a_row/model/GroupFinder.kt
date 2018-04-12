@@ -17,24 +17,32 @@ object GroupFinder {
 
                 if (wasUsed(curr, allGroups) || curr.type == Hole) continue
 
-                var groups = searchGroupMultiDirection(
-                        curr = curr,
-                        requiredType = curr.type,
-                        matrix = matrix,
-                        mainDirection = Right
-                )
+                try {
 
-                if (groups.isEmpty()) {
-                    groups = searchGroupMultiDirection(
+                    var groups = searchGroupMultiDirection(
                             curr = curr,
                             requiredType = curr.type,
                             matrix = matrix,
-                            mainDirection = Up
+                            mainDirection = Right
                     )
-                }
 
-                if (groups.isNotEmpty() && groups.size > 2) {
-                    allGroups.add(groups)
+                    if (groups.isEmpty()) {
+                        groups = searchGroupMultiDirection(
+                                curr = curr,
+                                requiredType = curr.type,
+                                matrix = matrix,
+                                mainDirection = Up
+                        )
+                    }
+
+
+                    if (groups.isNotEmpty() && groups.size > 2) {
+                        allGroups.add(groups)
+                    }
+                } catch (e: StackOverflowError) {
+                    e.printStackTrace()
+                    matrix.print()
+                    println("at r=$r c=$c")
                 }
             }
         }

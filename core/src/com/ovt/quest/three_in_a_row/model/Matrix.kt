@@ -24,7 +24,16 @@ open class Matrix(val maxColumns: Int, val maxRows: Int) {
         }
     }
 
-    open fun get(coords: Pair<Int, Int>): Item? = get(coords.first, coords.second)
+    open fun fillWith(itemFactory: ItemFactory) {
+        for (row in 0 until maxRows) {
+            for (column in 0 until maxColumns) {
+                val i = itemFactory.nonMatchingItem(column, row, this)
+                put(i, column, row)
+            }
+        }
+    }
+
+    fun get(coords: Pair<Int, Int>): Item? = get(coords.first, coords.second)
 
     fun remove(column: Int, row: Int) {
         matrix[column][row] = null
