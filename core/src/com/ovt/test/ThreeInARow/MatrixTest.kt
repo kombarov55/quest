@@ -53,29 +53,22 @@ class findAngleGroups: StringSpec() {
     }
 }
 
-class findCrossGroup: StringSpec() {
+class testFindPlusGroup: StringSpec() {
     init {
+        var m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-long-plus")
+        var groups = GroupFinder.findGroups(m)
+        groups.first() should containsAll(
+                m.get(4, 1), m.get(4, 2), m.get(4, 3), m.get(4, 4), m.get(4, 5),
+                m.get(3, 3), m.get(2, 3),
+                m.get(5, 3), m.get(6, 3))
 
+        m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-long-plus")
+        groups = GroupFinder.findGroups(m)
+        groups.first() should containsAll(
+                m.get(4, 3), m.get(4, 4), m.get(4, 5),
+                m.get(3, 3), m.get(2, 3),
+                m.get(5, 3), m.get(6, 3))
     }
-}
-
-
-fun testFindingGroups() {
-    var m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-group-finding-1")
-    var groups = GroupFinder.findGroups(m)
-
-    m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-group-finding-2")
-    groups = GroupFinder.findGroups(m)
-    val singleRequire = listOf(m.get(3, 1), m.get(4, 1), m.get(5, 1), m.get(3, 2), m.get(3, 3))
-    if (groups.first().containsAll(singleRequire)) {
-        println("third test: ok")
-    } else {
-        println("third test: fail")
-        m.print()
-        println("found groups: $groups")
-        println("required groups: $singleRequire")
-    }
-
 }
 
 fun loadMatrixFromFile(path: String): Matrix {
