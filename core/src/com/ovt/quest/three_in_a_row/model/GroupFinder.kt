@@ -9,18 +9,13 @@ import com.ovt.quest.three_in_a_row.model.Item.Type.Hole
  */
 object GroupFinder {
 
-
-    private var allGroups = mutableListOf<List<Item>>()
-
-    private data class Fork(val next: Item, val direction: Direction)
-    private var fork: Fork? = null
-
     fun findGroups(matrix: Matrix): List<List<Item>> {
+        val allGroups = mutableListOf<List<Item>>()
         for (r in 0 until matrix.maxRows) {
             for (c in 0 until matrix.maxColumns) {
                 val curr = matrix.get(c, r)!!
 
-                if (wasUsed(curr) || curr.type == Hole) continue
+                if (wasUsed(curr, allGroups) || curr.type == Hole) continue
 
                 var groups = searchGroupMultiDirection(
                         curr = curr,
@@ -44,11 +39,7 @@ object GroupFinder {
             }
         }
 
-        val result = allGroups
-        allGroups = mutableListOf()
-
-
-        return result
+        return allGroups
     }
 
     private fun searchGroupMultiDirection(
@@ -84,51 +75,7 @@ object GroupFinder {
         }
     }
 
-//    private fun searchGroupSingleDirection(
-//            curr: Item?,
-//            requiredType: Item.Type,
-//            matrix: Matrix,
-//            direction: Direction,
-//            accum: List<Item> = emptyList()
-//    ): List<Item> {
-//        if (curr == null || curr.type != requiredType) {
-//            return accum
-//        } else {
-//            return searchGroupSingleDirection(
-//                    curr.getNext(direction, matrix),
-//                    requiredType,
-//                    matrix,
-//                    direction,
-//                    (accum + curr)
-//            )
-//        }
-//
-//    }
-
-    private fun searchGroup(type: Item.Type, item: Item?, matrix: Matrix, direction: Direction, accum: List<Item> = emptyList()): List<Item> {
-        if (item == null || item.type != type) {
-            return accum
-        } else {
-            if (fork != null) {
-                val forkDirection = if (direction == Right) Up else Right
-
-                val forkItem = item.getNext(
-                        forkDirection,
-                        matrix
-                )
-
-                if (forkItem?.type == item.type) {
-                    fork = Fork(forkItem, forkDirection)
-                }
-            }
-
-            val next = item.getNext(direction, matrix)
-
-            return searchGroup(type, next, matrix, direction, accum + item)
-        }
-    }
-
-    private fun wasUsed(item: Item) = allGroups.flatMap { it }.contains(item)
+    private fun wasUsed(item: Item, allGroups: List<List<Item>>) = allGroups.flatMap { it }.contains(item)
 
 
 }
