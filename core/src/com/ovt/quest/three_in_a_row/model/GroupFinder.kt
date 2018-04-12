@@ -1,8 +1,7 @@
 package com.ovt.quest.three_in_a_row.model
 
 import com.ovt.quest.three_in_a_row.Direction
-import com.ovt.quest.three_in_a_row.Direction.Right
-import com.ovt.quest.three_in_a_row.Direction.Up
+import com.ovt.quest.three_in_a_row.Direction.*
 import com.ovt.quest.three_in_a_row.model.Item.Type.Hole
 
 /**
@@ -23,18 +22,26 @@ object GroupFinder {
 
                 if (wasUsed(curr) || curr.type == Hole) continue
 
-                var group = searchGroup(curr, matrix, Right, listOf(curr))
-                if (group.isEmpty()) {
-                    group = searchGroup(curr, matrix, Up)
+                var groups = searchGroupMultiDirection(
+                        curr = curr,
+                        requiredType = curr.type,
+                        matrix = matrix,
+                        mainDirection = Right,
+                        forkDirections = listOf(Up, Down)
+                )
+
+                if (groups.isEmpty()) {
+                    groups = searchGroupMultiDirection(
+                            curr = curr,
+                            requiredType = curr.type,
+                            matrix = matrix,
+                            mainDirection = Up,
+                            forkDirections = listOf(Left, Right)
+                    )
                 }
 
-                if (group.isNotEmpty() && fork != null) {
-                    group += searchGroup(fork!!.next, matrix, fork!!.direction, emptyList())
-                }
-
-                if (group.size > 2) {
-                    allGroups.add(group)
-                    fork = null
+                if (groups.isNotEmpty() && groups.size > 2) {
+                    allGroups.add(groups)
                 }
             }
         }
@@ -46,10 +53,63 @@ object GroupFinder {
         return result
     }
 
-    private fun searchGroup(item: Item, matrix: Matrix, direction: Direction, accum: List<Item> = emptyList()): List<Item> {
-        val next = item.getNext(direction, matrix)
+    private fun searchGroupMultiDirection(
+            curr: Item?,
+            requiredType: Item.Type,
+            matrix: Matrix,
+            mainDirection: Direction,
+            forkDirections: List<Direction>,
+            accum: MutableList<Item> = mutableListOf()
+    ): List<Item> {
+        if (curr == null || curr.type != requiredType) {
+            return accum
+        } else {
+            for (forkDirection in forkDirections) {
+                val next = curr.getNext(forkDirection, matrix)
+                if (next?.type == requiredType) {
+                    accum += searchGroupSingleDirection(
+                            next,
+                            requiredType,
+                            matrix,
+                            forkDirection
+                    )
+                }
+            }
+            accum += curr
+            return searchGroupMultiDirection(
+                    curr.getNext(mainDirection, matrix),
+                    requiredType,
+                    matrix,
+                    mainDirection,
+                    forkDirections,
+                    accum
+            )
+        }
+    }
 
-        if (next == null || next.type != item.type) {
+    private fun searchGroupSingleDirection(
+            curr: Item?,
+            requiredType: Item.Type,
+            matrix: Matrix,
+            direction: Direction,
+            accum: List<Item> = emptyList()
+    ): List<Item> {
+        if (curr == null || curr.type != requiredType) {
+            return accum
+        } else {
+            return searchGroupSingleDirection(
+                    curr.getNext(direction, matrix),
+                    requiredType,
+                    matrix,
+                    direction,
+                    (accum + curr)
+            )
+        }
+
+    }
+
+    private fun searchGroup(type: Item.Type, item: Item?, matrix: Matrix, direction: Direction, accum: List<Item> = emptyList()): List<Item> {
+        if (item == null || item.type != type) {
             return accum
         } else {
             if (fork != null) {
@@ -65,7 +125,9 @@ object GroupFinder {
                 }
             }
 
-            return searchGroup(next, matrix, direction, accum + next)
+            val next = item.getNext(direction, matrix)
+
+            return searchGroup(type, next, matrix, direction, accum + item)
         }
     }
 

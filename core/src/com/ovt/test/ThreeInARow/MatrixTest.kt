@@ -36,10 +36,11 @@ class findAngleGroups: StringSpec() {
     init {
         var m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-left-down-angle")
         var groups = GroupFinder.findGroups(m)
-//        groups.first() should containsAll(m.get(3, 1), m.get(4, 1), m.get(5, 1), m.get(3, 2), m.get(3, 3))
+        groups.first() should containsAll(m.get(3, 1), m.get(4, 1), m.get(5, 1), m.get(3, 2), m.get(3, 3))
 
         m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-left-up-angle")
         groups = GroupFinder.findGroups(m)
+
 
         m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-right-up-angle")
         groups = GroupFinder.findGroups(m)
