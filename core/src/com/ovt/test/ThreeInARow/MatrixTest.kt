@@ -4,6 +4,7 @@ import com.ovt.quest.three_in_a_row.model.GroupFinder
 import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
 import com.ovt.quest.three_in_a_row.model.Matrix
+import io.kotlintest.matchers.beEmpty
 import io.kotlintest.matchers.containsAll
 import io.kotlintest.matchers.should
 import io.kotlintest.matchers.shouldBe
@@ -50,6 +51,10 @@ class findAngleGroups: StringSpec() {
         m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/test-right-down-angle")
         groups = GroupFinder.findGroups(m)
         groups.first() should containsAll(m.get(3, 1), m.get(4, 1), m.get(5, 1), m.get(5, 2), m.get(5, 3))
+
+        m = loadMatrixFromFile("/Users/nikolay/IdeaProjects/quest/matrix-test-samples/stack-overflow-test")
+        groups = GroupFinder.findGroups(m)
+        groups.size shouldBe 0
     }
 }
 

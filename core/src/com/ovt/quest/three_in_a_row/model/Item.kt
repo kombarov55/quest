@@ -2,6 +2,7 @@ package com.ovt.quest.three_in_a_row.model
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.ovt.quest.three_in_a_row.Direction
 import com.ovt.quest.three_in_a_row.Direction.*
+import com.ovt.quest.three_in_a_row.toPositive
 
 /**
  * Created by nikolay on 15.03.18.
@@ -29,6 +30,11 @@ open class Item internal constructor (
         Right -> rightOfSelf(matrix)
         Down -> downOfSelf(matrix)
         Left -> leftOfSelf(matrix)
+    }
+
+    fun isNeighbourTo(i: Item): Boolean  {
+        return (column == i.column && toPositive(row - i.row) == 1) ||
+                (row == i.row && toPositive(column - i.column) == 1)
     }
 
     fun setLogicCoords(column: Int, row: Int) {

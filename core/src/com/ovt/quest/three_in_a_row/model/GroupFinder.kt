@@ -19,15 +19,15 @@ object GroupFinder {
 
                 try {
 
-                    var groups = searchGroupMultiDirection(
+                    var group = searchGroupMultiDirection(
                             curr = curr,
                             requiredType = curr.type,
                             matrix = matrix,
                             mainDirection = Right
                     )
 
-                    if (groups.isEmpty()) {
-                        groups = searchGroupMultiDirection(
+                    if (group.isEmpty()) {
+                        group = searchGroupMultiDirection(
                                 curr = curr,
                                 requiredType = curr.type,
                                 matrix = matrix,
@@ -36,8 +36,8 @@ object GroupFinder {
                     }
 
 
-                    if (groups.isNotEmpty() && groups.size > 2) {
-                        allGroups.add(groups)
+                    if (group.isNotEmpty() && group.size > 2 && hasThreeInARow(group)) {
+                        allGroups.add(group)
                     }
                 } catch (e: StackOverflowError) {
                     e.printStackTrace()
@@ -48,6 +48,15 @@ object GroupFinder {
         }
 
         return allGroups
+    }
+
+    private fun hasThreeInARow(group: List<Item>, curr: Item = group.first(), counter: Int = 0): Boolean {
+        val neighbour = group.find { it.isNeighbourTo(curr) }
+        if (neighbour != null) {
+            return hasThreeInARow(group - curr, neighbour, counter + 1)
+        } else {
+            return counter > 2
+        }
     }
 
     private fun searchGroupMultiDirection(
