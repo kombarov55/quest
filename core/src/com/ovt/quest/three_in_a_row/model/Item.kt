@@ -52,4 +52,16 @@ open class Item internal constructor (
         } else
             return false
     }
+
+    companion object {
+        fun swapLogicCoords(i1: Item, i2: Item) {
+            val (i1c, i1y) = i1.column to i1.row
+            i1.setLogicCoords(i2.column, i2.row)
+            i2.setLogicCoords(i1c, i1y)
+        }
+    }
+
+    fun getByOffset(columnOffset: Int, rowOffset: Int, matrix: Matrix): Item? {
+        return matrix.get(column + columnOffset, row + rowOffset)
+    }
 }

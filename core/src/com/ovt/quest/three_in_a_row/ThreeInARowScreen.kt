@@ -58,11 +58,18 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
 
+        println("before swap: $i1LogicCoords and $i2LogicCoords")
+        matrix.print()
+
         val i1 = matrix.get(i1LogicCoords)
         val i2 = matrix.get(i2LogicCoords)
 
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
+
+            println("after swap:")
+            matrix.print()
+
 //            swap(i1, i2)
 //            val groups = GroupFinder.findGroups(matrix)
 //            updateCounters(groups)
@@ -132,20 +139,21 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private fun swap(i1: Item, i2: Item, then: () -> Unit = { println("After swap!") }) {
         val (i1col, i1row) = i1.column to i1.row
 
-        i1.itemActor?.fastMoveTo(matrix.project(i2.column, i2.row))
-        matrix.put(i1)
         i1.setLogicCoords(i2.column, i2.row)
+        matrix.put(i1)
+        i1.itemActor?.fastMoveTo(matrix.project(i2.column, i2.row))
 
-        i2.itemActor?.fastMoveTo(matrix.project(i1col, i1row), then)
         i2.setLogicCoords(i1col, i1row)
+        i2.itemActor?.fastMoveTo(matrix.project(i1col, i1row), then)
         matrix.put(i2)
+
     }
 
     private fun addNewItems(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
         fun addNew(item: Item) {
             val ii = itemFactory.nonMatchingItem(item.column, item.row, matrix)
             matrix.put(ii)
-            stage.addActor(ii)
+            stage.addActor(ii.itemActor)
             ii.itemActor?.comeOut()
         }
 
