@@ -35,19 +35,17 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
         Gdx.input.inputProcessor = stage
         stage.onSwap = ::onSwap
-        stage.pressMe2.addClickListener {
-            val groups = GroupFinder.findGroups(matrix)
-            if (groups.isNotEmpty()) {
-                removeGroups(groups)
-            }
-        }
-
-        stage.pressMe.addClickListener {
+        stage.fallDown.addClickListener {
             itemFall.executeFallDown(matrix, itemFactory)
+
         }
 
-        stage.pressMe3.addClickListener {
+        stage.createNewItems.addClickListener {
             addNewItems(matrix, itemFactory, stage)
+        }
+
+        stage.explosion.addClickListener {
+            removeGroups(GroupFinder.findGroups(matrix))
         }
 
         stage.homeButton.addClickListener {
@@ -66,18 +64,13 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
-
-            println("after swap:")
-            matrix.print()
-
-//            swap(i1, i2)
-//            val groups = GroupFinder.findGroups(matrix)
-//            updateCounters(groups)
-//            if (groups.isNotEmpty()) {
-//                removeLoop(groups, matrix, itemFactory, stage)
-//            } else {
-//                swap(i1, i2)
-//            }
+            val groups = GroupFinder.findGroups(matrix)
+            updateCounters(groups)
+            if (groups.isNotEmpty()) {
+                removeLoop(groups, matrix, itemFactory, stage)
+            } else {
+                swap(i1, i2)
+            }
         })
     }
 
@@ -114,6 +107,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
 
     private fun removeGroups(matches: List<List<Item>>, then: () -> Unit = { println("After match remove") }) {
+        if (matches.isEmpty()) return
         val flattened = matches.flatten()
 
         flattened.dropLast(1).forEach {

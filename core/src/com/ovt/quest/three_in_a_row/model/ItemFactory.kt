@@ -25,7 +25,7 @@ class  ItemFactory(private val matrix: RenderingMatrix) {
     fun blue(column: Int, row: Int) = Item(column, row, Blue, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, blueTexture))
     fun yellow(column: Int, row: Int) = Item(column, row, Yellow, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, yellowTexture))
     fun pink(column: Int, row: Int) = Item(column, row, Pink, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, pinkTexture))
-    fun hole(column: Int, row: Int) = Item(column, row, Hole, ItemActor(matrix.project(column, row), matrix.itemWidth, matrix.itemHeight, holeTexture))
+    fun hole(column: Int, row: Int) = Item(column, row, Hole)
     fun rand(column: Int, row: Int) = byType(randType(), column, row)
 
     fun randType(): Item.Type = nonHoleTypes[MathUtils.random(nonHoleTypes.size - 1)]

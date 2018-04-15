@@ -11,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.ovt.quest.QuestGame
 import com.ovt.quest.three_in_a_row.Direction
-import com.ovt.quest.three_in_a_row.model.Item
-import com.ovt.quest.three_in_a_row.model.Matrix
 import com.ovt.quest.three_in_a_row.model.RenderingMatrix
 import com.ovt.quest.three_in_a_row.toPositive
 
@@ -28,9 +26,9 @@ class ThreeInARowStage(
         println("swap $p1 + $p2")
     }
 
-    val pressMe: Button
-    val pressMe2: Button
-    val pressMe3: Button
+    val createNewItems: Button
+    val fallDown: Button
+    val explosion: Button
 
     val homeButton: ImageButton
 
@@ -44,31 +42,9 @@ class ThreeInARowStage(
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
-        pressMe = game.buttons.normalButton("press me")
-
-        pressMe.width = w * 0.8f
-        pressMe.height = h * 0.05f
-        pressMe.x = (w - pressMe.width) / 2
-        pressMe.y = h * 0.7f
-
-        addActor(pressMe)
-
-        pressMe2 = game.buttons.normalButton("press me2")
-        pressMe2.width = pressMe.width
-        pressMe2.height = pressMe.height
-        pressMe2.x = pressMe.x
-        pressMe2.y = pressMe.y + pressMe.height + h * 0.01f
-
-        addActor(pressMe2)
-
-        pressMe3 = game.buttons.normalButton("press me3")
-        pressMe3.width = pressMe.width
-        pressMe3.height = pressMe.height
-        pressMe3.x = pressMe.x
-        pressMe3.y = pressMe2.y + pressMe2.height + h * 0.01f
-
-        addActor(pressMe3)
-
+        createNewItems = game.buttons.imgButton("img/up-arrow.png")
+        fallDown = game.buttons.imgButton("img/down-arrow.png")
+        explosion = game.buttons.imgButton("img/explosion.png")
         homeButton = game.buttons.imgButton(src = "img/home.png")
 
         fun placeHorizontally(xs: List<Actor>, pad: Float, side: Float, marginX: Float, marginY: Float) {
@@ -90,8 +66,8 @@ class ThreeInARowStage(
         yellowCounter = game.labelFactory.smallerLabel("x0")
         pinkCounter = game.labelFactory.smallerLabel("x0")
 
-        val row = listOf<Actor>(homeButton, redCounterImg, redCounter, blueCounterImg, blueCounter, yellowCounterImg, yellowCounter, pinkCounterImg, pinkCounter)
-        placeHorizontally(row, w * 0.005f, w * 0.07f, w * 0.01f, h * 0.95f)
+        val row = listOf<Actor>(homeButton, homeButton, createNewItems, fallDown, explosion, redCounterImg, redCounter, blueCounterImg, blueCounter, yellowCounterImg, yellowCounter, pinkCounterImg, pinkCounter)
+        placeHorizontally(row, w * 0.002f, h * 0.04f, w * 0.005f, h * 0.95f)
         row.forEach { addActor(it) }
     }
 
