@@ -1,7 +1,10 @@
-package com.ovt.quest.three_in_a_row.model
+package com.ovt.quest.three_in_a_row.service
 
+import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.model.Item.Type.Hole
+import com.ovt.quest.three_in_a_row.model.ItemFactory
 import com.ovt.quest.three_in_a_row.model.ItemFall.State.*
+import com.ovt.quest.three_in_a_row.model.RenderingMatrix
 
 /**
  * Created by nikolay on 24.03.18.

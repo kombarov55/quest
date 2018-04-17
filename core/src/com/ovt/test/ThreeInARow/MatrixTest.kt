@@ -1,10 +1,9 @@
 package com.ovt.test.ThreeInARow
 
-import com.ovt.quest.three_in_a_row.model.GroupFinder
+import com.ovt.quest.three_in_a_row.service.GroupFinder
 import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
 import com.ovt.quest.three_in_a_row.model.Matrix
-import io.kotlintest.matchers.beEmpty
 import io.kotlintest.matchers.containsAll
 import io.kotlintest.matchers.should
 import io.kotlintest.matchers.shouldBe
