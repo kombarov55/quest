@@ -10,6 +10,8 @@ import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 import com.ovt.quest.three_in_a_row.model.*
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
+import com.ovt.quest.three_in_a_row.service.GroupFinder
+import com.ovt.quest.three_in_a_row.service.ItemFall
 
 /**
  * Created by nikolay on 14.03.18.
