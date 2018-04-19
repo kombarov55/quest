@@ -3,9 +3,7 @@ package com.ovt.quest.three_in_a_row.service
 import com.ovt.quest.three_in_a_row.model.Item
 import com.ovt.quest.three_in_a_row.model.Item.Type.Hole
 import com.ovt.quest.three_in_a_row.model.ItemFactory
-
 import com.ovt.quest.three_in_a_row.model.RenderingMatrix
-import com.ovt.quest.three_in_a_row.service.ItemFall.State.*
 
 /**
  * Created by nikolay on 24.03.18.
@@ -30,14 +28,14 @@ class ItemFall(
             for (row in 0 until matrix.maxRows) {
                 val item = matrix.get(column, row)!!
                 when (state) {
-                    SearchingHole -> searchingHole(item)
-                    CountHolesInARow -> countHolesInARow(item, then)
-                    FallingItems -> fallingItems(item, then)
+                    State.SearchingHole -> searchingHole(item)
+                    State.CountHolesInARow -> countHolesInARow(item, then)
+                    State.FallingItems -> fallingItems(item, then)
                 }
             }
 
             holeCount = 0
-            state = SearchingHole
+            state = State.SearchingHole
         }
 
         if (!thenCalled) then.invoke()
@@ -45,7 +43,7 @@ class ItemFall(
 
     private fun searchingHole(item: Item) {
         if (item.type == Hole) {
-            state = CountHolesInARow
+            state = State.CountHolesInARow
 
             holeCount = 1
         }
@@ -55,7 +53,7 @@ class ItemFall(
         if (itemActor.type == Hole) {
             holeCount += 1
         } else {
-            state = FallingItems
+            state = State.FallingItems
             fallingItems(itemActor, then)
         }
     }
@@ -77,7 +75,7 @@ class ItemFall(
                 item.setLogicCoords(item.column, item.row - holeCount)
             }
         } else {
-            state = CountHolesInARow
+            state = State.CountHolesInARow
             holeCount += 1
         }
     }
