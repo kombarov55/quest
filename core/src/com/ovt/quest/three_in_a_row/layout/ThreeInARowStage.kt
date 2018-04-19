@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.ovt.quest.QuestGame
-import com.ovt.quest.three_in_a_row.Direction
+import com.ovt.quest.commons.Direction
 import com.ovt.quest.three_in_a_row.model.RenderingMatrix
 import com.ovt.quest.three_in_a_row.toPositive
 

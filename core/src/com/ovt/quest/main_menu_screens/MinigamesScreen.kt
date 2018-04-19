@@ -7,7 +7,6 @@ import com.ovt.quest.QuestGame
 import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.main_menu_screens.layout.MinigamesStage
-import com.ovt.quest.shooting.ShootingScreen
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 
 /**
@@ -27,8 +26,6 @@ class MinigamesScreen(private val game: QuestGame) : Screen {
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-
         stage.draw()
     }
 

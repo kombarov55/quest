@@ -1,4 +1,4 @@
-package com.ovt.quest.three_in_a_row
+package com.ovt.quest.commons
 
 /**
  * Created by nikolay on 23.03.18.

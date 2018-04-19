@@ -1,6 +1,6 @@
 package com.ovt.test.ThreeInARow
 
-import com.ovt.quest.three_in_a_row.Direction
+import com.ovt.quest.commons.Direction
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.StringSpec
 

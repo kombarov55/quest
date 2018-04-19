@@ -1,7 +1,7 @@
 package com.ovt.quest.three_in_a_row.model
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.ovt.quest.three_in_a_row.Direction
-import com.ovt.quest.three_in_a_row.Direction.*
+import com.ovt.quest.commons.Direction
+import com.ovt.quest.commons.Direction.*
 import com.ovt.quest.three_in_a_row.toPositive
 
 /**
