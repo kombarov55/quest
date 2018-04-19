@@ -1,18 +1,12 @@
 package com.ovt.quest.archery
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.input.GestureDetector
-import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import io.reactivex.subjects.PublishSubject
 
-class ArcheryInputProcessor(private val map: TiledMap): GestureDetector.GestureAdapter() {
-
-    val moveCamera = PublishSubject.create<Vector2>()
-    val zoom = PublishSubject.create<Float>()
+class ArcheryInputProcessor(private val screen: ArcheryScreen): GestureDetector.GestureAdapter() {
 
     private val directionKeys = listOf(Input.Keys.LEFT, Input.Keys.RIGHT, Input.Keys.UP, Input.Keys.DOWN)
     private val zoomKeys = listOf(Input.Keys.EQUALS, Input.Keys.MINUS)
@@ -20,12 +14,13 @@ class ArcheryInputProcessor(private val map: TiledMap): GestureDetector.GestureA
     private val bowArea = Rectangle()
 
 
+
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
         val delta = Vector2(deltaX, deltaY)
                 .scl(cameraTouchMovementMultiplier, cameraTouchMovementMultiplier)
                 .scl(-1f, 1f)
 
-        moveCamera.onNext(delta)
+        screen.moveCamera.onNext(delta)
 
         return true
     }
@@ -54,9 +49,9 @@ class ArcheryInputProcessor(private val map: TiledMap): GestureDetector.GestureA
     }
 
     companion object {
-        private val cameraMovement = 25f
-        private val cameraTouchMovementMultiplier = 1f
-        private val zoomDelta = 0.05f
+        val cameraMovement = 25f
+        val cameraTouchMovementMultiplier = 1f
+        val zoomDelta = 0.05f
     }
 
 }
