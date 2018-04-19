@@ -1,11 +1,15 @@
 package com.ovt.quest.archery
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.input.GestureDetector
+import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import io.reactivex.subjects.PublishSubject
 
-class ArcheryInputProcessor: InputAdapter() {
+class ArcheryInputProcessor(private val map: TiledMap): GestureDetector.GestureAdapter() {
 
     val moveCamera = PublishSubject.create<Vector2>()
     val zoom = PublishSubject.create<Float>()
@@ -13,49 +17,22 @@ class ArcheryInputProcessor: InputAdapter() {
     private val directionKeys = listOf(Input.Keys.LEFT, Input.Keys.RIGHT, Input.Keys.UP, Input.Keys.DOWN)
     private val zoomKeys = listOf(Input.Keys.EQUALS, Input.Keys.MINUS)
 
-    private var lastTouch = Vector2()
-
-    override fun keyDown(keycode: Int): Boolean {
-        if (directionKeys.contains(keycode)) {
-            moveCamera.onNext(translateKeyDirection(keycode))
-        }
-
-        else if (zoomKeys.contains(keycode)) {
-            zoom.onNext(translateZoom(keycode))
-        }
-        return super.keyDown(keycode)
-    }
+    private val bowArea = Rectangle()
 
 
-
-    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        lastTouch.x = screenX.toFloat()
-        lastTouch.y = screenY.toFloat()
-        return super.touchDown(screenX, screenY, pointer, button)
-    }
-
-    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        lastTouch.x = 0f
-        lastTouch.y = 0f
-        return super.touchUp(screenX, screenY, pointer, button)
-    }
-
-    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-
-        val x = screenX.toFloat()
-        val y = screenY.toFloat()
-
-        val delta = Vector2(lastTouch)
-                .sub(x, y)
+    override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
+        val delta = Vector2(deltaX, deltaY)
                 .scl(cameraTouchMovementMultiplier, cameraTouchMovementMultiplier)
-                .scl(1f, -1f)
-
-        lastTouch.x = x
-        lastTouch.y = y
+                .scl(-1f, 1f)
 
         moveCamera.onNext(delta)
 
-        return super.touchDragged(screenX, screenY, pointer)
+        return true
+    }
+
+    override fun zoom(initialDistance: Float, distance: Float): Boolean {
+        println(distance)
+        return true
     }
 
     private fun translateKeyDirection(keycode: Int): Vector2 {
