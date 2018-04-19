@@ -23,12 +23,12 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     override fun show() {
         renderer.setView(camera)
         Gdx.input.inputProcessor = inputProcessor
-        inputProcessor.directionTyped.subscribe { vector ->
+        inputProcessor.moveCamera.subscribe { vector ->
             camera.translate(vector)
             camera.update()
             renderer.setView(camera)
         }
-        inputProcessor.zoomTyped.subscribe { zoomAmount ->
+        inputProcessor.zoom.subscribe { zoomAmount ->
             camera.zoom += zoomAmount
             camera.update()
             renderer.setView(camera)
