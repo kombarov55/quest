@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -23,12 +22,10 @@ import io.reactivex.subjects.PublishSubject
 class ArcheryScreen(private val game: QuestGame) : Screen {
 
 
-    private val map: TiledMap = TmxMapLoader().load("maps/archery/archery.tmx")
+    val map: TiledMap = TmxMapLoader().load("maps/archery/archery.tmx")
     private val renderer: OrthogonalTiledMapRenderer = OrthogonalTiledMapRenderer(map)
-    private val camera = OrthographicCamera(1000f, 1000f)
+    val camera = OrthographicCamera(100f, 100f)
     private val inputProcessor = ArcheryInputProcessor(this)
-
-    private val hudBatch = SpriteBatch()
 
     val moveCamera = PublishSubject.create<Vector2>()
     val homeClicked = PublishSubject.create<Unit>()
@@ -36,8 +33,6 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     val t = Texture(Gdx.files.internal("maps/archery/bow.png"))
     val bow = TextureRegion.split(t, t.width / 6, t.height / 4)[0][0]
-
-//    private lateinit var  animation: Animation<TextureRegion>
 
     val bowCenter = map.layers["objects"].objects["bow"]
     val x = bowCenter.properties.get("x", Float::class.java)
@@ -48,8 +43,12 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     val hud = ArcheryHud(game, this)
 
     override fun show() {
-        renderer.setView(camera)
         Gdx.input.inputProcessor = InputMultiplexer(hud, GestureDetector(inputProcessor))
+        renderer.setView(camera)
+        camera.position.set(x, y, 0f)
+        camera.update()
+        renderer.setView(camera)
+
         moveCamera.subscribe { vector ->
             camera.translate(vector)
             camera.update()
@@ -64,7 +63,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         homeClicked.subscribe { game.screen = MainMenuScreen(game) }
 
-        camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2)
+
 
 
 

@@ -2,25 +2,34 @@ package com.ovt.quest.archery
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.input.GestureDetector
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import io.reactivex.subjects.PublishSubject
+import com.badlogic.gdx.math.Vector3
+import com.ovt.quest.three_in_a_row.toRectangle
 
 class ArcheryInputProcessor(private val screen: ArcheryScreen): GestureDetector.GestureAdapter() {
 
     private val directionKeys = listOf(Input.Keys.LEFT, Input.Keys.RIGHT, Input.Keys.UP, Input.Keys.DOWN)
     private val zoomKeys = listOf(Input.Keys.EQUALS, Input.Keys.MINUS)
 
-    private val bowArea = Rectangle()
+    private val bowArea = toRectangle(screen.map.layers["objects"].objects["bow"])
+
 
 
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
-        val delta = Vector2(deltaX, deltaY)
-                .scl(cameraTouchMovementMultiplier, cameraTouchMovementMultiplier)
-                .scl(-1f, 1f)
+        val point = screen.camera.unproject(Vector3(x, y, 0f))
+        if (bowArea.contains(Vector2(point.x, point.y))) {
+            println("rotate bow")
+        } else {
+            println("move camera")
+            val delta = Vector2(deltaX, deltaY)
+                    .scl(cameraTouchMovementMultiplier, cameraTouchMovementMultiplier)
+                    .scl(-1f, 1f)
 
-        screen.moveCamera.onNext(delta)
+            screen.moveCamera.onNext(delta)
+        }
+
+
 
         return true
     }
@@ -50,7 +59,7 @@ class ArcheryInputProcessor(private val screen: ArcheryScreen): GestureDetector.
 
     companion object {
         val cameraMovement = 25f
-        val cameraTouchMovementMultiplier = 1f
+        val cameraTouchMovementMultiplier = 0.7f
         val zoomDelta = 0.05f
     }
 
