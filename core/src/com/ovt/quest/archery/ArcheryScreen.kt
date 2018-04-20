@@ -32,20 +32,17 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     val zoom = PublishSubject.create<Float>()
 
     val t = Texture(Gdx.files.internal("maps/archery/bow.png"))
-    val bow = TextureRegion.split(t, t.width / 6, t.height / 4)[0][0]
 
-    val bowCenter = map.layers["objects"].objects["bow"]
-    val x = bowCenter.properties.get("x", Float::class.java)
-    val y = bowCenter.properties.get("y", Float::class.java)
-    val width = bowCenter.properties.get("width", Float::class.java)
-    val height = bowCenter.properties.get("height", Float::class.java)
+    val bowTexture = TextureRegion.split(t, t.width / 6, t.height / 4)[0][0]
+    val bowMapObject = map.layers["objects"].objects["bow"]
+    val bow = Bow(bowTexture, bowMapObject)
 
     val hud = ArcheryHud(game, this)
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, GestureDetector(inputProcessor))
         renderer.setView(camera)
-        camera.position.set(x, y, 0f)
+        camera.position.set(bow.x, bow.y, 0f)
         camera.update()
         renderer.setView(camera)
 
@@ -78,7 +75,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         renderer.render()
         renderer.batch.begin()
 
-        renderer.batch.draw(bow, x, y, width, height)
+        bow.draw(renderer.batch)
         renderer.batch.end()
 
 

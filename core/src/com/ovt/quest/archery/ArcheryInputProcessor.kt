@@ -19,7 +19,7 @@ class ArcheryInputProcessor(private val screen: ArcheryScreen): GestureDetector.
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
         val point = screen.camera.unproject(Vector3(x, y, 0f))
         if (bowArea.contains(Vector2(point.x, point.y))) {
-            println("rotate bow")
+            println("rotate bowMapObject")
         } else {
             println("move camera")
             val delta = Vector2(deltaX, deltaY)
