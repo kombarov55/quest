@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.ovt.quest.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import io.reactivex.subjects.PublishSubject
@@ -24,7 +25,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     val map: TiledMap = TmxMapLoader().load("maps/archery/archery.tmx")
     private val renderer: OrthogonalTiledMapRenderer = OrthogonalTiledMapRenderer(map)
-    val camera = OrthographicCamera(100f, 100f)
+    val camera = OrthographicCamera(250f, 250f)
     private val inputProcessor = ArcheryInputProcessor(this)
 
     val moveCamera = PublishSubject.create<Vector2>()
@@ -33,7 +34,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     val t = Texture(Gdx.files.internal("maps/archery/bow.png"))
 
-    val bowTexture = TextureRegion.split(t, t.width / 6, t.height / 4)[0][0]
+    val bowTexture = TextureRegion.split(t, t.width / 6, t.height / 4)[1][5]
     val bowMapObject = map.layers["objects"].objects["bow"]
     val bow = Bow(bowTexture, bowMapObject)
 
@@ -42,7 +43,8 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, GestureDetector(inputProcessor))
         renderer.setView(camera)
-        camera.position.set(bow.x, bow.y, 0f)
+//        camera.position.set(camera.project(Vector3(bow.originX, bow.originY, 0f)))
+        camera.position.set(Vector3(bow.originX, bow.originY, 0f))
         camera.update()
         renderer.setView(camera)
 

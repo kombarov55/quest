@@ -11,15 +11,20 @@ class ArcheryInputProcessor(private val screen: ArcheryScreen): GestureDetector.
     private val directionKeys = listOf(Input.Keys.LEFT, Input.Keys.RIGHT, Input.Keys.UP, Input.Keys.DOWN)
     private val zoomKeys = listOf(Input.Keys.EQUALS, Input.Keys.MINUS)
 
-    private val bowArea = toRectangle(screen.map.layers["objects"].objects["bow"])
+    private val bowRotationArea = toRectangle(screen.map.layers["objects"].objects["bow-rotation-area"])
 
 
 
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
         val point = screen.camera.unproject(Vector3(x, y, 0f))
-        if (bowArea.contains(Vector2(point.x, point.y))) {
-            println("rotate bowMapObject")
+        if (bowRotationArea.contains(Vector2(point.x, point.y))) {
+
+            val side2 = Vector2(point.x, point.y).sub(screen.bow.arrowStartPoint)
+            val angle = side2.angle(screen.bow.arrowVector)
+
+            println("rotate bow at $angle deg")
+
         } else {
             println("move camera")
             val delta = Vector2(deltaX, deltaY)
