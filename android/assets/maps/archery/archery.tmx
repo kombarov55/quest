@@ -92,6 +92,5 @@
  </layer>
  <objectgroup name="objects">
   <object id="14" name="bow" x="199.697" y="200.303" width="42.3601" height="50.2269"/>
-  <object id="18" name="bow-rotation-area" x="161.212" y="161.212" width="121.818" height="96.9697"/>
  </objectgroup>
 </map>

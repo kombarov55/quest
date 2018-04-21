@@ -36,6 +36,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     val homeClicked = PublishSubject.create<Unit>()
     val zoom = PublishSubject.create<Float>()
     val bowRotation = PublishSubject.create<Float>()
+    val bowFired = PublishSubject.create<Unit?>()
 
     val t = Texture(Gdx.files.internal("maps/archery/bow.png"))
 
@@ -51,8 +52,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, GestureDetector(inputProcessor))
         renderer.setView(camera)
-//        camera.position.set(camera.project(Vector3(bow.originX, bow.originY, 0f)))
-        camera.position.set(Vector3(bow.originX, bow.originY, 0f))
+        camera.position.set(Vector3(bow.x + bow.originX, bow.y + bow.originY, 0f))
         camera.update()
         renderer.setView(camera)
 
@@ -62,7 +62,6 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
             renderer.setView(camera)
         }
         zoom.subscribe { zoomAmount ->
-            println("ZOOM")
             camera.zoom += zoomAmount
             camera.update()
             renderer.setView(camera)
@@ -72,6 +71,10 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         bowRotation.subscribe { angle ->
             bow.rotation = angle
+        }
+
+        bowFired.subscribe {
+            println("FIRE IN THE HOLE!!")
         }
 
 
