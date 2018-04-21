@@ -31,6 +31,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     val moveCamera = PublishSubject.create<Vector2>()
     val homeClicked = PublishSubject.create<Unit>()
     val zoom = PublishSubject.create<Float>()
+    val bowRotation = PublishSubject.create<Float>()
 
     val t = Texture(Gdx.files.internal("maps/archery/bow.png"))
 
@@ -62,6 +63,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         homeClicked.subscribe { game.screen = MainMenuScreen(game) }
 
+        bowRotation.subscribe { println("rotate bow at $it deg") }
 
 
 

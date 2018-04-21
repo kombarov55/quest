@@ -35,5 +35,10 @@ class ArcheryHud(private val game: QuestGame, private val screen: ArcheryScreen)
         homeButton.addClickListener { screen.homeClicked.onNext(Unit) }
         zoomInButton.addClickListener { screen.zoom.onNext(ArcheryInputProcessor.zoomDelta) }
         zoomOutButton.addClickListener { screen.zoom.onNext(-ArcheryInputProcessor.zoomDelta) }
+
+        slider.addListener {
+            screen.bowRotation.onNext(slider.value)
+            true
+        }
     }
 }
