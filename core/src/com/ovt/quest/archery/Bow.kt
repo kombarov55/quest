@@ -21,26 +21,19 @@ class Bow(
     var scaleY: Float = 1f
     var rotation: Float = 0f
 
-    var arrowStartPoint: Vector2
-    var arrowEndPoint: Vector2
-    var arrowVector: Vector2
-
     constructor(region: TextureRegion, mapObject: MapObject): this(region) {
         val r = toRectangle(mapObject)
         x = r.x
         y = r.y
         width = r.width
         height = r.height
-        originX = x + (width / 2)
-        originY = y + (height / 2)
+        originX = 0f
+        originY = height / 2
     }
 
     init {
         originX = x + (width / 2)
         originY = y + (height / 2)
-        arrowStartPoint = Vector2(x, originY)
-        arrowEndPoint = Vector2(x + width, originY)
-        arrowVector = Vector2(arrowEndPoint).sub(arrowStartPoint)
     }
 
 

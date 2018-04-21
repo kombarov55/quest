@@ -20,10 +20,6 @@ class ArcheryInputProcessor(private val screen: ArcheryScreen): GestureDetector.
         val point = screen.camera.unproject(Vector3(x, y, 0f))
         if (bowRotationArea.contains(Vector2(point.x, point.y))) {
 
-            val side2 = Vector2(point.x, point.y).sub(screen.bow.arrowStartPoint)
-            val angle = side2.angle(screen.bow.arrowVector)
-
-            println("rotate bow at $angle deg")
 
         } else {
             println("move camera")

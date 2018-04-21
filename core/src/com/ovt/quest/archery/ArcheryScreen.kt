@@ -63,7 +63,9 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         homeClicked.subscribe { game.screen = MainMenuScreen(game) }
 
-        bowRotation.subscribe { println("rotate bow at $it deg") }
+        bowRotation.subscribe { angle ->
+            bow.rotation = angle
+        }
 
 
 
