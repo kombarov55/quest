@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
-import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Globals
 
 class QuestGame : Game() {
@@ -39,7 +38,7 @@ class QuestGame : Game() {
     internal lateinit var smallerFont: BitmapFont
     internal lateinit var tinyFont: BitmapFont
 
-    private lateinit var textButtonSkin: Skin
+    lateinit var skin: Skin
 
     override fun create() {
         initializeVariables()
@@ -57,9 +56,9 @@ class QuestGame : Game() {
         tinyFont = createFont(Gdx.graphics.height * 0.008f)
 
 
-        textButtonSkin = Skin(Gdx.files.internal("skin/cloud-form-ui.json"))
+        skin = Skin(Gdx.files.internal("skin/cloud-form-ui.json"))
 
-        buttons = Buttons(this, textButtonSkin)
+        buttons = Buttons(this, skin)
         labelFactory = LabelFactory(this)
 
         globals = Globals()
