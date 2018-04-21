@@ -13,8 +13,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.physics.box2d.Box2D
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.badlogic.gdx.physics.box2d.World
 import com.ovt.quest.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.three_in_a_row.Vector2
 import io.reactivex.subjects.PublishSubject
 
 /**
@@ -40,6 +44,9 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     val bow = Bow(bowTexture, bowMapObject)
 
     val hud = ArcheryHud(game, this)
+
+    val world = World(Vector2(0, -10), true)
+    val box2dRenderer = Box2DDebugRenderer()
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, GestureDetector(inputProcessor))
@@ -68,7 +75,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         }
 
 
-
+        Box2D.init()
 
 
     }
@@ -86,6 +93,9 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
 
         hud.draw()
+
+        box2dRenderer.render(world, camera.combined)
+        world.step(1/60f, 6, 2)
     }
 
     override fun hide() { }
