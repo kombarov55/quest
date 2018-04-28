@@ -27,9 +27,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener())
-
         cam.setToOrtho(false, 10f, 16.6f)
-
         makeSubscriptions()
     }
 
@@ -55,6 +53,10 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         }
 
         Events.goHome.subscribe { game.screen = MainMenuScreen(game) }
+
+        Events.rotateBow.subscribe { angle ->
+            println("rotate at $angle")
+        }
 
     }
 

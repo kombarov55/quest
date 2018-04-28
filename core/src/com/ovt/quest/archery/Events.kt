@@ -8,6 +8,7 @@ object Events {
     val moveCamera = PublishSubject.create<Vector2>()
     val zoomCamera = PublishSubject.create<Float>()
     val goHome = PublishSubject.create<Unit>()
+    val rotateBow = PublishSubject.create<Float>()
 
 
 }
