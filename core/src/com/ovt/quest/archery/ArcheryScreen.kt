@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
@@ -44,7 +45,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     private val targetTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/target.png")))
 
     override fun show() {
-        Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener())
+        Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener(), GestureDetector(GestureListener()))
         cam.setToOrtho(false, 10f, 16.6f)
 
         tilemap.layers["graphics"].isVisible = false
@@ -86,7 +87,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     private fun makeSubscriptions() {
         Events.moveCamera.subscribe { v ->
-            cam.translate(v)
+            cam.translate(v.x / PPM, v.y / PPM)
             cam.update()
         }
 
