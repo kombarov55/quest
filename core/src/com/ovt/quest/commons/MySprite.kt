@@ -17,8 +17,8 @@ class MySprite(val textureRegion: TextureRegion,
             width = obj.properties["width"] as Float / PPM,
             height = obj.properties["height"] as Float / PPM)
 
-    var originX: Float = x + width / 2
-    var originY: Float = y + height / 2
+    var originX: Float = width / 2
+    var originY: Float = height / 2
 
 
     fun draw(sb: SpriteBatch) {

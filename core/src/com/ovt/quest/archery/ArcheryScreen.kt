@@ -98,7 +98,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         Events.goHome.subscribe { game.screen = MainMenuScreen(game) }
 
         Events.rotateBow.subscribe { angle ->
-            println("rotate at $angle")
+            bowSprite.rotation = angle
         }
 
         Events.touch.subscribe {pos ->
