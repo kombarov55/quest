@@ -32,7 +32,7 @@ class KeyListener: InputAdapter() {
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        println("x=$screenX y=$screenY")
+        Events.touch.onNext(Vector2(screenX.toFloat(), screenY.toFloat()))
         return false
     }
 }
