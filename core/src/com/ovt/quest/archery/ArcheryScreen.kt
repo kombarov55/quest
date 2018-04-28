@@ -28,6 +28,9 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     val PPM = 16f
 
+    val maxX = 50
+    val maxY = 25
+
     private val tilemap = TmxMapLoader().load("maps/archery/archery.tmx")
     private val tmxRenderer = OrthogonalTiledMapRenderer(tilemap, 1f / PPM)
 
@@ -87,8 +90,10 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     private fun makeSubscriptions() {
         Events.moveCamera.subscribe { v ->
-            cam.translate(v.x / PPM, v.y / PPM)
-            cam.update()
+            if (!camOob(cam, v)) {
+                cam.translate(v.x / PPM, v.y / PPM)
+                cam.update()
+            }
         }
 
         Events.zoomCamera.subscribe { z ->
@@ -109,6 +114,15 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
             println("xx=${pos1.x} yy=${pos1.y}")
         }
 
+    }
+
+    private fun camOob(cam: OrthographicCamera, delta: Vector2): Boolean {
+        val newPos = Vector2(cam.position.x, cam.position.y).add(delta)
+
+        return newPos.x - cam.viewportWidth / 2 < 0 ||
+                newPos.y - cam.viewportHeight / 2 < 0 ||
+                newPos.x + cam.viewportWidth / 2 > maxX ||
+                newPos.y + cam.viewportHeight / 2 > maxY
     }
 
     override fun hide() { }
