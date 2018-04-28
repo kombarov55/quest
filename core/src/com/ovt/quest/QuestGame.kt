@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
+import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Globals
 
 class QuestGame : Game() {
@@ -43,8 +44,8 @@ class QuestGame : Game() {
     override fun create() {
         initializeVariables()
 
-//        setScreen(MainMenuScreen(this))
-        setScreen(ArcheryScreen(this))
+        setScreen(MainMenuScreen(this))
+//        setScreen(ArcheryScreen(this))
     }
 
     private fun initializeVariables() {
