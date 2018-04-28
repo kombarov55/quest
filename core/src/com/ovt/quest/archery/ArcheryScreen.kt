@@ -39,7 +39,9 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     private val b2dr = Box2DDebugRenderer()
 
     private lateinit var bowSprite: MySprite
+    private lateinit var targetSprite: MySprite
     private val bowTexture = TextureRegion.split(Texture(Gdx.files.internal("maps/archery/bow.png")), 70, 90)[1][5]
+    private val targetTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/target.png")))
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener())
@@ -62,6 +64,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         sb.begin()
         sb.projectionMatrix = cam.combined
         bowSprite.draw(sb)
+        targetSprite.draw(sb)
         sb.end()
 
         hudSpriteBatch.begin()
@@ -74,8 +77,11 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     private fun createObjects() {
         val objLayer = tilemap.layers["objects"]
-        val obj = objLayer.objects["bow"]
-        bowSprite = MySprite(bowTexture, obj, PPM)
+        val bow = objLayer.objects["bow"]
+        bowSprite = MySprite(bowTexture, bow, PPM)
+        val target = objLayer.objects["target"]
+        targetSprite = MySprite(targetTexture, target, PPM)
+
     }
 
     private fun makeSubscriptions() {
