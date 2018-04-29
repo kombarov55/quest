@@ -26,12 +26,12 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     val cam = OrthographicCamera()
 
-    val PPM = 16f
+    val PPM = 128f
 
     val maxX = 50
     val maxY = 25
 
-    private val tilemap = TmxMapLoader().load("maps/archery/archery.tmx")
+    private val tilemap = TmxMapLoader().load("maps/archery/hi-res/archery-hi-res.tmx")
     private val tmxRenderer = OrthogonalTiledMapRenderer(tilemap, 1f / PPM)
 
     private val hudSpriteBatch = SpriteBatch()
@@ -44,8 +44,8 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     private lateinit var bowSprite: MySprite
     private lateinit var targetSprite: MySprite
-    private val bowTexture = TextureRegion.split(Texture(Gdx.files.internal("maps/archery/bow.png")), 70, 90)[1][5]
-    private val targetTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/target.png")))
+    private val bowTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/hi-res/bow.png")))
+    private val targetTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/hi-res/target.png")))
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener(), GestureDetector(GestureListener()))
