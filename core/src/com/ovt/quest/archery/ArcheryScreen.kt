@@ -9,15 +9,13 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.input.GestureDetector
+import com.badlogic.gdx.maps.MapLayer
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.physics.box2d.BodyDef
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
-import com.badlogic.gdx.physics.box2d.FixtureDef
-import com.badlogic.gdx.physics.box2d.World
+import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.Animation
 import com.ovt.quest.commons.MySprite
@@ -43,24 +41,30 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     private val sb = SpriteBatch()
 
-    private val world = World(Vector2(0f, -9.81f), true)
-    private val b2dr = Box2DDebugRenderer()
-
     private lateinit var bowSprite: Animation
     private lateinit var targetSprite: MySprite
     private val targetTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/hi-res/target.png")))
+
+    private val world = World(Vector2(0f, -9.81f), true)
+    private val b2dr = Box2DDebugRenderer()
+
+    private lateinit var arrowBody: Body
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener(), GestureDetector(GestureListener()))
         cam.setToOrtho(false, 16.6f, 10f)
 
+        val objLayer = tilemap.layers["objects"]
+
+        createBow(objLayer)
+        createTarget(objLayer)
+        createArrow(objLayer)
         createObjects()
         makeSubscriptions()
     }
 
     override fun render(delta: Float) {
         world.step(1f/60, 6, 2)
-        b2dr.render(world, cam.combined)
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         tmxRenderer.setView(cam)
@@ -76,19 +80,42 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         hud.draw(hudSpriteBatch)
         hudSpriteBatch.end()
 
-
+        b2dr.render(world, cam.combined)
 
     }
 
     private fun createObjects() {
-        val objLayer = tilemap.layers["objects"]
+
+    }
+
+    private fun createBow(objLayer: MapLayer) {
         val bow = objLayer.objects["bow"]
         bowSprite = Animation(Texture(Gdx.files.internal("maps/archery/bow-anim.png")), 70, 90, bow, PPM)
+    }
 
+    private fun createArrow(objLayer: MapLayer) {
+        val bdef = BodyDef()
+        val fdef = FixtureDef()
+        val shape = PolygonShape()
 
+        val obj = objLayer.objects["arrow"]
+
+        val x = obj.properties["x"] as Float / PPM
+        val y = obj.properties["y"] as Float / PPM
+        val width = obj.properties["width"] as Float / PPM
+        val height = obj.properties["height"] as Float / PPM
+
+        bdef.position.set(x, y)
+        shape.setAsBox(width, height)
+        fdef.shape = shape
+
+        arrowBody = world.createBody(bdef)
+        arrowBody.createFixture(fdef)
+    }
+
+    private fun createTarget(objLayer: MapLayer) {
         val target = objLayer.objects["target"]
         targetSprite = MySprite(targetTexture, target, PPM)
-
     }
 
     private fun makeSubscriptions() {
@@ -108,6 +135,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         Events.bowRotation.subscribe { angle ->
             bowSprite.rotation = angle
+            arrowBody.setTransform(arrowBody.position, angle * MathUtils.degreesToRadians)
         }
 
         Events.touch.subscribe {pos ->

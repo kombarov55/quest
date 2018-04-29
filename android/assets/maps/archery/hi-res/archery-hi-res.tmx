@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="128" tileheight="128" nextobjectid="10">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="128" tileheight="128" nextobjectid="18">
  <tileset firstgid="1" name="grass" tilewidth="128" tileheight="128" tilecount="1">
   <image source="grass.png" width="128" height="128"/>
  </tileset>
@@ -9,6 +9,11 @@
  <tileset firstgid="752" name="bow" tilewidth="384" tileheight="384" tilecount="1">
   <image source="bow.png" width="384" height="384"/>
  </tileset>
+ <tileset firstgid="753" name="coll" tilewidth="512" tileheight="512" tilecount="1">
+  <tile id="0">
+   <image width="512" height="512" source="target.png"/>
+  </tile>
+ </tileset>
  <layer name="ground" width="50" height="25">
   <data encoding="base64" compression="zlib">
    eJzt1YOOIAYARdHprG3btm3btm3btm3btm3b3u1uu6h70r9oMsk7n/ByAwMCAoIRnBCEJBShCUNYwhGeCEQkEpGJQlSiEZ0YxCQWsYlDXOIRnwQkJBGJSUJSkpGcFKQkFalJQ1rSkZ4MZCQTmclCVrKRnRzkJBe5yUNe8pGfAhSkEIUpQlGKUZwSlKQUpSlDWcpRngpUpBKVqUJVqlGdGtSkFrWpQ13qUZ8GNKQRjWlCU5rRnBa0pBWtaUNb2tGeDnSkE53pQle60Z0e9KQXvelDX/rRnwEMZBCDGcJQhjGcEYxkFKMZw1jGMZ4JTGQSk5nCVKYxnRnMZBazmcNc5jGfBSxkEYtZwlKWsZwVrGQVq1nDWtaxng1sZBOb2cJWtrGdHexkF7vZw172sZ8DHOQQhznCUY5xnBOc5BSnOcNZznGeC1zkEpe5wlWucZ0b3OQWt7nDXe5xnwc85BGPecJTnvGcF7zkFa95w1ve8Z4PfOQTP/OZL/zCr3zlG9/5wW/8zh/8yV/8zT8E/GQEEozghCAkoQhNGMISjvBEICKRiEwUohKN6MQgJrGITRziEo/4JCAhiUhMEpKSjOSkICWpSE0a0pKO9GQgI5nITBayko3s5CAnuchNHvKSj/wUoCCFKEwRilKM4pSgJKUoTRnKUo7yVKAilahMFapSjerUoCa1qE0d6lKP+jSgIY1oTBOa0ozmtKAlrWhNG9rSjvZ0oCOd6EwXutKN7vSgJ73oTR/60o/+DGAggxjMEIYyjOGMYCSjGM0YxjKO8UxgIpOYzBSmMo3pzGAms5jNHOYyj/ksYCGLWMwSlrKM5axgJatYzRrWso71bGAjm9jMFrayje3sYCe72M0e9rKP/RzgIIc4zBGOcozjnOAkpzjNGc5yjvNc4CKXuMwVrnKN69zgJre4zR3uco/7POAhj3jME57yjOe84CWveM0b3vKO93zgI5/4mc984Rd+5Svf+M4PfuN3/uBP/uJv/iEg0P8JJBjBCUFIQhGaMIQlHOGJQEQiEZkoRCUa0YlBTGIRmzjEJR7xSUBCEpGYJCQlGclJQUpSkZo0pCUd6clARjKRmSxkJRvZyUFOcpGbPOQlH/kpQEEKUZgiFKUYxSlBSUpRmjKUpRzlqUBFKlGZKlSlGtWpQU1qUZs61KUe9WlAQxrRmCY0pRnNaUFLWtGaNrSlHe3pQEc60ZkudKUb3elBT3rRmz70pR/9GcBABjGYIQxlGMMZwUhGMZoxjGUc45nARCYxmSlMZRrTmcFMZjGbOcxlHvNZwEIWsZglLGUZy1nBSlaxmjWsZR3r2cBGNrGZLWxlG9vZwU52sZs97GUf+znAQQ5xmCMc5RjHOcFJTnGaM5zlHOe5wEUucZkrXOUa17nBTW5xmzvc5R73ecBDHvGYJzzlGc95wUte8Zo3vOUd7/nARz4F/pfvIEGCBAkSJMj/3L8gTHPr
@@ -17,5 +22,12 @@
  <objectgroup name="objects">
   <object id="2" name="target" x="5376" y="2176" width="512" height="512"/>
   <object id="8" name="bow" x="1087.88" y="2254.55" width="242.424" height="384"/>
+  <object id="13" name="ground" x="5366.67" y="2687.33">
+   <polyline points="0,0 -4688,2"/>
+  </object>
+  <object id="16" name="arrow" x="1184" y="2426" width="78.3333" height="16"/>
+ </objectgroup>
+ <objectgroup name="graphics">
+  <object id="10" name="target-img" gid="753" x="5378.67" y="2688" width="512" height="512"/>
  </objectgroup>
 </map>
