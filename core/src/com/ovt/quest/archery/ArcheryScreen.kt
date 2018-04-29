@@ -106,11 +106,13 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         val height = obj.properties["height"] as Float / PPM
 
         bdef.position.set(x, y)
+        bdef.type = BodyDef.BodyType.DynamicBody
         shape.setAsBox(width, height)
         fdef.shape = shape
 
         arrowBody = world.createBody(bdef)
         arrowBody.createFixture(fdef)
+        arrowBody.isActive = false
     }
 
     private fun createTarget(objLayer: MapLayer) {
@@ -151,7 +153,8 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         }
 
         Events.fireBow.subscribe { (angle, power) ->
-            println("fire: $angle to $power")
+            arrowBody.isActive = true
+            arrowBody.applyForceToCenter(500f, 500f, false)
         }
 
         Events.animation.subscribe {
