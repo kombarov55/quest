@@ -101,7 +101,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         Events.goHome.subscribe { game.screen = MainMenuScreen(game) }
 
-        Events.rotateBow.subscribe { angle ->
+        Events.bowRotation.subscribe { angle ->
             bowSprite.rotation = angle
         }
 
@@ -110,6 +110,14 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
             println("x=${pos.x} y=${pos.y}")
             println("xx=${pos1.x} yy=${pos1.y}")
+        }
+
+        Events.bowPower.subscribe { power ->
+
+        }
+
+        Events.fireBow.subscribe { (angle, power) ->
+            println("fire: $angle to $power")
         }
 
     }
