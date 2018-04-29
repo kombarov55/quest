@@ -51,8 +51,6 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener(), GestureDetector(GestureListener()))
         cam.setToOrtho(false, 10f, 16.6f)
 
-        tilemap.layers["graphics"].isVisible = false
-
         createObjects()
         makeSubscriptions()
     }
