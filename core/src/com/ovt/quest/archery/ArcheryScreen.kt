@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.ovt.quest.QuestGame
+import com.ovt.quest.commons.Animation
 import com.ovt.quest.commons.MySprite
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 
@@ -42,9 +43,8 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     private val world = World(Vector2(0f, -9.81f), true)
     private val b2dr = Box2DDebugRenderer()
 
-    private lateinit var bowSprite: MySprite
+    private lateinit var bowSprite: Animation
     private lateinit var targetSprite: MySprite
-    private val bowTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/hi-res/bow.png")))
     private val targetTexture = TextureRegion(Texture(Gdx.files.internal("maps/archery/hi-res/target.png")))
 
     override fun show() {
@@ -80,7 +80,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     private fun createObjects() {
         val objLayer = tilemap.layers["objects"]
         val bow = objLayer.objects["bow"]
-        bowSprite = MySprite(bowTexture, bow, PPM)
+        bowSprite = Animation(Texture(Gdx.files.internal("maps/archery/bow-anim.png")), 70, 90, bow, PPM)
         val target = objLayer.objects["target"]
         targetSprite = MySprite(targetTexture, target, PPM)
 
@@ -118,6 +118,10 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         Events.fireBow.subscribe { (angle, power) ->
             println("fire: $angle to $power")
+        }
+
+        Events.animation.subscribe {
+            bowSprite.nextFrame()
         }
 
     }

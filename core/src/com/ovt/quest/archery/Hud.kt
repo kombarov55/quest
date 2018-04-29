@@ -52,8 +52,6 @@ class Hud(private val game: QuestGame): Stage() {
 
         fire.addClickListener { Events.fireBow.onNext(bowRotation.value to bowPower.value) }
 
-
-
         addActor(table)
     }
 
