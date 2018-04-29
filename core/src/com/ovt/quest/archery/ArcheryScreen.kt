@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
@@ -113,7 +114,8 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         }
 
         Events.bowPower.subscribe { power ->
-
+            val tmp = (power / Vars.bowMaxPower)
+            bowSprite.currentFrameIndex = MathUtils.floor(tmp * (bowSprite.frames.size - 1).toFloat())
         }
 
         Events.fireBow.subscribe { (angle, power) ->
@@ -121,7 +123,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         }
 
         Events.animation.subscribe {
-            bowSprite.nextFrame()
+//            bowSprite.nextFrame()
         }
 
     }

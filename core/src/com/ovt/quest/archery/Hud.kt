@@ -17,7 +17,7 @@ class Hud(private val game: QuestGame): Stage() {
     val zoomIn = game.buttons.imgButton("img/zoom-in.png")
     val zoomOut = game.buttons.imgButton("img/zoom-out.png")
     val bowRotation = Slider(0f, 90f, 1f, false, game.skin)
-    val bowPower = Slider(0f, 100f, 1f, false, game.skin)
+    val bowPower = Slider(0f, Vars.bowMaxPower, 1f, false, game.skin)
     val fire = game.buttons.imgButton("img/explosion.png")
 
     private val w = Gdx.graphics.width
