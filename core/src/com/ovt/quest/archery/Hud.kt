@@ -17,6 +17,8 @@ class Hud(private val game: QuestGame): Stage() {
     val zoomIn = game.buttons.imgButton("img/zoom-in.png")
     val zoomOut = game.buttons.imgButton("img/zoom-out.png")
     val bowRotation = Slider(0f, 90f, 1f, false, game.skin)
+    val bowPower = Slider(0f, 100f, 1f, false, game.skin)
+    val fire = game.buttons.imgButton("img/explosion.png")
 
     private val w = Gdx.graphics.width
     private val h = Gdx.graphics.height
@@ -29,7 +31,9 @@ class Hud(private val game: QuestGame): Stage() {
         table.add(zoomIn)
         table.add(zoomOut)
         table.row()
-        table.add(bowRotation).colspan(3).fillX()
+        table.add(bowRotation)
+        table.add(bowPower)
+        table.add(fire)
 
         home.addClickListener { Events.goHome.onNext(Unit) }
         zoomIn.addClickListener { Events.zoomCamera.onNext(Vars.zoom) }
