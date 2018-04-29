@@ -14,7 +14,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.badlogic.gdx.physics.box2d.FixtureDef
 import com.badlogic.gdx.physics.box2d.World
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.Animation
@@ -50,7 +52,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener(), GestureDetector(GestureListener()))
-        cam.setToOrtho(false, 10f, 16.6f)
+        cam.setToOrtho(false, 16.6f, 10f)
 
         createObjects()
         makeSubscriptions()
@@ -82,6 +84,8 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         val objLayer = tilemap.layers["objects"]
         val bow = objLayer.objects["bow"]
         bowSprite = Animation(Texture(Gdx.files.internal("maps/archery/bow-anim.png")), 70, 90, bow, PPM)
+
+
         val target = objLayer.objects["target"]
         targetSprite = MySprite(targetTexture, target, PPM)
 
