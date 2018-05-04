@@ -55,6 +55,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener(), GestureDetector(GestureListener()))
         cam.setToOrtho(false, 16.6f, 10f)
+        cam.zoom -= 0.5f
 
         val objLayer = tilemap.layers["objects"]
 
@@ -136,7 +137,6 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         Events.bowRotation.subscribe { angle ->
             bowSprite.rotation = angle
-            arrowBody.setTransform(arrowBody.position, angle * MathUtils.degreesToRadians)
         }
 
         Events.touch.subscribe {pos ->
@@ -153,7 +153,12 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         Events.fireBow.subscribe { (angle, power) ->
             arrowBody.isActive = true
-            arrowBody.applyForceToCenter(500f, 500f, false)
+            val radAngle = (MathUtils.degreesToRadians * angle).toDouble()
+            arrowBody.setTransform(arrowBody.position, radAngle.toFloat())
+
+            val xPower = Math.sin(radAngle) * power
+            val yPower = Math.tan(radAngle) * xPower
+            arrowBody.applyForceToCenter(xPower.toFloat(), yPower.toFloat(), false)
         }
 
         Events.animation.subscribe {
