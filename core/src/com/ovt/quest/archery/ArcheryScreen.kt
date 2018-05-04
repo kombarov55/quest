@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.maps.MapLayer
+import com.badlogic.gdx.maps.objects.PolygonMapObject
+import com.badlogic.gdx.maps.objects.PolylineMapObject
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.MathUtils
@@ -95,23 +97,20 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
     private fun createArrow(objLayer: MapLayer) {
         val bdef = BodyDef()
-        val fdef = FixtureDef()
         val shape = PolygonShape()
 
-        val obj = objLayer.objects["arrow"]
+        val obj = objLayer.objects["arrow"] as PolylineMapObject
 
         val x = obj.properties["x"] as Float / PPM
         val y = obj.properties["y"] as Float / PPM
-        val width = obj.properties["width"] as Float / PPM
-        val height = obj.properties["height"] as Float / PPM
 
         bdef.position.set(x, y)
         bdef.type = BodyDef.BodyType.DynamicBody
-        shape.setAsBox(width, height)
-        fdef.shape = shape
+
+        shape.set(obj.polyline.vertices.map { it / PPM }.toFloatArray())
 
         arrowBody = world.createBody(bdef)
-        arrowBody.createFixture(fdef)
+        arrowBody.createFixture(shape, 1f)
         arrowBody.isActive = false
     }
 
