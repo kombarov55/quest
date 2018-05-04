@@ -99,6 +99,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     private fun createArrow(objLayer: MapLayer) {
         val bdef = BodyDef()
         val shape = PolygonShape()
+        val fdef = FixtureDef()
 
         val obj = objLayer.objects["arrow"] as PolylineMapObject
 
@@ -108,9 +109,11 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         bdef.position.set(x, y)
         bdef.type = BodyDef.BodyType.DynamicBody
 
-        shape.set(obj.polyline.vertices.map { it / PPM }.toFloatArray())
-
         arrowBody = world.createBody(bdef)
+
+        shape.set(obj.polyline.vertices.map { it / PPM }.toFloatArray())
+        fdef.shape = shape
+
         arrowBody.createFixture(shape, 1f)
         arrowBody.isActive = false
     }
