@@ -8,16 +8,16 @@ class RenderingMatrix(maxColumns: Int, maxRows: Int): Matrix(maxColumns, maxRows
     private val h = Gdx.graphics.height
     private val w = Gdx.graphics.width
 
-    private val tableMarginBottom = h * 0.1f
-    private val tableMarginTop = h * 0.2f
-    private val tableMarginLeft = w * 0.3f
+    private val tableMarginBottom = h * 0.08f
+    private val tableMarginTop = h * 0.15f
+    private val tableMarginLeft = w * 0.15f
 
     private val tableHeight = (h - tableMarginBottom - tableMarginTop)
     private val tableWidth = (w - tableMarginLeft * 2)
 
     private val tableStart = Vector2(tableMarginLeft, tableMarginBottom)
 
-    private val itemPad = w  * 0.005f
+    private val itemPad = w  * 0.0025f
 
     val itemHeight = (tableHeight / maxRows) - (itemPad * 2)
     val itemWidth = (tableWidth / maxColumns) - (itemPad * 2)

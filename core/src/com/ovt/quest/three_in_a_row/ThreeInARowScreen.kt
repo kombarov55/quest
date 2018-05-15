@@ -20,7 +20,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     companion object {
         var maxRows = 8
-        var maxColumns = 8
+        var maxColumns = 15
     }
 
     private val matrix = RenderingMatrix(maxColumns, maxRows)
