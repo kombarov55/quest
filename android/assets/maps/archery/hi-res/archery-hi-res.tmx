@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="128" tileheight="128" infinite="0" nextobjectid="27">
- <tileset firstgid="1" name="grass" tilewidth="128" tileheight="128" tilecount="1" columns="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="128" tileheight="128" nextobjectid="37">
+ <tileset firstgid="1" name="grass" tilewidth="128" tileheight="128" tilecount="1">
   <image source="grass.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="2" name="sky" tilewidth="128" tileheight="128" tilecount="750" columns="50">
+ <tileset firstgid="2" name="sky" tilewidth="128" tileheight="128" tilecount="750">
   <image source="sky.png" width="6400" height="1920"/>
  </tileset>
- <tileset firstgid="752" name="bow" tilewidth="384" tileheight="384" tilecount="1" columns="1">
+ <tileset firstgid="752" name="bow" tilewidth="384" tileheight="384" tilecount="1">
   <image source="bow.png" width="384" height="384"/>
  </tileset>
- <tileset firstgid="753" name="coll" tilewidth="512" tileheight="512" tilecount="1" columns="0">
+ <tileset firstgid="753" name="coll" tilewidth="512" tileheight="512" tilecount="1">
   <tile id="0">
    <image width="512" height="512" source="target.png"/>
   </tile>
@@ -26,13 +26,16 @@
   <object id="13" name="ground" x="5366.67" y="2687.33">
    <polyline points="0,0 -4688,2"/>
   </object>
-  <object id="26" name="arrow" x="1519.15" y="2417.91">
-   <polyline points="0,0 53.403,19.316 9.08988,42.0407 -153.392,19.316 1.13623,1.13623"/>
+  <object id="27" name="arrow" x="1518.67" y="2418.33">
+   <polygon points="0,0 53.3333,18.6667 1.66667,42.6667"/>
+  </object>
+  <object id="36" name="arrow-arm" x="1517" y="2437">
+   <polygon points="0,0 0,7.5 -158,8 -157,1"/>
   </object>
  </objectgroup>
  <objectgroup name="contour"/>
  <objectgroup name="graphics">
   <object id="10" name="target-img" gid="753" x="5378.67" y="2688" width="512" height="512"/>
-  <object id="18" name="ground" gid="754" x="1269.21" y="2646.9" width="426.863" height="404.003"/>
+  <object id="18" name="ground" gid="754" x="1267.71" y="2647.9" width="426.863" height="404.003"/>
  </objectgroup>
 </map>

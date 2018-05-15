@@ -101,20 +101,24 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         val fdef = FixtureDef()
 
         val objLayer = tilemap.layers["objects"]
-        val obj = objLayer.objects["arrow"] as PolylineMapObject
+        val arrow = objLayer.objects["arrow"] as PolygonMapObject
+        val arrowArm = objLayer.objects["arrow-arm"] as PolygonMapObject
 
-        val x = obj.properties["x"] as Float / PPM
-        val y = obj.properties["y"] as Float / PPM
+        val x = arrow.properties["x"] as Float / PPM
+        val y = arrow.properties["y"] as Float / PPM
 
         bdef.position.set(x, y)
         bdef.type = BodyDef.BodyType.DynamicBody
-
         arrowBody = world.createBody(bdef)
 
-        shape.set(obj.polyline.vertices.map { it / PPM }.toFloatArray())
+        shape.set(arrow.polygon.vertices.map { it / PPM }.toFloatArray())
         fdef.shape = shape
+        arrowBody.createFixture(fdef)
 
-        arrowBody.createFixture(shape, 1f)
+        shape.set(arrowArm.polygon.vertices.map { it / PPM }.toFloatArray())
+        fdef.shape = shape
+        arrowBody.createFixture(fdef)
+
         arrowBody.isActive = false
     }
 
