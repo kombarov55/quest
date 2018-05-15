@@ -55,7 +55,6 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(hud, KeyListener(), GestureDetector(GestureListener()))
         cam.setToOrtho(false, 16.6f, 10f)
-        cam.zoom -= 0.5f
 
         val objLayer = tilemap.layers["objects"]
 
