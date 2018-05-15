@@ -14,6 +14,7 @@ object Events {
     val bowRotation = PublishSubject.create<Float>()
     val fireBow = PublishSubject.create<Pair<Float, Float>>()
     val touch = PublishSubject.create<Vector2>()
+    val createArrow = PublishSubject.create<Unit>()
 
     val animation = Observable.interval(200, TimeUnit.MILLISECONDS)
 

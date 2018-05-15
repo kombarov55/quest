@@ -19,13 +19,14 @@ class Hud(private val game: QuestGame): Stage() {
     val bowRotation = Slider(0f, 90f, 1f, false, game.skin)
     val bowPower = Slider(0f, Vars.bowMaxPower, 1f, false, game.skin)
     val fire = game.buttons.imgButton("img/explosion.png")
+    val createArrow = game.buttons.imgButton("img/up-arrow.png")
 
     private val w = Gdx.graphics.width
     private val h = Gdx.graphics.height
 
     init {
         table.debug = true
-        table.setPosition(w * 0.1f, h * 0.85f)
+        table.setPosition(w * 0.12f, h * 0.85f)
         table.defaults().width(h * 0.1f).height(h * 0.1f)
         table.add(home)
         table.add(zoomIn)
@@ -34,6 +35,7 @@ class Hud(private val game: QuestGame): Stage() {
         table.add(bowRotation)
         table.add(bowPower)
         table.add(fire)
+        table.add(createArrow)
 
         home.addClickListener { Events.goHome.onNext(Unit) }
         zoomIn.addClickListener { Events.zoomCamera.onNext(Vars.zoom) }
@@ -51,6 +53,8 @@ class Hud(private val game: QuestGame): Stage() {
         })
 
         fire.addClickListener { Events.fireBow.onNext(bowRotation.value to bowPower.value) }
+        createArrow.addClickListener { Events.createArrow.onNext(Unit) }
+
 
         addActor(table)
     }

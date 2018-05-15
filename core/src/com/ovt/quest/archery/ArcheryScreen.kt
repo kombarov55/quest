@@ -58,7 +58,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         createBow(objLayer)
         createTarget(objLayer)
-        createArrow(objLayer)
+        createArrow()
         createObjects()
         makeSubscriptions()
     }
@@ -93,11 +93,12 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         bowSprite = Animation(Texture(Gdx.files.internal("maps/archery/bow-anim.png")), 70, 90, bow, PPM)
     }
 
-    private fun createArrow(objLayer: MapLayer) {
+    private fun createArrow() {
         val bdef = BodyDef()
         val fdef = FixtureDef()
         val shape = PolygonShape()
 
+        val objLayer = tilemap.layers["objects"]
         val obj = objLayer.objects["arrow"]
 
         val x = obj.properties["x"] as Float / PPM
@@ -157,8 +158,8 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
             arrowBody.applyForceToCenter(500f, 500f, false)
         }
 
-        Events.animation.subscribe {
-//            bowSprite.nextFrame()
+        Events.createArrow.subscribe {
+            createArrow()
         }
 
     }
