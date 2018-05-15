@@ -15,7 +15,7 @@ import com.ovt.quest.main_menu_screens.MainMenuScreen
 class QuestStage(private val game: QuestGame) : Stage() {
 
     val titleLabel = game.labelFactory.biggerLabel()
-    val contentLabel = game.buttons.normalButton()
+    val contentLabel = game.labelFactory.normalLabel()
 
     private val diaryTable = DiaryTable(game, { hideDiary() })
     private val settingsTable = Table()
@@ -51,8 +51,8 @@ class QuestStage(private val game: QuestGame) : Stage() {
         table.add(titleLabel)
         table.row()
 
-        contentLabel.label.setWrap(true)
-        contentLabel.label.setAlignment(Align.top)
+        contentLabel.setWrap(true)
+        contentLabel.setAlignment(Align.top)
 
         table.add(contentLabel)
                 .width(Gdx.graphics.width * 0.9f)
