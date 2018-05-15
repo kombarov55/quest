@@ -36,7 +36,6 @@ class QuestStage(private val game: QuestGame) : Stage() {
         table.setPosition(0f, 0f)
         table.width = w.toFloat()
         table.height = h.toFloat()
-//        table.pad(0f, 0f, 0f, 100f)
 
         table.add(settingsTable).left()
         settingsTable.defaults().width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE)
