@@ -44,8 +44,8 @@ class QuestGame : Game() {
     override fun create() {
         initializeVariables()
 
-//        setScreen(MainMenuScreen(this))
-        setScreen(ArcheryScreen(this))
+        setScreen(MainMenuScreen(this))
+//        setScreen(ArcheryScreen(this))
     }
 
     private fun initializeVariables() {

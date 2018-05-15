@@ -15,7 +15,7 @@ import com.ovt.quest.main_menu_screens.MainMenuScreen
 class QuestStage(private val game: QuestGame) : Stage() {
 
     val titleLabel = game.labelFactory.biggerLabel()
-    val contentLabel = game.buttons.smallerButton()
+    val contentLabel = game.buttons.normalButton()
 
     private val diaryTable = DiaryTable(game, { hideDiary() })
     private val settingsTable = Table()
@@ -24,24 +24,22 @@ class QuestStage(private val game: QuestGame) : Stage() {
     private val diaryButton = game.buttons.imgButton("img/diary.png", onClick = ::showDiary)
     private val homeButton = game.buttons.imgButton("img/home.png", onClick = ::toHome)
 
-    private var background: Image? = null
+    private var background: Image? = game.background
 
-    private val BUTTON_SIDE_SIZE = 40f
+    private val BUTTON_SIDE_SIZE = Gdx.graphics.width * 0.07f
 
     init {
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
         val table = Table()
-        table.setFillParent(true)
-        table.top().padTop(Gdx.graphics.height * 0.03f)
+        table.setPosition(0f, 0f)
+        table.width = w.toFloat()
+        table.height = h.toFloat()
+//        table.pad(0f, 0f, 0f, 100f)
 
         table.add(settingsTable).left()
-        settingsTable.defaults()
-                .expandX()
-                .pad(w * 0.01f)
-                .left()
-                .width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE)
+        settingsTable.defaults().width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE)
         settingsTable.add(settingsButton)
         settingsTable.add(diaryButton)
         settingsTable.add(homeButton)
@@ -57,12 +55,17 @@ class QuestStage(private val game: QuestGame) : Stage() {
         contentLabel.label.setWrap(true)
         contentLabel.label.setAlignment(Align.top)
 
-        table.add(contentLabel).width(Gdx.graphics.width * 0.9f).padBottom(Gdx.graphics.height * 0.05f).padTop(Gdx.graphics.height * 0.03f)
+        table.add(contentLabel)
+                .width(Gdx.graphics.width * 0.9f)
+                .expandX()
+                .padBottom(Gdx.graphics.height * 0.05f)
+                .padTop(Gdx.graphics.height * 0.03f)
 
         table.row()
 
         table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.1f)
 
+        addActor(background)
         addActor(table)
 
         diaryTable.isVisible = false
@@ -70,12 +73,12 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     fun addOptions(options: List<String>?) {
         options?.map { option ->
-            val button = game.buttons.smallerButton(option, onClick = { onOptionClickListener?.invoke(option) })
+            val button = game.buttons.normalButton(option, onClick = { onOptionClickListener?.invoke(option) })
             button.label.setWrap(true)
             button
         }?.forEach { button ->
             val width = Gdx.graphics.width * 0.75f
-            val height = Gdx.graphics.height * 0.05f
+            val height = Gdx.graphics.height * 0.1f
             val pad = Gdx.graphics.width * 0.005f
 
             optionsTable.add(button).width(width).minHeight(height).pad(pad)
