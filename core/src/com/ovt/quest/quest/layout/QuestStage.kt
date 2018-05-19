@@ -21,6 +21,8 @@ import com.ovt.quest.three_in_a_row.layout.CallbackAction
  */
 class QuestStage(private val game: QuestGame) : Stage() {
 
+    private val table: Table
+
     val titleLabel = game.labelFactory.biggerLabel()
     val contentLabel = game.buttons.smallerButton()
 
@@ -40,7 +42,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
-        val table = Table()
+        table = Table()
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
@@ -83,8 +85,6 @@ class QuestStage(private val game: QuestGame) : Stage() {
         scroll.y = diaryTable.y
         scroll.width = diaryTable.width
         scroll.height = diaryTable.height
-        addActor(scroll)
-        diaryButton.addClickListener { this@QuestStage.addActor(diaryTable) }
     }
 
     fun addOptions(options: List<String>?) {
@@ -110,7 +110,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
         toastLabel.addAction(SequenceAction(
                 ParallelAction(
                         Actions.fadeOut(2f),
-                        Actions.moveBy(0f, Gdx.graphics.height * 0.05f, 2f)),
+                        Actions.moveBy(0f, Gdx.graphics.height * 0.02f, 2f)),
                 CallbackAction { toastLabel.remove() }))
     }
 
@@ -146,7 +146,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
     }
 
     private fun showDiary() {
-        diaryTable.isVisible = true
+        table.add(diaryTable.parent)
     }
 
     private fun hideDiary() {
