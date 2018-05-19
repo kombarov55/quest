@@ -12,8 +12,6 @@ import com.ovt.quest.QuestGame
  */
 class DiaryTable(private val game: QuestGame, onClose: (() -> Unit)? = null) : Table() {
 
-    private fun testLabel(i: Int) = game.labelFactory.normalLabel("окей $i")
-
     private val BUTTON_SIDE_SIZE = 30f
 
     init {

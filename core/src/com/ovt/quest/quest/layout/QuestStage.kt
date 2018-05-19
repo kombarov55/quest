@@ -24,7 +24,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
     val titleLabel = game.labelFactory.biggerLabel()
     val contentLabel = game.buttons.smallerButton()
 
-    private val diaryTable = DiaryTable(game)
+    private val diaryTable = DiaryTable(game, ::hideDiary)
     private val settingsTable = Table()
     private val optionsTable = Table()
     private val settingsButton = game.buttons.imgButton("img/settings.png", onClick = ::toggleSettings)
@@ -124,16 +124,8 @@ class QuestStage(private val game: QuestGame) : Stage() {
         println(msg)
     }
 
-    //TODO: временно выключена
     fun setBackground(imgname: String) {
         println("Фон изменён на $imgname")
-//        if (background?.name == imgname) return
-//        actors.removeValue(background, false)
-//
-//        background = Image(Texture(Gdx.files.internal("img/" + imgname)))
-//        background?.name = imgname
-//
-//        actors.insert(0, background)
     }
 
 
@@ -155,6 +147,11 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     private fun showDiary() {
         diaryTable.isVisible = true
+    }
+
+    private fun hideDiary() {
+        diaryTable.parent.remove()
+        toggleSettings()
     }
 
     private fun toHome() {
