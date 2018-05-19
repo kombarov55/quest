@@ -3,11 +3,18 @@ package com.ovt.quest.quest.layout
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.ovt.quest.QuestGame
+import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.three_in_a_row.layout.CallbackAction
 
 /**
  * Created by nikolay on 11.03.18.
@@ -17,24 +24,27 @@ class QuestStage(private val game: QuestGame) : Stage() {
     val titleLabel = game.labelFactory.biggerLabel()
     val contentLabel = game.buttons.smallerButton()
 
-    private val diaryTable = DiaryTable(game, { hideDiary() })
+    private val diaryTable = DiaryTable(game)
     private val settingsTable = Table()
     private val optionsTable = Table()
     private val settingsButton = game.buttons.imgButton("img/settings.png", onClick = ::toggleSettings)
     private val diaryButton = game.buttons.imgButton("img/diary.png", onClick = ::showDiary)
     private val homeButton = game.buttons.imgButton("img/home.png", onClick = ::toHome)
 
-    private var background: Image? = null
-
     private val BUTTON_SIDE_SIZE = 40f
 
     init {
+
+        addActor(game.background)
+
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
         val table = Table()
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
+
+        table.defaults().expandX()
 
         table.add(settingsTable).left()
         settingsTable.defaults()
@@ -57,15 +67,24 @@ class QuestStage(private val game: QuestGame) : Stage() {
         contentLabel.label.setWrap(true)
         contentLabel.label.setAlignment(Align.top)
 
-        table.add(contentLabel).width(Gdx.graphics.width * 0.9f).padBottom(Gdx.graphics.height * 0.05f).padTop(Gdx.graphics.height * 0.03f)
+        table.add(contentLabel)
+                .width(Gdx.graphics.width * 0.9f)
+                .expandX()
+                .padBottom(Gdx.graphics.height * 0.05f)
+                .padTop(Gdx.graphics.height * 0.03f)
 
         table.row()
 
         table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.1f)
 
         addActor(table)
-
-        diaryTable.isVisible = false
+        val scroll = ScrollPane(diaryTable, game.skin)
+        scroll.x = diaryTable.x
+        scroll.y = diaryTable.y
+        scroll.width = diaryTable.width
+        scroll.height = diaryTable.height
+        addActor(scroll)
+        diaryButton.addClickListener { this@QuestStage.addActor(diaryTable) }
     }
 
     fun addOptions(options: List<String>?) {
@@ -75,7 +94,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
             button
         }?.forEach { button ->
             val width = Gdx.graphics.width * 0.75f
-            val height = Gdx.graphics.height * 0.05f
+            val height = Gdx.graphics.height * 0.1f
             val pad = Gdx.graphics.width * 0.005f
 
             optionsTable.add(button).width(width).minHeight(height).pad(pad)
@@ -83,12 +102,26 @@ class QuestStage(private val game: QuestGame) : Stage() {
         }
     }
 
+    fun showToast(text: String) {
+        val toastLabel = game.labelFactory.smallerLabel(text)
+        toastLabel.x = Gdx.graphics.width / 2 - toastLabel.width / 2
+        toastLabel.y = Gdx.graphics.height * 0.4f
+        addActor(toastLabel)
+        toastLabel.addAction(SequenceAction(
+                ParallelAction(
+                        Actions.fadeOut(2f),
+                        Actions.moveBy(0f, Gdx.graphics.height * 0.05f, 2f)),
+                CallbackAction { toastLabel.remove() }))
+    }
+
     fun clearOptions() {
         optionsTable.clear()
     }
 
     fun notifyDiaryNote(noteTitle: String) {
-        println("Открыта запись в дневнике: $noteTitle")
+        val msg = "Открыта запись в дневнике: $noteTitle"
+        showToast(msg)
+        println(msg)
     }
 
     //TODO: временно выключена
@@ -122,11 +155,6 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     private fun showDiary() {
         diaryTable.isVisible = true
-    }
-
-    private fun hideDiary() {
-        diaryTable.isVisible = false
-        toggleSettings()
     }
 
     private fun toHome() {

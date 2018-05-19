@@ -10,13 +10,14 @@ import com.ovt.quest.QuestGame
 /**
  * Created by nikolay on 21/02/2018.
  */
-class DiaryTable(private val game: QuestGame, hideClicked: () -> Unit) : Table() {
+class DiaryTable(private val game: QuestGame, onClose: (() -> Unit)? = null) : Table() {
 
     private fun testLabel(i: Int) = game.labelFactory.normalLabel("окей $i")
 
     private val BUTTON_SIDE_SIZE = 30f
 
     init {
+        setDebug(true)
 
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
@@ -26,24 +27,34 @@ class DiaryTable(private val game: QuestGame, hideClicked: () -> Unit) : Table()
 
         background = Image(Texture(Gdx.files.internal("img/settings-table-bg-white.jpg"))).drawable
         setPosition(w * 0.1f, h * 0.1f)
-        defaults().expandX().pad(h * 0.025f).width(width * 0.8f)
+        defaults().expandX().width(width * 0.97f)
         top()
 
-        add(game.buttons.imgButton("img/close.png", onClick = { hideClicked() }))
-                .height(BUTTON_SIDE_SIZE).width(BUTTON_SIDE_SIZE).right()
+        add(game.buttons.imgButton("img/close.png", onClick = {
+            onClose?.invoke()
+        })).height(BUTTON_SIDE_SIZE).width(BUTTON_SIDE_SIZE).right()
 
+        val notesTable = Table()
+        notesTable.setDebug(true)
+        notesTable.defaults().expandX().top()
         row()
 
-        val diaryNotes = Table()
-        diaryNotes.defaults().top().expand().pad(h * 0.025f).width(width * 0.8f)
+        game.globals.allDiaryNotes.forEach { note ->
+            val titleLabel = game.labelFactory.biggerLabel(note.title)
+            notesTable.row()
+            notesTable.add(titleLabel)
 
-        for (i in 0..7) {
-            diaryNotes.add(testLabel(i))
-            row()
+
+            val contentLabel = game.labelFactory.normalLabel(note.content)
+            contentLabel.setWrap(true)
+            notesTable.row()
+            notesTable.add(contentLabel).left().width(this.width)
         }
 
-        val scrollPane = ScrollPane(diaryNotes)
-
-        add(scrollPane).top().expandY()
+        val sp = ScrollPane(notesTable)
+        sp.width = notesTable.width
+        sp.height = notesTable.height
+        row()
+        add(sp)
     }
 }

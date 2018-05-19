@@ -101,7 +101,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         val fdef = FixtureDef()
 
         val objLayer = tilemap.layers["objects"]
-        val obj = objLayer.objects["arrow"] as PolylineMapObject
+            val obj = objLayer.objects["arrow"] as PolygonMapObject
 
         val x = obj.properties["x"] as Float / PPM
         val y = obj.properties["y"] as Float / PPM
@@ -111,7 +111,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
 
         arrowBody = world.createBody(bdef)
 
-        shape.set(obj.polyline.vertices.map { it / PPM }.toFloatArray())
+        shape.set(obj.polygon.vertices.map { it / PPM }.toFloatArray())
         fdef.shape = shape
 
         arrowBody.createFixture(shape, 1f)

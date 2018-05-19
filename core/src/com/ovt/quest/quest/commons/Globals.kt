@@ -1,5 +1,6 @@
 package com.ovt.quest.quest.commons
 
+import com.ovt.quest.quest.model.DiaryNote
 import com.ovt.quest.quest.model.QuestNode
 
 /**
@@ -12,6 +13,10 @@ class Globals {
     val defaultQuestNode: QuestNode = questNodes.toList().first().second
 
     var currentQuestNode: QuestNode = defaultQuestNode
+
+    var allDiaryNotes: List<DiaryNote> = DiaryNotesLoader.load()
+
+
 
 
 }
