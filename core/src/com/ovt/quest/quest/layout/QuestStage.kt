@@ -79,11 +79,6 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
         addActor(background)
         addActor(table)
-        val scroll = ScrollPane(diaryTable, game.skin)
-        scroll.x = diaryTable.x
-        scroll.y = diaryTable.y
-        scroll.width = diaryTable.width
-        scroll.height = diaryTable.height
     }
 
     fun addOptions(options: List<String>?) {
@@ -145,11 +140,11 @@ class QuestStage(private val game: QuestGame) : Stage() {
     }
 
     private fun showDiary() {
-        table.add(diaryTable.parent)
+        addActor(diaryTable)
     }
 
     private fun hideDiary() {
-        diaryTable.parent.remove()
+        diaryTable.remove()
         toggleSettings()
     }
 

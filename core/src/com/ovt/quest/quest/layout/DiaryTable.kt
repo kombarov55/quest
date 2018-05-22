@@ -15,8 +15,6 @@ class DiaryTable(private val game: QuestGame, onClose: (() -> Unit)? = null) : T
     private val BUTTON_SIDE_SIZE = 30f
 
     init {
-        setDebug(true)
-
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
@@ -33,7 +31,6 @@ class DiaryTable(private val game: QuestGame, onClose: (() -> Unit)? = null) : T
         })).height(BUTTON_SIDE_SIZE).width(BUTTON_SIDE_SIZE).right()
 
         val notesTable = Table()
-        notesTable.setDebug(true)
         notesTable.defaults().expandX().top()
         row()
 
