@@ -15,6 +15,7 @@ import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.quest.QuestScreen
 import com.ovt.quest.quest.commons.Globals
 
 class QuestGame : Game() {
@@ -43,9 +44,8 @@ class QuestGame : Game() {
 
     override fun create() {
         initializeVariables()
-
-        setScreen(MainMenuScreen(this))
-//        setScreen(ArcheryScreen(this))
+//        setScreen(MainMenuScreen(this))
+        setScreen(QuestScreen(this))
     }
 
     private fun initializeVariables() {
@@ -53,7 +53,7 @@ class QuestGame : Game() {
 
         bigFont = createFont(Gdx.graphics.height * 0.06f)
         normalFont = createFont(Gdx.graphics.height * 0.03f)
-        smallerFont = createFont(Gdx.graphics.height * 0.02f)
+        smallerFont = createFont(Gdx.graphics.height * 0.03f)
         tinyFont = createFont(Gdx.graphics.height * 0.008f)
 
 

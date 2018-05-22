@@ -66,6 +66,7 @@ class QuestScreen(private val game: QuestGame) : Screen {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
+        questStage.act()
         questStage.draw()
     }
 
