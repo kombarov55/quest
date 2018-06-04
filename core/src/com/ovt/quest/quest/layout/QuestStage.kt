@@ -4,16 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.ovt.quest.QuestGame
-import com.ovt.quest.commons.addClickListener
+import com.ovt.quest.commons.Res
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.quest.commons.Items
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
 
 /**
@@ -26,8 +25,11 @@ class QuestStage(private val game: QuestGame) : Stage() {
     val titleLabel = game.labelFactory.normalLabel()
     val contentLabel = game.buttons.normalButton()
 
+    val coinsLabel = game.labelFactory.normalLabel(Items.coins.toString())
+
     private val diaryTable = DiaryTable(game, ::hideDiary)
     private val settingsTable = Table()
+    private val itemsTable = Table()
     private val optionsTable = Table()
     private val settingsButton = game.buttons.imgButton("img/settings.png", onClick = ::toggleSettings)
     private val diaryButton = game.buttons.imgButton("img/diary.png", onClick = ::showDiary)
@@ -36,6 +38,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
     private var background: Image? = game.background
 
     private val BUTTON_SIDE_SIZE = Gdx.graphics.width * 0.07f
+    private val ITEM_IMG_SIDE_SIZE = Gdx.graphics.width * 0.03f
 
     init {
 
@@ -45,16 +48,24 @@ class QuestStage(private val game: QuestGame) : Stage() {
         val w = Gdx.graphics.width
 
         table = Table()
+        table.setDebug(true, true)
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
-        table.defaults().expandX()
+        table.defaults().expandX().colspan(2)
 
-        table.add(settingsTable).left()
-        settingsTable.defaults().width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE)
+        settingsTable.defaults().width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE).expandY().fillY()
         settingsTable.add(settingsButton)
         settingsTable.add(diaryButton)
         settingsTable.add(homeButton)
+        table.add(settingsTable).left().colspan(1).padLeft(w * 0.01f)
+
+        itemsTable.defaults().left()
+        itemsTable.add(Image(Res.explosion)).width(ITEM_IMG_SIDE_SIZE).height(ITEM_IMG_SIDE_SIZE)
+        itemsTable.add(game.labelFactory.smallerLabel("x"))
+        itemsTable.add(coinsLabel)
+
+        table.add(itemsTable).right().colspan(1).padRight(w * 0.15f)
 
         diaryButton.isVisible = false
         homeButton.isVisible = false

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
+import com.ovt.quest.commons.Res
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.QuestScreen
 import com.ovt.quest.quest.commons.Globals
