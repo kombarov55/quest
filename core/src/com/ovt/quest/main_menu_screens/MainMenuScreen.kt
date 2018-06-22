@@ -4,7 +4,9 @@ package com.ovt.quest.main_menu_screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.ovt.quest.QuestGame
 import com.ovt.quest.quest.QuestScreen
@@ -15,6 +17,9 @@ import com.ovt.quest.quest.QuestScreen
 class MainMenuScreen(internal var game: QuestGame) : Screen {
 
     private val stage = Stage()
+
+    val t = Texture(Gdx.files.internal("img/фон-главное-меню.png"))
+    val bg = Image(t)
 
     override fun show() {
 
@@ -47,6 +52,7 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
         table.row()
 //        table.add(exitButton)
 
+        stage.addActor(bg)
         stage.addActor(table)
     }
 
@@ -70,6 +76,8 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
 
     override fun hide() {}
 
-    override fun dispose() {}
+    override fun dispose() {
+        t.dispose()
+    }
 
 }

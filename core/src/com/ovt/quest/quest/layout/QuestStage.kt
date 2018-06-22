@@ -3,6 +3,7 @@ package com.ovt.quest.quest.layout
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
@@ -10,11 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.Res
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.quest.commons.Globals
 import com.ovt.quest.quest.commons.Items
+import com.ovt.quest.quest.commons.R
 import com.ovt.quest.quest.commons.UIEvents
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
 
@@ -32,7 +36,6 @@ class QuestStage(private val game: QuestGame) : Stage() {
     private val optionsTable = Table()
 
     init {
-        addActor(game.background)
 
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
@@ -58,6 +61,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
         table.add(InfoLayout(game)).left()
 
+        addActor(game.globals.currentBg)
         addActor(table)
 
         subscribeToggleDiary()
@@ -98,7 +102,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
     }
 
     fun setBackground(imgname: String) {
-        println("Фон изменён на $imgname")
+        game.globals.currentBg.drawable = TextureRegionDrawable(TextureRegion(R.getTexture(imgname)))
     }
 
 
