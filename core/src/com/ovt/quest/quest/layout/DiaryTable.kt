@@ -6,11 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.ovt.quest.QuestGame
+import com.ovt.quest.quest.commons.UIEvents
 
 /**
  * Created by nikolay on 21/02/2018.
  */
-class DiaryTable(private val game: QuestGame, onClose: (() -> Unit)? = null) : Table() {
+class DiaryTable(private val game: QuestGame) : Table() {
 
     private val BUTTON_SIDE_SIZE = 30f
 
@@ -26,9 +27,10 @@ class DiaryTable(private val game: QuestGame, onClose: (() -> Unit)? = null) : T
         defaults().expandX().width(width * 0.97f)
         top()
 
-        add(game.buttons.imgButton("img/close.png", onClick = {
-            onClose?.invoke()
-        })).height(BUTTON_SIDE_SIZE).width(BUTTON_SIDE_SIZE).right()
+        add(game.buttons.imgButton("img/close.png", onClick = { UIEvents.toggleDiary.onNext(false) }))
+                .height(BUTTON_SIDE_SIZE)
+                .width(BUTTON_SIDE_SIZE)
+                .right()
 
         val notesTable = Table()
         notesTable.defaults().expandX().top()
