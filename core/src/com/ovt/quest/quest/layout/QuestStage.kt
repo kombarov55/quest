@@ -37,8 +37,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     private var background: Image? = game.background
 
-    private val BUTTON_SIDE_SIZE = Gdx.graphics.width * 0.07f
-    private val ITEM_IMG_SIDE_SIZE = Gdx.graphics.width * 0.03f
+    private val BUTTON_SIDE_SIZE = Gdx.graphics.width * 0.05f
 
     init {
 
@@ -48,31 +47,23 @@ class QuestStage(private val game: QuestGame) : Stage() {
         val w = Gdx.graphics.width
 
         table = Table()
+        table.debug = true
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
-        table.defaults().expandX().colspan(2)
+        table.defaults().expandX()
 
         settingsTable.defaults().width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE).expandY().fillY()
         settingsTable.add(settingsButton)
         settingsTable.add(diaryButton)
         settingsTable.add(homeButton)
-        table.add(settingsTable).left().colspan(1).padLeft(w * 0.01f)
-
-        itemsTable.defaults().left()
-        itemsTable.add(Image(Res.explosion)).width(ITEM_IMG_SIDE_SIZE).height(ITEM_IMG_SIDE_SIZE)
-        itemsTable.add(game.labelFactory.smallerLabel("x"))
-        itemsTable.add(coinsLabel)
-
-        table.add(itemsTable).right().colspan(1).padRight(w * 0.15f)
+        table.add(settingsTable).left().padLeft(w * 0.01f)
+        table.row()
 
         diaryButton.isVisible = false
         homeButton.isVisible = false
 
-        table.row()
 
-        table.add(titleLabel)
-        table.row()
 
         contentLabel.label.setWrap(true)
         contentLabel.label.setAlignment(Align.top)
