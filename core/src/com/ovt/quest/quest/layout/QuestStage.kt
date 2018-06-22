@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.ovt.quest.QuestGame
@@ -25,15 +26,13 @@ class QuestStage(private val game: QuestGame) : Stage() {
     val titleLabel = game.labelFactory.normalLabel()
     val contentLabel = game.buttons.normalButton()
 
-    val coinsLabel = game.labelFactory.normalLabel(Items.coins.toString())
-
     private val diaryTable = DiaryTable(game, ::hideDiary)
-    private val settingsTable = Table()
+    private val settingsTable: Table
     private val itemsTable = Table()
     private val optionsTable = Table()
-    private val settingsButton = game.buttons.imgButton("img/settings.png", onClick = ::toggleSettings)
-    private val diaryButton = game.buttons.imgButton("img/diary.png", onClick = ::showDiary)
-    private val homeButton = game.buttons.imgButton("img/home.png", onClick = ::toHome)
+    private lateinit var settingsButton: ImageButton
+    private lateinit var  diaryButton: ImageButton
+    private lateinit var  homeButton: ImageButton
 
     private var background: Image? = game.background
 
@@ -53,17 +52,10 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
         table.defaults().expandX()
 
-        settingsTable.defaults().width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE).expandY().fillY()
-        settingsTable.add(settingsButton)
-        settingsTable.add(diaryButton)
-        settingsTable.add(homeButton)
+
+        settingsTable = createSettingsTable()
         table.add(settingsTable).left().padLeft(w * 0.01f)
         table.row()
-
-        diaryButton.isVisible = false
-        homeButton.isVisible = false
-
-
 
         contentLabel.label.setWrap(true)
         contentLabel.label.setAlignment(Align.top)
@@ -169,6 +161,28 @@ class QuestStage(private val game: QuestGame) : Stage() {
             else -> super.keyDown(keyCode)
         }
     }
+
+    // tables
+
+    fun createSettingsTable(): Table {
+        val settingsTable = Table()
+
+        settingsButton = game.buttons.imgButton("img/settings.png", onClick = ::toggleSettings)
+        diaryButton = game.buttons.imgButton("img/diary.png", onClick = ::showDiary)
+        homeButton = game.buttons.imgButton("img/home.png", onClick = ::toHome)
+
+        diaryButton.isVisible = false
+        homeButton.isVisible = false
+
+        settingsTable.defaults().width(BUTTON_SIDE_SIZE).height(BUTTON_SIDE_SIZE).expandY().fillY()
+        settingsTable.add(settingsButton)
+        settingsTable.add(diaryButton)
+        settingsTable.add(homeButton)
+
+        return settingsTable
+    }
+
+
 
 
 }
