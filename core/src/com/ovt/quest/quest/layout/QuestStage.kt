@@ -48,7 +48,6 @@ class QuestStage(private val game: QuestGame) : Stage() {
         val w = Gdx.graphics.width
 
         table = Table()
-        table.setDebug(true, true)
         table.setFillParent(true)
         table.top().padTop(Gdx.graphics.height * 0.03f)
 
@@ -86,6 +85,16 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
         table.row()
 
+        /*
+        val width = Gdx.graphics.width * 0.75f
+            val height = Gdx.graphics.height * 0.1f
+            val pad = Gdx.graphics.width * 0.005f
+
+        .width(width).minHeight(height).pad(pad)
+         */
+
+        optionsTable.defaults().width(w * 0.5f).height(h * 0.07f).pad(w * 0.002f)
+
         table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.1f)
 
         addActor(background)
@@ -98,11 +107,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
             button.label.setWrap(true)
             button
         }?.forEach { button ->
-            val width = Gdx.graphics.width * 0.75f
-            val height = Gdx.graphics.height * 0.1f
-            val pad = Gdx.graphics.width * 0.005f
-
-            optionsTable.add(button).width(width).minHeight(height).pad(pad)
+            optionsTable.add(button)
             optionsTable.row()
         }
     }
