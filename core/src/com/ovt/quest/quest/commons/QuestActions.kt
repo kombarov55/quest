@@ -5,8 +5,8 @@ import com.ovt.quest.QuestGame
 /**
  * Created by nikolay on 14/01/2018.
  */
-object
-QuestActions {
+object QuestActions {
+
 
     val actions: Map<String, (QuestGame) -> String?> = mapOf(
             "hide2" to {game: QuestGame ->
@@ -31,6 +31,9 @@ QuestActions {
 
             "hide6" to {game: QuestGame ->
                 game.globals.questNodes["6"]?.hidden = true
+                null
+            },
+            "" to { game: QuestGame ->
                 null
             }
 
