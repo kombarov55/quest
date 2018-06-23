@@ -18,6 +18,7 @@ import com.ovt.quest.commons.Res
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.QuestScreen
 import com.ovt.quest.quest.commons.Globals
+import com.ovt.quest.quest.layout.ScreamerScreen
 
 class QuestGame : Game() {
 
@@ -46,7 +47,7 @@ class QuestGame : Game() {
     override fun create() {
         initializeVariables()
 //        setScreen(MainMenuScreen(this))
-        setScreen(QuestScreen(this))
+        setScreen(ScreamerScreen(this))
     }
 
     private fun initializeVariables() {

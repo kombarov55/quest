@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.ovt.quest.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
-import com.ovt.quest.quest.commons.R
+import com.ovt.quest.quest.commons.Textures
 import com.ovt.quest.quest.commons.UIEvents
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
 
@@ -96,7 +96,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
     }
 
     fun setBackground(imgname: String) {
-        game.globals.currentBg.drawable = TextureRegionDrawable(TextureRegion(R.getTexture(imgname)))
+        game.globals.currentBg.drawable = TextureRegionDrawable(TextureRegion(Textures.getTexture(imgname)))
     }
 
 

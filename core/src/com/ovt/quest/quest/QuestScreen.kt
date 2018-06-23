@@ -2,6 +2,7 @@ package com.ovt.quest.quest
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.QuestGame
 import com.ovt.quest.quest.model.Option
@@ -13,8 +14,7 @@ import com.ovt.quest.quest.model.QuestNode
  * Created by kombarov_na on 26.12.2017.
  */
 
-class QuestScreen(private val game: QuestGame) : Screen {
-
+class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
     private val questStage = QuestStage(game)
 
     override fun show() {
@@ -69,14 +69,4 @@ class QuestScreen(private val game: QuestGame) : Screen {
         questStage.act()
         questStage.draw()
     }
-
-    override fun resize(width: Int, height: Int) {}
-
-    override fun pause() {}
-
-    override fun resume() {}
-
-    override fun hide() {}
-
-    override fun dispose() {}
 }

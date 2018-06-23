@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 
 
-object R {
+object Textures {
 
     private val textures = mutableMapOf<String, Texture>()
 
@@ -16,5 +16,12 @@ object R {
             textures[path] = t
         }
         return t
+    }
+
+    fun disposeAll() {
+        textures.forEach { _, v ->
+            v.dispose()
+        }
+        textures.clear()
     }
 }
