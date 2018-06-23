@@ -12,7 +12,7 @@ class Globals {
     val questNodes: Map<String, QuestNode> = QuestlineLoader.loadQuestNodes().map { it.id to it }.toMap()
     val defaultQuestNode: QuestNode = questNodes.toList().first().second
     var currentQuestNode: QuestNode = defaultQuestNode
-    var currentBg: Image  = Image(R.getTexture(currentQuestNode.background ?: defaultQuestNode.background!!))
+    val currentBg: Image  = Image(R.getTexture(currentQuestNode.background ?: defaultQuestNode.background!!))
     var allDiaryNotes: List<DiaryNote> = DiaryNotesLoader.load()
 
 
