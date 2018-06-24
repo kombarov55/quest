@@ -5,5 +5,6 @@ package com.ovt.quest.quest.model
  */
 data class QuestEvent(
         val diaryNoteId: String?,
-        val hideNoteId: String?
+        val hideNoteId: String?,
+        val screamer: Boolean?
 )

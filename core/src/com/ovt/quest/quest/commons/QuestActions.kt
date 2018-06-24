@@ -1,42 +1,40 @@
 package com.ovt.quest.quest.commons
 
 import com.ovt.quest.QuestGame
+import kotlin.reflect.full.memberFunctions
 
 /**
  * Created by nikolay on 14/01/2018.
  */
-object QuestActions {
+class QuestActions(private val game: QuestGame) {
 
+    private val a = actions()
 
-    val actions: Map<String, (QuestGame) -> String?> = mapOf(
-            "hide2" to {game: QuestGame ->
-                game.globals.questNodes["2"]?.hidden = true
-                null
-            },
+    fun nextIdWithCond(id: String): String {
+        val name = id.substring(0, id.indexOf('('))
+        val method = actions::class.memberFunctions.find { it.name == name }
+        return method?.call(a, id) as String
+    }
 
-            "hide3" to {game: QuestGame ->
-                game.globals.questNodes["3"]?.hidden = true
-                null
-            },
+    inner class actions {
 
-            "hide4" to {game: QuestGame ->
-                game.globals.questNodes["4"]?.hidden = true
-                null
-            },
+        fun wine(signature: String): String {
+            val args = getArgs(signature)
+            val failedId = args[0]
+            val successId = args[1]
 
-            "hide5" to {game: QuestGame ->
-                game.globals.questNodes["5"]?.hidden = true
-                null
-            },
-
-            "hide6" to {game: QuestGame ->
-                game.globals.questNodes["6"]?.hidden = true
-                null
-            },
-            "" to { game: QuestGame ->
-                null
+            game.globals.coins
+            if (game.globals.coins < 2) {
+                return failedId
+            } else {
+                game.globals.coins -= 2
+                return successId
             }
+        }
 
-    )
 
+    }
+
+    private fun getArgs(signature: String): List<String> =
+            signature.substring(signature.indexOf('(') + 1, signature.indexOf(')')).split(Regex(",\\s*"))
 }

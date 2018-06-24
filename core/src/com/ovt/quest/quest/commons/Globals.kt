@@ -15,6 +15,8 @@ class Globals {
     val currentBg: Image  = Image(Textures.getTexture(currentQuestNode.background ?: defaultQuestNode.background!!))
     var allDiaryNotes: List<DiaryNote> = DiaryNotesLoader.load()
 
+    var coins = 5
+
 
 
 

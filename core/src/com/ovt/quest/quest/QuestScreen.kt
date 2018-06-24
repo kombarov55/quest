@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.QuestGame
 import com.ovt.quest.quest.model.Option
 import com.ovt.quest.quest.layout.QuestStage
+import com.ovt.quest.quest.layout.ScreamerScreen
 import com.ovt.quest.quest.model.QuestEvent
 import com.ovt.quest.quest.model.QuestNode
 
@@ -37,14 +38,23 @@ class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
 
     }
 
-    private fun nonHidden(option: Option): Boolean =
+    private fun nonHidden(option: Option): Boolean  {
+        return if (option.targetId.endsWith('+'))
+            true else
             game.globals.questNodes[option.targetId]?.hidden == false
+    }
 
 
     val onOptionClicked = { optionText: String ->
-        val nextNodeId = game.globals.currentQuestNode.options
+        var nextNodeId = game.globals.currentQuestNode.options
                 ?.find { it.text == optionText }
-                ?.targetId
+                ?.targetId!!
+
+
+        if (nextNodeId.endsWith("+")) {
+            nextNodeId = game.questActions.nextIdWithCond(nextNodeId)
+        }
+
         val nextNode = game.globals.questNodes[nextNodeId] ?: game.globals.defaultQuestNode
         game.globals.currentQuestNode = nextNode
 
@@ -58,6 +68,9 @@ class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
         if (events.hideNoteId != null) game.globals.questNodes[events.hideNoteId]?.hidden = true
         if (events.diaryNoteId != null) {
             questStage.notifyDiaryNote(events.diaryNoteId)
+        }
+        if (events.screamer == true) {
+            game.screen = ScreamerScreen(game)
         }
     }
 

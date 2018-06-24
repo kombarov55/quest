@@ -11,13 +11,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
-import com.ovt.quest.commons.Res
 import com.ovt.quest.main_menu_screens.MainMenuScreen
-import com.ovt.quest.quest.QuestScreen
 import com.ovt.quest.quest.commons.Globals
+import com.ovt.quest.quest.commons.QuestActions
 import com.ovt.quest.quest.layout.ScreamerScreen
 
 class QuestGame : Game() {
@@ -36,6 +34,7 @@ class QuestGame : Game() {
     lateinit var labelFactory: LabelFactory
 
     lateinit var globals: Globals
+    lateinit var questActions: QuestActions
 
     internal lateinit var bigFont: BitmapFont
     internal lateinit var normalFont: BitmapFont
@@ -46,8 +45,7 @@ class QuestGame : Game() {
 
     override fun create() {
         initializeVariables()
-//        setScreen(MainMenuScreen(this))
-        setScreen(ScreamerScreen(this))
+        setScreen(MainMenuScreen(this))
     }
 
     private fun initializeVariables() {
@@ -65,6 +63,7 @@ class QuestGame : Game() {
         labelFactory = LabelFactory(this)
 
         globals = Globals()
+        questActions = QuestActions(this)
 
         titleLabelStyle = LabelStyle(bigFont, Color.BLACK)
         descriptionStyle = LabelStyle(smallerFont, Color.BLACK)

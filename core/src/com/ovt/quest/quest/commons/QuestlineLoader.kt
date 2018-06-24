@@ -3,7 +3,6 @@ package com.ovt.quest.quest.commons
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.JsonValue
-import com.badlogic.gdx.utils.XmlReader
 import com.ovt.quest.quest.model.Option
 import com.ovt.quest.quest.model.QuestEvent
 import com.ovt.quest.quest.model.QuestNode
@@ -35,7 +34,7 @@ object QuestlineLoader {
     private fun mapEvent(jsonObj: JsonValue?): QuestEvent? =
             if (jsonObj == null)
                 null else
-                QuestEvent(diaryNoteId = jsonObj.getNullableString("openDiaryNote"), hideNoteId = jsonObj.getNullableString("hideNode"))
+                QuestEvent(diaryNoteId = jsonObj.getNullableString("openDiaryNote"), hideNoteId = jsonObj.getNullableString("hideNode"), screamer = jsonObj.getNullableString("screamer")?.toBoolean())
 
     private fun JsonValue.getNullableString(name: String): String? {
         try {
