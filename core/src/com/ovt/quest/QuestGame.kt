@@ -35,6 +35,7 @@ class QuestGame : Game() {
 
     lateinit var globals: Globals
 
+    internal lateinit var giantFont: BitmapFont
     internal lateinit var bigFont: BitmapFont
     internal lateinit var normalFont: BitmapFont
     internal lateinit var smallerFont: BitmapFont
@@ -50,6 +51,7 @@ class QuestGame : Game() {
     private fun initializeVariables() {
         batch = SpriteBatch()
 
+        giantFont = createFont(Gdx.graphics.height * 0.08f)
         bigFont = createFont(Gdx.graphics.height * 0.06f)
         normalFont = createFont(Gdx.graphics.height * 0.03f)
         smallerFont = createFont(Gdx.graphics.height * 0.03f)

@@ -10,9 +10,14 @@ import com.ovt.quest.QuestGame
  */
 class LabelFactory(private val game: QuestGame) {
 
+    private val giantStyle = LabelStyle(game.giantFont, Color.BLACK)
     private val biggerLabelStyle = LabelStyle(game.bigFont, Color.BLACK)
     private val smallerLabelStyle = LabelStyle(game.smallerFont, Color.BLACK)
     private val normalLabelStyle = LabelStyle(game.normalFont, Color.BLACK)
+
+    fun giantLabel(text: String = ""): Label {
+        return Label(text, giantStyle)
+    }
 
     fun biggerLabel(text: String = ""): Label {
         return Label(text, biggerLabelStyle)
