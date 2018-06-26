@@ -1,38 +1,38 @@
 package com.ovt.quest.quest.commons
 
 import com.ovt.quest.QuestGame
+import com.ovt.quest.quest.QuestScreen
+import com.ovt.quest.quest.layout.ScreamerScreen
 import kotlin.reflect.full.memberFunctions
 
 /**
  * Created by nikolay on 14/01/2018.
  */
-class QuestActions(private val game: QuestGame) {
+class PseudoExecutor(private val game: QuestGame, private val screen: QuestScreen) {
 
     private val a = actions()
 
-    fun nextIdWithCond(id: String): String {
+    fun executePseudoAction(id: String) {
         val name = id.substring(0, id.indexOf('('))
         val method = actions::class.memberFunctions.find { it.name == name }
-        return method?.call(a, id) as String
+        method?.call(a, id)
     }
 
     inner class actions {
 
-        fun wine(signature: String): String {
+        fun wine(signature: String) {
             val args = getArgs(signature)
-            val failedId = args[0]
-            val successId = args[1]
+            val successId = args[0]
+            val failedId = args[1]
 
-            game.globals.coins
             if (game.globals.coins < 2) {
-                return failedId
+                screen.setCurrentNode(failedId)
             } else {
                 game.globals.coins -= 2
-                return successId
+                game.globals.currentQuestNode = game.globals.questNodes[successId]!!
+                game.screen = ScreamerScreen(game)
             }
         }
-
-
     }
 
     private fun getArgs(signature: String): List<String> =

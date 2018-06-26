@@ -15,7 +15,7 @@ import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Globals
-import com.ovt.quest.quest.commons.QuestActions
+import com.ovt.quest.quest.commons.PseudoExecutor
 import com.ovt.quest.quest.layout.ScreamerScreen
 
 class QuestGame : Game() {
@@ -34,7 +34,6 @@ class QuestGame : Game() {
     lateinit var labelFactory: LabelFactory
 
     lateinit var globals: Globals
-    lateinit var questActions: QuestActions
 
     internal lateinit var bigFont: BitmapFont
     internal lateinit var normalFont: BitmapFont
@@ -56,14 +55,12 @@ class QuestGame : Game() {
         smallerFont = createFont(Gdx.graphics.height * 0.03f)
         tinyFont = createFont(Gdx.graphics.height * 0.008f)
 
-
         skin = Skin(Gdx.files.internal("skin/cloud-form-ui.json"))
 
         buttons = Buttons(this, skin)
         labelFactory = LabelFactory(this)
 
         globals = Globals()
-        questActions = QuestActions(this)
 
         titleLabelStyle = LabelStyle(bigFont, Color.BLACK)
         descriptionStyle = LabelStyle(smallerFont, Color.BLACK)

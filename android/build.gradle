@@ -70,6 +70,7 @@ task run(type: Exec) {
         localProperties.withInputStream { instr ->
             properties.load(instr)
         }
+        environment "$ANDROID_HOME", "/Users/nikolaykombarov/Library/Android/sdk"
         def sdkDir = properties.getProperty('sdk.dir')
         if (sdkDir) {
             path = sdkDir

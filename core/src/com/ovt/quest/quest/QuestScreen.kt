@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.ovt.quest.QuestGame
+import com.ovt.quest.quest.commons.PseudoExecutor
 import com.ovt.quest.quest.model.Option
 import com.ovt.quest.quest.layout.QuestStage
 import com.ovt.quest.quest.layout.ScreamerScreen
@@ -17,6 +18,7 @@ import com.ovt.quest.quest.model.QuestNode
 
 class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
     private val questStage = QuestStage(game)
+    private val pseudoExecutor = PseudoExecutor(game, this)
 
     override fun show() {
         Gdx.input.inputProcessor = questStage
@@ -25,7 +27,14 @@ class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
         displayNode(game.globals.currentQuestNode)
     }
 
+    fun setCurrentNode(id: String) {
+        val node = game.globals.questNodes[id]!!
+        game.globals.currentQuestNode = node
 
+        executeEvents(node.events)
+
+        displayNode(node)
+    }
 
     private fun displayNode(node: QuestNode) {
         if (node.background != null) questStage.setBackground(node.background)
@@ -46,21 +55,18 @@ class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
 
 
     val onOptionClicked = { optionText: String ->
-        var nextNodeId = game.globals.currentQuestNode.options
-                ?.find { it.text == optionText }
-                ?.targetId!!
-
-
+        val selectedOption = game.globals.currentQuestNode.options!!.find { it.text == optionText }!!
+        val nextNodeId = selectedOption.targetId
         if (nextNodeId.endsWith("+")) {
-            nextNodeId = game.questActions.nextIdWithCond(nextNodeId)
+            pseudoExecutor.executePseudoAction(nextNodeId)
+        } else {
+            val nextNode = game.globals.questNodes[nextNodeId]!!
+            game.globals.currentQuestNode = nextNode
+
+            executeEvents(nextNode.events)
+
+            displayNode(nextNode)
         }
-
-        val nextNode = game.globals.questNodes[nextNodeId] ?: game.globals.defaultQuestNode
-        game.globals.currentQuestNode = nextNode
-
-        executeEvents(nextNode.events)
-
-        displayNode(nextNode)
     }
 
     private fun executeEvents(events: QuestEvent?) {
