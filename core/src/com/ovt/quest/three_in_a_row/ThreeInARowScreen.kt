@@ -19,8 +19,8 @@ import com.ovt.quest.three_in_a_row.service.ItemFall
 class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     companion object {
-        var maxRows = 8
-        var maxColumns = 15
+        var maxRows = 5
+        var maxColumns = 10
     }
 
     private val matrix = RenderingMatrix(maxColumns, maxRows)
