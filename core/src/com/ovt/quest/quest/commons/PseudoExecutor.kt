@@ -2,6 +2,7 @@ package com.ovt.quest.quest.commons
 
 import com.ovt.quest.QuestGame
 import com.ovt.quest.quest.QuestScreen
+import com.ovt.quest.quest.layout.PortraitsScreen
 import com.ovt.quest.quest.layout.ScreamerScreen
 import kotlin.reflect.full.memberFunctions
 
@@ -32,6 +33,12 @@ class PseudoExecutor(private val game: QuestGame, private val screen: QuestScree
                 game.globals.currentQuestNode = game.globals.questNodes[successId]!!
                 game.screen = ScreamerScreen(game)
             }
+        }
+
+        fun portraits(signature: String) {
+            val targetId = getArgs(signature)[0]
+            game.globals.currentQuestNode = game.globals.questNodes[targetId]!!
+            game.screen = PortraitsScreen(game)
         }
     }
 
