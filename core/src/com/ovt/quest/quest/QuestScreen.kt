@@ -36,6 +36,10 @@ class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
         displayNode(node)
     }
 
+    fun notifyDiaryNote(noteTitle: String) {
+        questStage.notifyDiaryNote(noteTitle)
+    }
+
     private fun displayNode(node: QuestNode) {
         if (node.background != null) questStage.setBackground(node.background)
 

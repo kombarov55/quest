@@ -31,8 +31,6 @@ class PseudoExecutor(private val game: QuestGame, private val screen: QuestScree
                 }
             },
             "portraits" to { signature: String ->
-                val targetId = getArgs(signature)[0]
-                game.globals.currentQuestNode = game.globals.questNodes[targetId]!!
                 game.screen = PortraitsScreen(game)
             }
     )
