@@ -17,6 +17,10 @@ class Globals {
 
     var coins = 5
 
+    fun reset() {
+        coins = 5
+    }
+
 
 
 
