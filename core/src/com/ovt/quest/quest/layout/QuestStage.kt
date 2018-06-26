@@ -49,7 +49,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
         table.add(contentLabel).width(w * 0.9f).padBottom(h * 0.05f).padTop(h * 0.03f)
         table.row()
 
-        optionsTable.defaults().width(w * 0.7f).height(h * 0.07f).pad(w * 0.002f)
+        optionsTable.defaults().width(w * 0.7f).minHeight(h * 0.07f).pad(w * 0.002f)
         table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.08f)
         table.row()
 
