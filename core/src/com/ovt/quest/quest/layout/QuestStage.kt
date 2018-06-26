@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.viewport.StretchViewport
 import com.ovt.quest.QuestGame
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Textures
@@ -51,8 +50,8 @@ class QuestStage(private val game: QuestGame) : Stage() {
         table.add(contentLabel).width(w * 0.9f).padBottom(h * 0.05f).padTop(h * 0.03f)
         table.row()
 
-        optionsTable.defaults().width(w * 0.7f).minHeight(h * 0.07f).pad(w * 0.002f)
-        table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.08f)
+        optionsTable.defaults().width(w * 0.7f).minHeight(h * 0.1f).pad(w * 0.002f)
+        table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.03f)
         table.row()
 
         table.add(InfoLayout(game)).left()

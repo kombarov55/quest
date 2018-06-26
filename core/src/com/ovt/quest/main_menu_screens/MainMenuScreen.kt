@@ -21,14 +21,19 @@ class MainMenuScreen(internal var game: QuestGame) : Screen {
     val t = Texture(Gdx.files.internal("img/фон-главное-меню.png"))
     val bg = Image(t)
 
+    init {
+        bg.x = 0f
+        bg.y = 0f
+        bg.width = Gdx.graphics.width.toFloat()
+        bg.height = Gdx.graphics.height.toFloat()
+    }
+
     override fun show() {
 
         val h = Gdx.graphics.height
         val w = Gdx.graphics.width
 
         Gdx.input.inputProcessor = stage
-
-        stage.addActor(game.background)
 
         val startButton = game.buttons.biggerButton("Начать", onClick = {
             clearGameProgress()

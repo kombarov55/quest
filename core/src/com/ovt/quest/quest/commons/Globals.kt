@@ -1,5 +1,6 @@
 package com.ovt.quest.quest.commons
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.ovt.quest.quest.model.DiaryNote
 import com.ovt.quest.quest.model.QuestNode
@@ -19,6 +20,13 @@ class Globals {
 
     fun reset() {
         coins = 5
+    }
+
+    init {
+        currentBg.x = 0f
+        currentBg.y = 0f
+        currentBg.width = Gdx.graphics.width.toFloat()
+        currentBg.height = Gdx.graphics.height.toFloat()
     }
 
 
