@@ -40,6 +40,7 @@ class QuestScreen(private val game: QuestGame) : ScreenAdapter() {
         questStage.clearOptions()
         questStage.addOptions(node.options?.filter { nonHidden(it) }?.map { it.text })
 
+        questStage.updateItemsLine()
     }
 
     private fun nonHidden(option: Option): Boolean  {

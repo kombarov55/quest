@@ -29,6 +29,8 @@ class Globals {
         currentBg.height = Gdx.graphics.height.toFloat()
     }
 
+    fun itemsToString() = "У вас $coins монет${ if(coins < 5) "ы" else "" }"
+
 
 
 

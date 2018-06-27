@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.ovt.quest.QuestGame
 
 
-class InfoLayout(game: QuestGame): Table() {
+class ItemsTable(game: QuestGame): Table() {
 
 
     init {
         defaults().expandX().left()
-        add(game.labelFactory.smallerLabel("У вас имеется: 5 монет, Башня"))
+        add(game.labelFactory.smallerLabel(game.globals.itemsToString()))
     }
 
 }

@@ -26,6 +26,7 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     val titleLabel = game.labelFactory.normalLabel()
     val contentLabel = game.buttons.normalButton()
+    val itemsLabel = game.labelFactory.smallerLabel()
 
     private val diaryTable = DiaryTable(game)
     private val optionsTable = Table()
@@ -54,7 +55,8 @@ class QuestStage(private val game: QuestGame) : Stage() {
         table.add(optionsTable).expandY().bottom().padBottom(Gdx.graphics.height * 0.03f)
         table.row()
 
-        table.add(InfoLayout(game)).left()
+        itemsLabel.setText(game.globals.itemsToString())
+        table.add(itemsLabel).left()
 
         addActor(game.globals.currentBg)
         addActor(table)
@@ -98,6 +100,10 @@ class QuestStage(private val game: QuestGame) : Stage() {
 
     fun setBackground(imgname: String) {
         game.globals.currentBg.drawable = TextureRegionDrawable(TextureRegion(Textures.getTexture(imgname)))
+    }
+
+    fun updateItemsLine() {
+        itemsLabel.setText(game.globals.itemsToString())
     }
 
 
