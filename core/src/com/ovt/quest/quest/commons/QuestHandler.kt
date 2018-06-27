@@ -6,9 +6,11 @@ import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.bordel.BordelScreen
 import com.ovt.quest.horce_racing.HorceRacingScreen
 import com.ovt.quest.quest.QuestScreen
+import com.ovt.quest.quest.layout.AnnabelDissapearScreen
 import com.ovt.quest.quest.layout.PortraitsScreen
 import com.ovt.quest.quest.layout.ScreamerScreen
 import com.ovt.quest.quest.model.QuestEvent
+import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 
 /**
  * Created by nikolay on 14/01/2018.
@@ -61,7 +63,7 @@ class QuestHandler(private val game: QuestGame, private val screen: QuestScreen)
                     game.screen = ScreamerScreen(game)
                 }
             },
-            "portraits" to { signature: String ->
+            "portraits" to { _: String ->
                 game.screen = PortraitsScreen(game)
             },
             "horceRacing" to { _: String ->
@@ -81,6 +83,18 @@ class QuestHandler(private val game: QuestGame, private val screen: QuestScreen)
                 val nextId = getArgs(signature)[0]
                 game.globals.currentQuestNode = game.globals.questNodes[nextId]!!
                 game.screen = AlchemyScreen(game)
+            },
+            "threeInARow" to { signature: String ->
+                val args = getArgs(signature)
+                val nextId = args[0]
+                val difficulty = args[1]
+                game.globals.currentQuestNode = game.globals.questNodes[nextId]!!
+                game.screen = ThreeInARowScreen(game)
+            },
+            "annabelDissapear" to { signature: String ->
+                val nextId = getArgs(signature)[0]
+                game.globals.currentQuestNode = game.globals.questNodes[nextId]!!
+                game.screen = AnnabelDissapearScreen(game)
             }
     )
 
