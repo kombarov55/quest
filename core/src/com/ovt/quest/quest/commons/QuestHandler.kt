@@ -1,6 +1,7 @@
 package com.ovt.quest.quest.commons
 
 import com.ovt.quest.QuestGame
+import com.ovt.quest.horce_racing.HorceRacingScreen
 import com.ovt.quest.quest.QuestScreen
 import com.ovt.quest.quest.layout.PortraitsScreen
 import com.ovt.quest.quest.layout.ScreamerScreen
@@ -59,6 +60,9 @@ class QuestHandler(private val game: QuestGame, private val screen: QuestScreen)
             },
             "portraits" to { signature: String ->
                 game.screen = PortraitsScreen(game)
+            },
+            "horceRacing" to { _: String ->
+                game.screen = HorceRacingScreen(game)
             }
     )
 
