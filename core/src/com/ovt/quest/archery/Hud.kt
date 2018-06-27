@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
+import com.ovt.quest.horce_racing.layout.FinishTable
 
 class Hud(private val game: QuestGame): Stage() {
 
@@ -20,6 +21,8 @@ class Hud(private val game: QuestGame): Stage() {
     val bowPower = Slider(0f, Vars.bowMaxPower, 1f, false, game.skin)
     val fire = game.buttons.imgButton("img/explosion.png")
     val createArrow = game.buttons.imgButton("img/up-arrow.png")
+
+    val finishTable = FinishTable(game)
 
     private val w = Gdx.graphics.width
     private val h = Gdx.graphics.height
@@ -56,11 +59,13 @@ class Hud(private val game: QuestGame): Stage() {
         createArrow.addClickListener { Events.createArrow.onNext(Unit) }
 
 
+        addActor(finishTable)
         addActor(table)
     }
 
     fun draw(sb: SpriteBatch) {
         table.draw(sb, 1f)
+        finishTable.draw(sb, 1f)
     }
 
 

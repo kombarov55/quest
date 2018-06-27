@@ -78,11 +78,11 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
         targetSprite.draw(sb)
         sb.end()
 
+        b2dr.render(world, cam.combined)
+
         hudSpriteBatch.begin()
         hud.draw(hudSpriteBatch)
         hudSpriteBatch.end()
-
-        b2dr.render(world, cam.combined)
 
     }
 
