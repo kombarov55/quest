@@ -1,6 +1,7 @@
 package com.ovt.quest.quest.commons
 
 import com.ovt.quest.QuestGame
+import com.ovt.quest.alchemy.AlchemyScreen
 import com.ovt.quest.archery.ArcheryScreen
 import com.ovt.quest.bordel.BordelScreen
 import com.ovt.quest.horce_racing.HorceRacingScreen
@@ -75,6 +76,11 @@ class QuestHandler(private val game: QuestGame, private val screen: QuestScreen)
                 val nextId = getArgs(signature)[0]
                 game.globals.currentQuestNode = game.globals.questNodes[nextId]!!
                 game.screen = ArcheryScreen(game)
+            },
+            "alchemy" to { signature: String ->
+                val nextId = getArgs(signature)[0]
+                game.globals.currentQuestNode = game.globals.questNodes[nextId]!!
+                game.screen = AlchemyScreen(game)
             }
     )
 
