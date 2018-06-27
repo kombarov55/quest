@@ -1,6 +1,7 @@
 package com.ovt.quest.quest.commons
 
 import com.ovt.quest.QuestGame
+import com.ovt.quest.bordel.BordelScreen
 import com.ovt.quest.horce_racing.HorceRacingScreen
 import com.ovt.quest.quest.QuestScreen
 import com.ovt.quest.quest.layout.PortraitsScreen
@@ -63,6 +64,11 @@ class QuestHandler(private val game: QuestGame, private val screen: QuestScreen)
             },
             "horceRacing" to { _: String ->
                 game.screen = HorceRacingScreen(game)
+            },
+            "bordel" to { signature: String ->
+                val nextId = getArgs(signature)[0]
+                game.globals.currentQuestNode = game.globals.questNodes[nextId]!!
+                game.screen = BordelScreen(game)
             }
     )
 
