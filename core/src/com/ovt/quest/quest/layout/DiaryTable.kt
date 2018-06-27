@@ -31,7 +31,7 @@ class DiaryTable(private val game: QuestGame) : Table() {
 
         headerTable.defaults()
                 .padTop(Gdx.graphics.height * 0.01f)
-                .padBottom(Gdx.graphics.height * 0.07f)
+                .padBottom(Gdx.graphics.height * 0.04f)
                 .top()
 
         headerTable.add(game.labelFactory.giantLabel("Дневник"))

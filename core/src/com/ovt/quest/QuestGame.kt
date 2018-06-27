@@ -15,7 +15,7 @@ import com.ovt.quest.commons.Buttons
 import com.ovt.quest.commons.LabelFactory
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.quest.commons.Globals
-import com.ovt.quest.quest.commons.PseudoExecutor
+import com.ovt.quest.quest.commons.QuestHandler
 import com.ovt.quest.quest.layout.ScreamerScreen
 
 class QuestGame : Game() {
