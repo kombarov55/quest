@@ -8,6 +8,7 @@ import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.horce_racing.layout.FinishTable
 import com.ovt.quest.main_menu_screens.MainMenuScreen
+import com.ovt.quest.three_in_a_row.layout.Hud
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 import com.ovt.quest.three_in_a_row.model.*
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
@@ -27,6 +28,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     private val matrix = RenderingMatrix(maxColumns, maxRows)
     private val stage = ThreeInARowStage(game, matrix)
+    private val hud = Hud(game)
     private val itemFactory = ItemFactory(matrix)
     private val itemFall = ItemFall(matrix, itemFactory)
     private val events = ThreeInARowEvents(this)
@@ -61,7 +63,8 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     fun finish() {
         val finishTable = FinishTable(game)
-        stage.addActor(finishTable)
+        hud.addActor(finishTable)
+        Gdx.input.inputProcessor = hud
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
@@ -186,10 +189,12 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        Gdx.input.inputProcessor = stage
 
         stage.act()
         stage.draw()
+
+        hud.act()
+        hud.draw()
     }
 
     override fun hide() {

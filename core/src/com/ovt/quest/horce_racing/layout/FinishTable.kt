@@ -1,9 +1,11 @@
 package com.ovt.quest.horce_racing.layout
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.ovt.quest.QuestGame
 import com.ovt.quest.quest.QuestScreen
+import com.ovt.quest.quest.commons.Textures
 
 
 class FinishTable(game: QuestGame): Table() {
@@ -20,10 +22,13 @@ class FinishTable(game: QuestGame): Table() {
         y = (Gdx.graphics.height / 2) - height / 2
 
         defaults().expandX()
+        background = Image(Textures.getTexture("diary-note-bg.png")).drawable
 
         add(label)
         row()
         add(button)
     }
+
+
 
 }
