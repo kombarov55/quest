@@ -1,6 +1,7 @@
 package com.ovt.quest.three_in_a_row
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -41,7 +42,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         matrix.fillWith(itemFactory)
         matrix.forEach { stage.addActor(it?.itemActor) }
 
-        Gdx.input.inputProcessor = stage
+        Gdx.input.inputProcessor = InputMultiplexer(hud, stage)
         stage.onSwap = this::onSwap
 
         hud.homeButton.addClickListener {
@@ -53,7 +54,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     fun finish() {
         val finishTable = FinishTable(game)
         hud.addActor(finishTable)
-        Gdx.input.inputProcessor = hud
+//        Gdx.input.inputProcessor = hud
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
@@ -83,6 +84,14 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         hud.playerTotal.setText("" + (red + blue + yellow + pink) + "/30")
     }
 
+    fun freeze() {
+        Gdx.input.inputProcessor = hud
+    }
+
+    fun unfreeze() {
+        Gdx.input.inputProcessor = stage
+    }
+
     private fun removeLoop(matches: List<List<Item>>, matrix: RenderingMatrix, itemFactory: ItemFactory, stage: Stage) {
         removeGroups(matches, then = {
             events.swapped.onNext(matches.flatten())
@@ -90,7 +99,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
                 addNewItems(matrix, itemFactory, stage)
                 val newGroups = GroupFinder.findGroups(matrix)
                 if (newGroups.isNotEmpty()) {
-//                    updateCounters(newGroups)
                     removeLoop(newGroups, matrix, itemFactory, stage)
                 }
             })

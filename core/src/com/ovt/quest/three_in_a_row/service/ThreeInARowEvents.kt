@@ -42,11 +42,11 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
         }
 
         endPlayerTurn.subscribe {
-
+            screen.freeze()
         }
 
         endEnemyTurn.subscribe {
-
+            screen.unfreeze()
         }
     }
 
