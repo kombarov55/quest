@@ -38,8 +38,6 @@ class ThreeInARowStage(
     val yellowCounter: Label
     val pinkCounter: Label
 
-    val finishTable = FinishTable(game)
-
 
     init {
         val h = Gdx.graphics.height
@@ -49,8 +47,6 @@ class ThreeInARowStage(
         fallDown = game.buttons.imgButton("img/down-arrow.png")
         explosion = game.buttons.imgButton("img/explosion.png")
         homeButton = game.buttons.imgButton(src = "img/home.png")
-
-        addActor(finishTable)
 
         fun placeHorizontally(xs: List<Actor>, pad: Float, side: Float, marginX: Float, marginY: Float) {
             for (i in 0 until xs.size) {

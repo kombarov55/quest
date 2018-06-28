@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
+import com.ovt.quest.horce_racing.layout.FinishTable
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
 import com.ovt.quest.three_in_a_row.model.*
 import com.ovt.quest.three_in_a_row.model.Item.Type.*
 import com.ovt.quest.three_in_a_row.service.GroupFinder
 import com.ovt.quest.three_in_a_row.service.ItemFall
+import com.ovt.quest.three_in_a_row.service.ThreeInARowEvents
 
 /**
  * Created by nikolay on 14.03.18.
@@ -27,6 +29,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private val stage = ThreeInARowStage(game, matrix)
     private val itemFactory = ItemFactory(matrix)
     private val itemFall = ItemFall(matrix, itemFactory)
+    private val events = ThreeInARowEvents(this)
 
     private val sound = Gdx.audio.newSound(Gdx.files.internal("sounds/shot-and-reload.wav"))
 
@@ -54,6 +57,11 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
             game.screen = MainMenuScreen(game)
         }
 
+    }
+
+    fun finish() {
+        val finishTable = FinishTable(game)
+        stage.addActor(finishTable)
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
@@ -127,7 +135,8 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
             })
         }
 
-         sound.play(0.4f)
+        sound.play(0.4f)
+        events.swapped.onNext(flattened)
     }
 
 
