@@ -75,13 +75,19 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         if (i1 == null || i2 == null) return
         swap(i1, i2, then = {
             val groups = GroupFinder.findGroups(matrix)
-            updateCounters(groups)
             if (groups.isNotEmpty()) {
                 removeLoop(groups, matrix, itemFactory, stage)
             } else {
                 swap(i1, i2)
             }
         })
+    }
+
+    fun updateCounters(red: Int, blue: Int, yellow: Int, pink: Int) {
+        stage.redCounter.setText(red.toString())
+        stage.blueCounter.setText(blue.toString())
+        stage.yellowCounter.setText(yellow.toString())
+        stage.pinkCounter.setText(pink.toString())
     }
 
     private fun updateCounters(groups: List<List<Item>>) {
@@ -103,11 +109,12 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     private fun removeLoop(matches: List<List<Item>>, matrix: RenderingMatrix, itemFactory: ItemFactory, stage: Stage) {
         removeGroups(matches, then = {
+            events.swapped.onNext(matches.flatten())
             itemFall.executeFallDown(matrix, itemFactory, then = {
                 addNewItems(matrix, itemFactory, stage)
                 val newGroups = GroupFinder.findGroups(matrix)
                 if (newGroups.isNotEmpty()) {
-                    updateCounters(newGroups)
+//                    updateCounters(newGroups)
                     removeLoop(newGroups, matrix, itemFactory, stage)
                 }
             })
@@ -136,7 +143,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         }
 
         sound.play(0.4f)
-        events.swapped.onNext(flattened)
     }
 
 
