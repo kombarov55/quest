@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.horce_racing.layout.FinishTable
@@ -41,21 +42,9 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         matrix.forEach { stage.addActor(it?.itemActor) }
 
         Gdx.input.inputProcessor = stage
-        stage.onSwap = ::onSwap
-        stage.fallDown.addClickListener {
-            itemFall.executeFallDown(matrix, itemFactory)
+        stage.onSwap = this::onSwap
 
-        }
-
-        stage.createNewItems.addClickListener {
-            addNewItems(matrix, itemFactory, stage)
-        }
-
-        stage.explosion.addClickListener {
-            removeGroups(GroupFinder.findGroups(matrix))
-        }
-
-        stage.homeButton.addClickListener {
+        hud.homeButton.addClickListener {
             game.screen = MainMenuScreen(game)
         }
 
@@ -87,27 +76,11 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     }
 
     fun updateCounters(red: Int, blue: Int, yellow: Int, pink: Int) {
-        stage.redCounter.setText(red.toString())
-        stage.blueCounter.setText(blue.toString())
-        stage.yellowCounter.setText(yellow.toString())
-        stage.pinkCounter.setText(pink.toString())
-    }
-
-    private fun updateCounters(groups: List<List<Item>>) {
-        for (group in groups) {
-            val label = when (group.first().type) {
-                Red -> stage.redCounter
-                Blue -> stage.blueCounter
-                Yellow -> stage.yellowCounter
-                Pink -> stage.pinkCounter
-                Hole -> throw RuntimeException("never gonna happen")
-            }
-
-            val prevValue = label.text.toString().drop(1).toInt()
-            val newValue = prevValue + group.size
-            label.setText("x$newValue")
-
-        }
+        hud.redCounter.setText(red.toString())
+        hud.blueCounter.setText(blue.toString())
+        hud.yellowCounter.setText(yellow.toString())
+        hud.pinkCounter.setText(pink.toString())
+        hud.playerTotal.setText("" + (red + blue + yellow + pink) + "/30")
     }
 
     private fun removeLoop(matches: List<List<Item>>, matrix: RenderingMatrix, itemFactory: ItemFactory, stage: Stage) {

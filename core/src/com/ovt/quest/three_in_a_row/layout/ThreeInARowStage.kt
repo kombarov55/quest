@@ -1,17 +1,9 @@
 package com.ovt.quest.three_in_a_row.layout
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Button
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.Direction
-import com.ovt.quest.horce_racing.layout.FinishTable
 import com.ovt.quest.three_in_a_row.model.RenderingMatrix
 import com.ovt.quest.three_in_a_row.toPositive
 
@@ -25,51 +17,6 @@ class ThreeInARowStage(
 
     var onSwap: ((Pair<Int, Int>, Pair<Int, Int>) -> Unit)? = { p1, p2 ->
         println("swap $p1 + $p2")
-    }
-
-    val createNewItems: Button
-    val fallDown: Button
-    val explosion: Button
-
-    val homeButton: ImageButton
-
-    val redCounter: Label
-    val blueCounter: Label
-    val yellowCounter: Label
-    val pinkCounter: Label
-
-
-    init {
-        val h = Gdx.graphics.height
-        val w = Gdx.graphics.width
-
-        createNewItems = game.buttons.imgButton("img/up-arrow.png")
-        fallDown = game.buttons.imgButton("img/down-arrow.png")
-        explosion = game.buttons.imgButton("img/explosion.png")
-        homeButton = game.buttons.imgButton(src = "img/home.png")
-
-        fun placeHorizontally(xs: List<Actor>, pad: Float, side: Float, marginX: Float, marginY: Float) {
-            for (i in 0 until xs.size) {
-                val actor = xs[i]
-                actor.width = side
-                actor.height = side
-                actor.x = marginX + pad + i * (side + pad * 2)
-                actor.y = marginY
-            }
-        }
-        val redCounterImg = Image(Texture(Gdx.files.internal("img/item_red.png")))
-        val blueCounterImg = Image(Texture(Gdx.files.internal("img/item_blue.png")))
-        val yellowCounterImg = Image(Texture(Gdx.files.internal("img/item_yellow.png")))
-        val pinkCounterImg = Image(Texture(Gdx.files.internal("img/item_pink.png")))
-
-        redCounter = game.labelFactory.smallerLabel("x0")
-        blueCounter = game.labelFactory.smallerLabel("x0")
-        yellowCounter = game.labelFactory.smallerLabel("x0")
-        pinkCounter = game.labelFactory.smallerLabel("x0")
-
-        val row = listOf<Actor>(homeButton, homeButton, createNewItems, fallDown, explosion, redCounterImg, redCounter, blueCounterImg, blueCounter, yellowCounterImg, yellowCounter, pinkCounterImg, pinkCounter)
-        placeHorizontally(row, w * 0.002f, h * 0.04f, w * 0.005f, h * 0.95f)
-        row.forEach { addActor(it) }
     }
 
     private var selectedItemLogicCoords: Pair<Int, Int>? = null

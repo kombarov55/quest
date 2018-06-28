@@ -1,6 +1,5 @@
 package com.ovt.quest.three_in_a_row.service
 
-import com.badlogic.gdx.graphics.Color
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 import com.ovt.quest.three_in_a_row.model.Item
 import io.reactivex.subjects.PublishSubject
@@ -19,6 +18,8 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
     private val limit = 30
 
     val swapped = PublishSubject.create<List<Item>>()
+    val endPlayerTurn = PublishSubject.create<Unit>()
+    val endEnemyTurn = PublishSubject.create<Unit>()
 
     init {
         swapped.subscribe { group ->
@@ -38,6 +39,14 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
             }
 
             screen.updateCounters(redPoints, bluePoints, yellowPoints, pinkPoints)
+        }
+
+        endPlayerTurn.subscribe {
+
+        }
+
+        endEnemyTurn.subscribe {
+
         }
     }
 
