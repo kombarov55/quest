@@ -105,7 +105,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
                     if (newGroups.isNotEmpty()) {
                         removeLoop(newGroups, matrix, itemFactory, stage)
                     } else {
-                        Thread.sleep(1000)
+                        events.endPlayerTurn.onNext(Unit)
                     }
                 })
             })
@@ -155,7 +155,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         val holes = matrix.flatten().filter { it?.type == Hole }
 
         if (holes.isNotEmpty()) {
-
             holes.take(holes.size - 1).forEach { item ->
                 val ii = itemFactory.nonMatchingItem(item!!.column, item!!.row, matrix)
                 matrix.put(ii)

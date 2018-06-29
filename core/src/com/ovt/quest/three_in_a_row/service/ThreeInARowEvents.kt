@@ -40,13 +40,14 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
             }
 
             screen.updateCounters(redPoints, bluePoints, yellowPoints, pinkPoints)
+        }
 
-//            screen.freeze()
-//            println("хмммм.....")
-//            Thread.sleep(1000)
-//            println("Сходим вот так..")
-//            screen.unfreeze()
-
+        endPlayerTurn.subscribe {
+            screen.freeze()
+            println("хмммм.....")
+            Thread.sleep(1000)
+            println("Сходим вот так..")
+            screen.unfreeze()
         }
     }
 
