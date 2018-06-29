@@ -69,11 +69,14 @@ class ItemActor(
                         CallbackAction(then)))
     }
 
-    fun comeOut() {
+    fun comeOut(then: (() -> Unit)? = null) {
         this.setScale(0.1f, 0.1f)
         val rotate = Actions.rotateBy(360f * -1, comeOutDuration)
         val scaleUp = Actions.scaleTo(1f, 1f, comeOutDuration)
-        addAction(ParallelAction(rotate, scaleUp))
+        val action = if (then == null)
+            ParallelAction(rotate, scaleUp) else
+            SequenceAction(ParallelAction(rotate, scaleUp), CallbackAction(then))
+        addAction(action)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {

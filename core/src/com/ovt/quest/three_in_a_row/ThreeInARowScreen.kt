@@ -98,13 +98,16 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     private fun removeLoop(matches: List<List<Item>>, matrix: RenderingMatrix, itemFactory: ItemFactory, stage: Stage) {
         removeGroups(matches, then = {
-            events.swapped.onNext(matches.flatten())
+            events.successfulSwap.onNext(matches.flatten())
             itemFall.executeFallDown(matrix, itemFactory, then = {
-                addNewItems(matrix, itemFactory, stage)
-                val newGroups = GroupFinder.findGroups(matrix)
-                if (newGroups.isNotEmpty()) {
-                    removeLoop(newGroups, matrix, itemFactory, stage)
-                }
+                addNewItems(matrix, itemFactory, stage, then = {
+                    val newGroups = GroupFinder.findGroups(matrix)
+                    if (newGroups.isNotEmpty()) {
+                        removeLoop(newGroups, matrix, itemFactory, stage)
+                    } else {
+                        Thread.sleep(1000)
+                    }
+                })
             })
         })
     }
@@ -150,10 +153,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     private fun addNewItems(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
         fun addNew(item: Item) {
-            val ii = itemFactory.nonMatchingItem(item.column, item.row, matrix)
-            matrix.put(ii)
-            stage.addActor(ii.itemActor)
-            ii.itemActor?.comeOut()
+
         }
 
         val holes = matrix.flatten().filter { it?.type == Hole }
@@ -161,12 +161,17 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         if (holes.isNotEmpty()) {
 
             holes.take(holes.size - 1).forEach { item ->
-                addNew(item!!)
+                val ii = itemFactory.nonMatchingItem(item!!.column, item!!.row, matrix)
+                matrix.put(ii)
+                stage.addActor(ii.itemActor)
+                ii.itemActor?.comeOut()
             }
 
             holes.last().let { item ->
-                addNew(item!!)
-                then.invoke()
+                val ii = itemFactory.nonMatchingItem(item!!.column, item!!.row, matrix)
+                matrix.put(ii)
+                stage.addActor(ii.itemActor)
+                ii.itemActor?.comeOut(then = then)
             }
         }
     }
