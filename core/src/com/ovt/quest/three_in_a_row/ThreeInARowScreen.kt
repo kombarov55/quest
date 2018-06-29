@@ -152,10 +152,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     }
 
     private fun addNewItems(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
-        fun addNew(item: Item) {
-
-        }
-
         val holes = matrix.flatten().filter { it?.type == Hole }
 
         if (holes.isNotEmpty()) {
