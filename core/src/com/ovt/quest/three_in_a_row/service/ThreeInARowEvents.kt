@@ -2,6 +2,8 @@ package com.ovt.quest.three_in_a_row.service
 
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 import com.ovt.quest.three_in_a_row.model.Item
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 
@@ -41,12 +43,12 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
             screen.updateCounters(redPoints, bluePoints, yellowPoints, pinkPoints)
         }
 
-        endPlayerTurn.subscribe {
-            screen.freeze()
+        endPlayerTurn.subscribeOn(Schedulers.newThread()).subscribe {
+//            screen.freeze()
         }
 
-        endEnemyTurn.subscribe {
-            screen.unfreeze()
+        endEnemyTurn.subscribeOn(Schedulers.newThread()).subscribe {
+//            screen.unfreeze()
         }
     }
 

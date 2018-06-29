@@ -5,15 +5,17 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.ovt.quest.QuestGame
 import com.ovt.quest.commons.addClickListener
 import com.ovt.quest.horce_racing.layout.FinishTable
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.three_in_a_row.layout.Hud
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
-import com.ovt.quest.three_in_a_row.model.*
-import com.ovt.quest.three_in_a_row.model.Item.Type.*
+import com.ovt.quest.three_in_a_row.model.Item
+import com.ovt.quest.three_in_a_row.model.Item.Type.Hole
+import com.ovt.quest.three_in_a_row.model.ItemFactory
+import com.ovt.quest.three_in_a_row.model.Matrix
+import com.ovt.quest.three_in_a_row.model.RenderingMatrix
 import com.ovt.quest.three_in_a_row.service.GroupFinder
 import com.ovt.quest.three_in_a_row.service.ItemFall
 import com.ovt.quest.three_in_a_row.service.ThreeInARowEvents
@@ -35,6 +37,8 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     private val itemFall = ItemFall(matrix, itemFactory)
     private val events = ThreeInARowEvents(this)
 
+    private val inputMultiplexer = InputMultiplexer(hud, stage)
+
     private val sound = Gdx.audio.newSound(Gdx.files.internal("sounds/shot-and-reload.wav"))
 
 
@@ -42,7 +46,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         matrix.fillWith(itemFactory)
         matrix.forEach { stage.addActor(it?.itemActor) }
 
-        Gdx.input.inputProcessor = InputMultiplexer(hud, stage)
+        Gdx.input.inputProcessor = inputMultiplexer
         stage.onSwap = this::onSwap
 
         hud.homeButton.addClickListener {
@@ -54,7 +58,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     fun finish() {
         val finishTable = FinishTable(game)
         hud.addActor(finishTable)
-//        Gdx.input.inputProcessor = hud
     }
 
     private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
@@ -70,6 +73,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
             val groups = GroupFinder.findGroups(matrix)
             if (groups.isNotEmpty()) {
                 removeLoop(groups, matrix, itemFactory, stage)
+
             } else {
                 swap(i1, i2)
             }
@@ -85,11 +89,11 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     }
 
     fun freeze() {
-        Gdx.input.inputProcessor = hud
+        inputMultiplexer.removeProcessor(stage)
     }
 
     fun unfreeze() {
-        Gdx.input.inputProcessor = stage
+        inputMultiplexer.addProcessor(stage)
     }
 
     private fun removeLoop(matches: List<List<Item>>, matrix: RenderingMatrix, itemFactory: ItemFactory, stage: Stage) {
