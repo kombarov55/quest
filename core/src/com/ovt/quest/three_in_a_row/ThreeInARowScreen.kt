@@ -11,14 +11,12 @@ import com.ovt.quest.horce_racing.layout.FinishTable
 import com.ovt.quest.main_menu_screens.MainMenuScreen
 import com.ovt.quest.three_in_a_row.layout.Hud
 import com.ovt.quest.three_in_a_row.layout.ThreeInARowStage
-import com.ovt.quest.three_in_a_row.model.Item
+import com.ovt.quest.three_in_a_row.model.*
 import com.ovt.quest.three_in_a_row.model.Item.Type.Hole
-import com.ovt.quest.three_in_a_row.model.ItemFactory
-import com.ovt.quest.three_in_a_row.model.Matrix
-import com.ovt.quest.three_in_a_row.model.RenderingMatrix
 import com.ovt.quest.three_in_a_row.service.GroupFinder
 import com.ovt.quest.three_in_a_row.service.ItemFall
 import com.ovt.quest.three_in_a_row.service.ThreeInARowEvents
+import io.reactivex.Observable
 
 /**
  * Created by nikolay on 14.03.18.
@@ -62,21 +60,31 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
 
-        println("before swap: $i1LogicCoords and $i2LogicCoords")
-        matrix.print()
+        events.swap.onNext(Coords(i1LogicCoords.first, i1LogicCoords.second) to Coords(i2LogicCoords.first, i2LogicCoords.second))
 
-        val i1 = matrix.get(i1LogicCoords)
-        val i2 = matrix.get(i2LogicCoords)
+//        println("before swap: $i1LogicCoords and $i2LogicCoords")
+//        matrix.print()
+//
+//        val i1 = matrix.get(i1LogicCoords)
+//        val i2 = matrix.get(i2LogicCoords)
+//
+//        if (i1 == null || i2 == null) return
+//        swap(i1, i2, then = {
+//            val groups = GroupFinder.findGroups(matrix)
+//            if (groups.isNotEmpty()) {
+//                removeLoop(groups, matrix, itemFactory, stage)
+//            } else {
+//                swap(i1, i2)
+//            }
+//        })
+    }
 
-        if (i1 == null || i2 == null) return
-        swap(i1, i2, then = {
-            val groups = GroupFinder.findGroups(matrix)
-            if (groups.isNotEmpty()) {
-                removeLoop(groups, matrix, itemFactory, stage)
-            } else {
-                swap(i1, i2)
-            }
-        })
+    fun rxSwap(c1: Coords, c2: Coords): Observable<Unit> {
+        val i1 = matrix.get(c1)!!
+        val i2 = matrix.get(c2)!!
+
+        i1.itemActor!!.RX_fastMoveTo(matrix.project(c2)).subscribe()
+        return i2.itemActor!!.RX_fastMoveTo(matrix.project(c1))
     }
 
     fun updateCounters(red: Int, blue: Int, yellow: Int, pink: Int) {

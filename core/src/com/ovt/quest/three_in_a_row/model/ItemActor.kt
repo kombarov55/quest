@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.ovt.quest.three_in_a_row.layout.CallbackAction
+import io.reactivex.Observable
 
 class ItemActor(
         initialCoords: Vector2,
@@ -35,6 +36,18 @@ class ItemActor(
                 SequenceAction(
                         Actions.moveTo(coords.x, coords.y, swapDuration),
                         CallbackAction(then)))
+    }
+
+    fun RX_fastMoveTo(coords: Vector2): Observable<Unit> {
+        return Observable.create {
+            addAction(
+                    SequenceAction(
+                            Actions.moveTo(coords.x, coords.y, swapDuration),
+                            CallbackAction {
+                                println("callback")
+                                Unit
+                            }))
+        }
     }
 
     fun slowMoveTo(coords: Vector2, then: () -> Unit = {  }) {
