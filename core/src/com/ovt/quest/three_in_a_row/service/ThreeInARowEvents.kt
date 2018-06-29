@@ -46,8 +46,10 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
             screen.freeze()
             println("хмммм.....")
             Thread.sleep(1000)
+            screen.onSwap(1 to 1, 2 to 1)
             println("Сходим вот так..")
             screen.unfreeze()
+
         }
     }
 

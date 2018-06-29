@@ -60,7 +60,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         hud.addActor(finishTable)
     }
 
-    private fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
+    fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
 
         println("before swap: $i1LogicCoords and $i2LogicCoords")
         matrix.print()
@@ -73,7 +73,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
             val groups = GroupFinder.findGroups(matrix)
             if (groups.isNotEmpty()) {
                 removeLoop(groups, matrix, itemFactory, stage)
-
             } else {
                 swap(i1, i2)
             }
@@ -137,6 +136,9 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     }
 
 
+    fun swap(i1: Pair<Int, Int>, i2: Pair<Int, Int>, then: () -> Unit = { println("After swap!") }) {
+        swap(matrix.get(i1)!!, matrix.get(i2)!!, then)
+    }
 
     private fun swap(i1: Item, i2: Item, then: () -> Unit = { println("After swap!") }) {
         val (i1col, i1row) = i1.column to i1.row
