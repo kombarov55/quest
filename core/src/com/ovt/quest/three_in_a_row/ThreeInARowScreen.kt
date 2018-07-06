@@ -80,7 +80,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 //        })
     }
 
-    fun rxSwap(c1: Coords, c2: Coords): Single<Unit> {
+    fun rxSwap(c1: Coords, c2: Coords): Observable<Unit> {
         val i1 = matrix.get(c1)!!
         val i2 = matrix.get(c2)!!
 
