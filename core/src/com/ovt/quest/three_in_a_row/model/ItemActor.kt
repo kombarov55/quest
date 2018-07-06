@@ -39,13 +39,14 @@ class ItemActor(
     }
 
     fun RX_fastMoveTo(coords: Vector2): Observable<Unit> {
-        return Observable.create {
+        return Observable.create { s ->
             addAction(
                     SequenceAction(
                             Actions.moveTo(coords.x, coords.y, swapDuration),
                             CallbackAction {
                                 println("callback")
-                                Unit
+                                s.onNext(Unit)
+                                s.onComplete()
                             }))
         }
     }

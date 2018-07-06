@@ -17,6 +17,7 @@ import com.ovt.quest.three_in_a_row.service.GroupFinder
 import com.ovt.quest.three_in_a_row.service.ItemFall
 import com.ovt.quest.three_in_a_row.service.ThreeInARowEvents
 import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Created by nikolay on 14.03.18.
@@ -79,7 +80,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 //        })
     }
 
-    fun rxSwap(c1: Coords, c2: Coords): Observable<Unit> {
+    fun rxSwap(c1: Coords, c2: Coords): Single<Unit> {
         val i1 = matrix.get(c1)!!
         val i2 = matrix.get(c2)!!
 
