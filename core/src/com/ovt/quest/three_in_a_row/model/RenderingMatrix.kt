@@ -34,6 +34,8 @@ class RenderingMatrix(maxColumns: Int, maxRows: Int): Matrix(maxColumns, maxRows
 
     fun project(c: Coords): Vector2 = project(c.x, c.y)
 
+    fun project(i: Item): Vector2 = project(i.column, i.row)
+
     fun unproject(coords: Vector2): Pair<Int, Int>? {
 
         val xFromMatrixStart = coords.x - tableMarginLeft

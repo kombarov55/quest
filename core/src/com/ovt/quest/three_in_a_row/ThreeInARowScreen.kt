@@ -80,13 +80,25 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 //        })
     }
 
-    fun rxSwap(c1: Coords, c2: Coords): Observable<Unit> {
-        val i1 = matrix.get(c1)!!
-        val i2 = matrix.get(c2)!!
-
-        i1.itemActor!!.RX_fastMoveTo(matrix.project(c2)).subscribe()
-        return i2.itemActor!!.RX_fastMoveTo(matrix.project(c1))
+    fun rxVisualSwap(i1: Item, i2: Item): Observable<Pair<Item, Item>> {
+        i1.itemActor!!.RX_fastMoveTo(matrix.project(i2)).subscribe()
+        return i2.itemActor!!.RX_fastMoveTo(matrix.project(i1))
+                .map { i1 to i2 }
     }
+
+    fun coordsSwap(i1: Item, i2: Item) {
+        val (i1col, i1row) = i1.column to i1.row
+
+        i1.setLogicCoords(i2.column, i2.row)
+        matrix.put(i1)
+
+        i2.setLogicCoords(i1col, i1row)
+        matrix.put(i2)
+    }
+
+
+    fun getItems(c1: Coords, c2: Coords): Pair<Item?, Item?> = matrix.get(c1) to matrix.get(c2)
+
 
     fun updateCounters(red: Int, blue: Int, yellow: Int, pink: Int) {
         hud.redCounter.setText(red.toString())

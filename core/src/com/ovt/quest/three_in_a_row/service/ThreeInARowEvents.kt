@@ -29,9 +29,13 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
 
     init {
 
-        swap.flatMap { (c1, c2) ->
-            screen.rxSwap(c1, c2)
-        }.subscribe { unit -> println("complete!") }
+        swap
+                .map { (c1, c2) ->  screen.getItems(c1, c2) }
+                .filter { (c1, c2) -> c1 != null && c2 != null }
+                .map { (c1, c2) -> c1!! to c2!! }
+                .flatMap { (i1, i2) -> screen.rxVisualSwap(i1, i2) }
+                .doOnNext { (i1, i2) -> screen.coordsSwap(i1, i2) }
+                .subscribe { unit -> println("complete!") }
 
 
         successfulSwap.subscribe { group ->
