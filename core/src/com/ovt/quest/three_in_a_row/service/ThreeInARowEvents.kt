@@ -21,7 +21,7 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
 
     val successfulSwap = PublishSubject.create<List<Item>>()
 
-    val endPlayerTurn = PublishSubject.create<Unit>()
+    val startEnemyTurn = PublishSubject.create<Unit>()
 
 
     val swap = PublishSubject.create<Pair<Coords, Coords>>()
@@ -71,14 +71,13 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
                     if (groups.isNotEmpty()) {
                         removeLoop.onNext(groups.flatten())
                     } else {
-                        screen.unfreeze()
+                        startEnemyTurn.onNext(Unit)
                     }
                 }
 
 
 
         successfulSwap.subscribe { group ->
-
             totalPoints += group.size
             if (totalPoints >= limit) {
                 screen.finish()
@@ -95,13 +94,12 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
             screen.updateCounters(redPoints, bluePoints, yellowPoints, pinkPoints)
         }
 
-        endPlayerTurn.subscribe {
-            screen.freeze()
+        startEnemyTurn.subscribe {
             println("хмммм.....")
             Thread.sleep(1000)
-            screen.onSwap(1 to 1, 2 to 1)
+//            screen.onSwap(1 to 1, 2 to 1)
+            swap.onNext(Coords(1, 1) to Coords(2, 1))
             println("Сходим вот так..")
-            screen.unfreeze()
 
         }
     }

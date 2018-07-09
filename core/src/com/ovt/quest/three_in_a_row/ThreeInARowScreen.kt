@@ -90,12 +90,22 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         hud.playerTotal.setText("" + (red + blue + yellow + pink) + "/30")
     }
 
+
+    var freezed = false
+
     fun freeze() {
-        inputMultiplexer.removeProcessor(stage)
+        if (!freezed) {
+            freezed = true
+            inputMultiplexer.removeProcessor(stage)
+        }
+
     }
 
     fun unfreeze() {
-        inputMultiplexer.addProcessor(stage)
+        if (freezed) {
+            freezed = false
+            inputMultiplexer.addProcessor(stage)
+        }
     }
 
     fun RX_visualRemove(groups: List<Item>): Observable<List<Item>> {
