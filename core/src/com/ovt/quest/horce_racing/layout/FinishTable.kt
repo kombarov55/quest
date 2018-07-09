@@ -11,7 +11,7 @@ import com.ovt.quest.quest.commons.Textures
 class FinishTable(game: QuestGame): Table() {
 
     val label = game.labelFactory.giantLabel("Вы выйграли!")
-    val button = game.buttons.biggerButton("Выйти", onClick = {
+    val button = game.buttons.biggerButton("Продолжить", onClick = {
         game.screen = (QuestScreen(game))
     })
 

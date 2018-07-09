@@ -29,23 +29,10 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
 
     val removeLoop = PublishSubject.create<List<Item>>()
 
-    /*
-    remove:
-      (List<Item>) -> [visual remove] List<Item>
-      (List<Item>) -> [matrixRemove] List<Item>
-      (List<Item>) -> [remove items] List<Item>
-      () -> [fall down]
-      () -> [find holes] List<Item>
-      (List<Item>) -> [fill holes visually] List<Item>
-      (List<Item>) -> [fill holes in matrix]
-      () -> [find groups] List<Item>
-      { groups > 0? removeLoop.onNext(groups) }
-
-     */
-
 
     init {
         swap
+                .doOnNext { screen.freeze() }
                 .map { (c1, c2) ->  screen.getItems(c1, c2) }
                 .filter { (c1, c2) -> c1 != null && c2 != null }.map { (c1, c2) -> c1!! to c2!! }
                 .flatMap { (i1, i2) -> screen.rxVisualSwap(i1, i2) }
@@ -61,10 +48,17 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
 
         swapBack
                 .flatMap { (i1, i2) -> screen.rxVisualSwap(i1, i2) }
-                .subscribe { (i1, i2) -> screen.coordsSwap(i1, i2) }
+                .subscribe { (i1, i2) ->
+                    screen.coordsSwap(i1, i2)
+                    screen.unfreeze()
+                }
 
 
         removeLoop
+                .doOnNext { group ->
+                    screen.playDissapearSound()
+                    successfulSwap.onNext(group)
+                }
                 .flatMap { groups -> screen.RX_visualRemove(groups) }
                 .doOnNext {group -> screen.coordsRemove(group) }
                 .flatMap { screen.RX_fallDown() }
@@ -76,10 +70,10 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
                 .subscribe { groups ->
                     if (groups.isNotEmpty()) {
                         removeLoop.onNext(groups.flatten())
+                    } else {
+                        screen.unfreeze()
                     }
                 }
-
-//        val groups = firstSwap.map { GroupFinder.findGroups(screen.matrix) }
 
 
 
@@ -98,7 +92,6 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
                     Item.Type.Pink -> pinkPoints += 1
                 }
             }
-
             screen.updateCounters(redPoints, bluePoints, yellowPoints, pinkPoints)
         }
 

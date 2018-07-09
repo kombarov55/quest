@@ -59,24 +59,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     }
 
     fun onSwap(i1LogicCoords: Pair<Int, Int>, i2LogicCoords: Pair<Int, Int>) {
-
         events.swap.onNext(Coords(i1LogicCoords.first, i1LogicCoords.second) to Coords(i2LogicCoords.first, i2LogicCoords.second))
-
-//        println("before swap: $i1LogicCoords and $i2LogicCoords")
-//        matrix.print()
-//
-//        val i1 = matrix.get(i1LogicCoords)
-//        val i2 = matrix.get(i2LogicCoords)
-//
-//        if (i1 == null || i2 == null) return
-//        swap(i1, i2, then = {
-//            val groups = GroupFinder.findGroups(matrix)
-//            if (groups.isNotEmpty()) {
-//                removeLoop(groups, matrix, itemFactory, stage)
-//            } else {
-//                swap(i1, i2)
-//            }
-//        })
     }
 
     fun rxVisualSwap(i1: Item, i2: Item): Observable<Pair<Item, Item>> {
@@ -113,46 +96,6 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     fun unfreeze() {
         inputMultiplexer.addProcessor(stage)
-    }
-
-    private fun removeLoop(matches: List<List<Item>>, matrix: RenderingMatrix, itemFactory: ItemFactory, stage: Stage) {
-        removeGroups(matches, then = {
-            events.successfulSwap.onNext(matches.flatten())
-            itemFall.executeFallDown(matrix, itemFactory, then = {
-                addNewItems(matrix, itemFactory, stage, then = {
-                    val newGroups = GroupFinder.findGroups(matrix)
-                    if (newGroups.isNotEmpty()) {
-                        removeLoop(newGroups, matrix, itemFactory, stage)
-                    } else {
-                        events.endPlayerTurn.onNext(Unit)
-                    }
-                })
-            })
-        })
-    }
-
-
-
-    private fun removeGroups(matches: List<List<Item>>, then: () -> Unit = { println("After match remove") }) {
-        if (matches.isEmpty()) return
-        val flattened = matches.flatten()
-
-        flattened.dropLast(1).forEach {
-            matrix.put(itemFactory.hole(it.column, it.row))
-            it.itemActor?.dissapear(then = {
-                it.remove()
-            })
-        }
-
-        flattened.last().let { first ->
-            matrix.put(itemFactory.hole(first.column, first.row))
-            first.itemActor?.dissapear(then = {
-                first.remove()
-                then.invoke()
-            })
-        }
-
-        sound.play(0.4f)
     }
 
     fun RX_visualRemove(groups: List<Item>): Observable<List<Item>> {
@@ -203,43 +146,8 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         items.forEach { matrix.put(it) }
     }
 
-
-
-    fun swap(i1: Pair<Int, Int>, i2: Pair<Int, Int>, then: () -> Unit = { println("After swap!") }) {
-        swap(matrix.get(i1)!!, matrix.get(i2)!!, then)
-    }
-
-    private fun swap(i1: Item, i2: Item, then: () -> Unit = { println("After swap!") }) {
-        val (i1col, i1row) = i1.column to i1.row
-
-        i1.setLogicCoords(i2.column, i2.row)
-        matrix.put(i1)
-        i1.itemActor?.fastMoveTo(matrix.project(i2.column, i2.row))
-
-        i2.setLogicCoords(i1col, i1row)
-        i2.itemActor?.fastMoveTo(matrix.project(i1col, i1row), then)
-        matrix.put(i2)
-
-    }
-
-    private fun addNewItems(matrix: Matrix, itemFactory: ItemFactory, stage: Stage, then: () -> Unit = {  }) {
-        val holes = matrix.flatten().filter { it?.type == Hole }
-
-        if (holes.isNotEmpty()) {
-            holes.take(holes.size - 1).forEach { item ->
-                val ii = itemFactory.nonMatchingItem(item!!.column, item!!.row, matrix)
-                matrix.put(ii)
-                stage.addActor(ii.itemActor)
-                ii.itemActor?.comeOut()
-            }
-
-            holes.last().let { item ->
-                val ii = itemFactory.nonMatchingItem(item!!.column, item!!.row, matrix)
-                matrix.put(ii)
-                stage.addActor(ii.itemActor)
-                ii.itemActor?.comeOut(then = then)
-            }
-        }
+    fun playDissapearSound(volume: Float = 0.4f) {
+        sound.play(volume)
     }
 
     override fun render(delta: Float) {
