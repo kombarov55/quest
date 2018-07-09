@@ -72,7 +72,12 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
                 .map { holes -> screen.holesToNewItems(holes) }
                 .flatMap { items -> screen.RX_fillHolesVisually(items) }
                 .doOnNext { items -> screen.fillHolesInMatrix(items) }
-                .subscribe {  }
+                .map { GroupFinder.findGroups(screen.matrix) }
+                .subscribe { groups ->
+                    if (groups.isNotEmpty()) {
+                        removeLoop.onNext(groups.flatten())
+                    }
+                }
 
 //        val groups = firstSwap.map { GroupFinder.findGroups(screen.matrix) }
 
