@@ -174,6 +174,34 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         }
     }
 
+    fun findHoles(): List<Item> =
+            matrix.flatten()
+                    .filter { it?.type == Hole }
+                    .requireNoNulls()
+
+    fun RX_fillHolesVisually(holes: List<Item>): Observable<List<Item>> {
+        holes.dropLast(1).forEach { item ->
+            stage.addActor(item.itemActor)
+            item.itemActor?.comeOut()
+        }
+
+        return Observable.create { s ->
+            holes.last().let { item ->
+                stage.addActor(item.itemActor)
+                item.itemActor?.comeOut {
+                    s.onNext(holes)
+                    s.onComplete()
+                }
+            }
+        }
+    }
+
+    fun holesToNewItems(holes: List<Item>): List<Item> =
+            holes.map { hole -> itemFactory.nonMatchingItem(hole!!.column, hole!!.row, matrix) }
+
+    fun fillHolesInMatrix(items: List<Item>) {
+        items.forEach { matrix.put(it) }
+    }
 
 
 

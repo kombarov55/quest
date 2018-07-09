@@ -68,6 +68,10 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
                 .flatMap { groups -> screen.RX_visualRemove(groups) }
                 .doOnNext {group -> screen.coordsRemove(group) }
                 .flatMap { screen.RX_fallDown() }
+                .map { screen.findHoles() }
+                .map { holes -> screen.holesToNewItems(holes) }
+                .flatMap { items -> screen.RX_fillHolesVisually(items) }
+                .doOnNext { items -> screen.fillHolesInMatrix(items) }
                 .subscribe {  }
 
 //        val groups = firstSwap.map { GroupFinder.findGroups(screen.matrix) }
