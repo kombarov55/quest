@@ -72,6 +72,12 @@ class ItemActor(
                 CallbackAction(then)))
     }
 
+    fun dissapear() {
+        addAction(ParallelAction(
+                Actions.scaleTo(0.1f, 0.1f, dissapearDuration),
+                Actions.fadeOut(dissapearDuration)))
+    }
+
     fun dissapear(then: () -> Unit) {
 
         addAction(
@@ -81,6 +87,22 @@ class ItemActor(
                                 Actions.fadeOut(dissapearDuration)),
                         CallbackAction(then)))
     }
+
+    fun RX_dissapear(): Observable<Unit> =
+        Observable.create { s ->
+            addAction(
+                    SequenceAction(
+                            ParallelAction(
+                                    Actions.scaleTo(0.1f, 0.1f, dissapearDuration),
+                                    Actions.fadeOut(dissapearDuration)),
+                            CallbackAction {
+                                s.onNext(Unit)
+                                s.onComplete()
+                            }))
+        }
+
+
+
 
     fun comeOut(then: (() -> Unit)? = null) {
         this.setScale(0.1f, 0.1f)

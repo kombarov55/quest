@@ -17,7 +17,6 @@ import com.ovt.quest.three_in_a_row.service.GroupFinder
 import com.ovt.quest.three_in_a_row.service.ItemFall
 import com.ovt.quest.three_in_a_row.service.ThreeInARowEvents
 import io.reactivex.Observable
-import io.reactivex.Single
 
 /**
  * Created by nikolay on 14.03.18.
@@ -155,6 +154,27 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
         sound.play(0.4f)
     }
+
+    fun RX_visualRemove(groups: List<Item>): Observable<List<Item>> {
+        groups.dropLast(1).forEach { it.itemActor?.dissapear() }
+        return groups.last().itemActor!!.RX_dissapear().map { groups }
+
+    }
+
+    fun coordsRemove(group: List<Item>) {
+        group.forEach { matrix.put(itemFactory.hole(it.column, it.row)) }
+    }
+
+    fun RX_fallDown(): Observable<Unit> {
+        return Observable.create { s ->
+            itemFall.executeFallDown(matrix, itemFactory, {
+                s.onNext(Unit)
+                s.onComplete()
+            })
+        }
+    }
+
+
 
 
     fun swap(i1: Pair<Int, Int>, i2: Pair<Int, Int>, then: () -> Unit = { println("After swap!") }) {
