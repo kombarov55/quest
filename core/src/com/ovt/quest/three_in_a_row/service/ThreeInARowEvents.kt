@@ -97,7 +97,6 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
         startEnemyTurn.subscribe {
             println("хмммм.....")
             Thread.sleep(1000)
-//            screen.onSwap(1 to 1, 2 to 1)
             swap.onNext(Coords(1, 1) to Coords(2, 1))
             println("Сходим вот так..")
 
