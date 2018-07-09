@@ -44,7 +44,6 @@ class ItemActor(
                     SequenceAction(
                             Actions.moveTo(coords.x, coords.y, swapDuration),
                             CallbackAction {
-                                println("callback")
                                 s.onNext(Unit)
                                 s.onComplete()
                             }))

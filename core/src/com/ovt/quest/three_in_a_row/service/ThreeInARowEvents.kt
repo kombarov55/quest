@@ -25,17 +25,41 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
 
 
     val swap = PublishSubject.create<Pair<Coords, Coords>>()
+    val swapBack = PublishSubject.create<Pair<Item, Item>>()
+
+    val removeLoop = PublishSubject.create<Unit>()
 
 
     init {
 
+        var i1: Item? = null
+        var i2: Item? = null
+
+
         swap
                 .map { (c1, c2) ->  screen.getItems(c1, c2) }
-                .filter { (c1, c2) -> c1 != null && c2 != null }
-                .map { (c1, c2) -> c1!! to c2!! }
+                .filter { (c1, c2) -> c1 != null && c2 != null }.map { (c1, c2) -> c1!! to c2!! }.doOnNext { i1 = it.first; i2 = it.second }
                 .flatMap { (i1, i2) -> screen.rxVisualSwap(i1, i2) }
                 .doOnNext { (i1, i2) -> screen.coordsSwap(i1, i2) }
-                .subscribe { unit -> println("complete!") }
+                .subscribe { pair ->
+                    val groups = GroupFinder.findGroups(screen.matrix)
+                    if (groups.isEmpty()) {
+                        swapBack.onNext(pair)
+                    } else {
+                        removeLoop.onNext(Unit)
+                    }
+                }
+
+        swapBack
+                .flatMap { (i1, i2) -> screen.rxVisualSwap(i1, i2) }
+                .subscribe { (i1, i2) -> screen.coordsSwap(i1, i2) }
+
+
+        removeLoop
+                .subscribe { println("remove i suppose") }
+
+//        val groups = firstSwap.map { GroupFinder.findGroups(screen.matrix) }
+
 
 
         successfulSwap.subscribe { group ->

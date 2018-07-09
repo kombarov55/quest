@@ -29,7 +29,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         var maxColumns = 10
     }
 
-    private val matrix = RenderingMatrix(maxColumns, maxRows)
+    val matrix = RenderingMatrix(maxColumns, maxRows)
     private val stage = ThreeInARowStage(game, matrix)
     private val hud = Hud(game)
     private val itemFactory = ItemFactory(matrix)
@@ -81,7 +81,7 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
     }
 
     fun rxVisualSwap(i1: Item, i2: Item): Observable<Pair<Item, Item>> {
-        i1.itemActor!!.RX_fastMoveTo(matrix.project(i2)).subscribe()
+        i1.itemActor!!.fastMoveTo(matrix.project(i2))
         return i2.itemActor!!.RX_fastMoveTo(matrix.project(i1))
                 .map { i1 to i2 }
     }

@@ -51,7 +51,6 @@ open class Matrix(val maxColumns: Int, val maxRows: Int) {
         for (row in maxRows - 1 downTo 0) {
             for (column in 0 until maxColumns) {
                 val i = get(column, row)
-//                print("${i?.type.toString().first()}")
                 print("${i?.type?.name?.let { name -> if (name.equals("Hole")) " " else name.first() }} {${i?.column}, ${i?.row}}\t")
             }
             println()
