@@ -90,6 +90,14 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
         hud.playerTotal.setText("" + (red + blue + yellow + pink) + "/30")
     }
 
+    fun updateEnemyCounters(red: Int, blue: Int, yellow: Int, pink: Int) {
+        hud.enemyRedCounter.setText(red.toString())
+        hud.enemyBlueCounter.setText(blue.toString())
+        hud.enemyYellowCounter.setText(yellow.toString())
+        hud.enemyPinkCounter.setText(pink.toString())
+        hud.enemyTotal.setText("" + (red + blue + yellow + pink) + "/30")
+    }
+
 
     var freezed = false
 
