@@ -4,7 +4,4 @@
 . Вращать body стрелы
 . http://rotatingcanvas.com/arrows-and-bullets-in-box2d/
 
-3 в ряд:
-. Дополнить поиск ходов
 
-. Настройки в файл настроек

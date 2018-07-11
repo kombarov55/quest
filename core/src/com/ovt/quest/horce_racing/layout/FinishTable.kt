@@ -22,7 +22,7 @@ class FinishTable(game: QuestGame, title: String = "Вы выйграли!"): Ta
         y = (Gdx.graphics.height / 2) - height / 2
 
         defaults().expandX()
-        background = Image(Textures.getTexture("diary-note-bg.png")).drawable
+//        background = Image(Textures.getTexture("diary-note-bg.png")).drawable
 
         add(label)
         row()
