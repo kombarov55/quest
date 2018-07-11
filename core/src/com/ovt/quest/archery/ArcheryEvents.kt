@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-object Events {
+object ArcheryEvents {
 
     val moveCamera = PublishSubject.create<Vector2>()
     val zoomCamera = PublishSubject.create<Float>()

@@ -18,7 +18,7 @@ class KeyListener: InputAdapter() {
             else -> null
         }
 
-        if (dir != null) Events.moveCamera.onNext(dir)
+        if (dir != null) ArcheryEvents.moveCamera.onNext(dir)
 
         val zoom = when (keycode) {
             Input.Keys.MINUS -> Vars.zoom
@@ -26,13 +26,13 @@ class KeyListener: InputAdapter() {
             else -> null
         }
 
-        if (zoom != null) Events.zoomCamera.onNext(zoom)
+        if (zoom != null) ArcheryEvents.zoomCamera.onNext(zoom)
 
         return true
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        Events.touch.onNext(Vector2(screenX.toFloat(), screenY.toFloat()))
+        ArcheryEvents.touch.onNext(Vector2(screenX.toFloat(), screenY.toFloat()))
         return false
     }
 }

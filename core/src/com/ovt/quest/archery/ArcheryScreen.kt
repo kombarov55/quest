@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.maps.MapLayer
 import com.badlogic.gdx.maps.objects.PolygonMapObject
-import com.badlogic.gdx.maps.objects.PolylineMapObject
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.MathUtils
@@ -128,37 +127,37 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
     }
 
     private fun makeSubscriptions() {
-        Events.moveCamera.subscribe { v ->
+        ArcheryEvents.moveCamera.subscribe { v ->
             if (!camOob(cam, v)) {
                 cam.translate(v.x / PPM, v.y / PPM)
                 cam.update()
             }
         }
 
-        Events.zoomCamera.subscribe { z ->
+        ArcheryEvents.zoomCamera.subscribe { z ->
             cam.zoom += z
             cam.update()
         }
 
-        Events.goHome.subscribe { game.screen = MainMenuScreen(game) }
+        ArcheryEvents.goHome.subscribe { game.screen = MainMenuScreen(game) }
 
-        Events.bowRotation.subscribe { angle ->
+        ArcheryEvents.bowRotation.subscribe { angle ->
             bowSprite.rotation = angle
         }
 
-        Events.touch.subscribe {pos ->
+        ArcheryEvents.touch.subscribe { pos ->
             val pos1 = cam.unproject(Vector3(pos, 0f))
 
             println("x=${pos.x} y=${pos.y}")
             println("xx=${pos1.x} yy=${pos1.y}")
         }
 
-        Events.bowPower.subscribe { power ->
+        ArcheryEvents.bowPower.subscribe { power ->
             val tmp = (power / Vars.bowMaxPower)
             bowSprite.currentFrameIndex = MathUtils.floor(tmp * (bowSprite.frames.size - 1).toFloat())
         }
 
-        Events.fireBow.subscribe { (angle, power) ->
+        ArcheryEvents.fireBow.subscribe { (angle, power) ->
             arrowBody.isActive = true
             val radAngle = (MathUtils.degreesToRadians * angle).toDouble()
             arrowBody.setTransform(arrowBody.position, radAngle.toFloat())
@@ -168,7 +167,7 @@ class ArcheryScreen(private val game: QuestGame) : Screen {
             arrowBody.applyForceToCenter(xPower.toFloat(), yPower.toFloat(), false)
         }
 
-        Events.createArrow.subscribe {
+        ArcheryEvents.createArrow.subscribe {
             createArrow()
         }
 

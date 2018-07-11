@@ -40,23 +40,23 @@ class Hud(private val game: QuestGame): Stage() {
         table.add(fire)
         table.add(createArrow)
 
-        home.addClickListener { Events.goHome.onNext(Unit) }
-        zoomIn.addClickListener { Events.zoomCamera.onNext(Vars.zoom) }
-        zoomOut.addClickListener { Events.zoomCamera.onNext(-Vars.zoom) }
+        home.addClickListener { ArcheryEvents.goHome.onNext(Unit) }
+        zoomIn.addClickListener { ArcheryEvents.zoomCamera.onNext(Vars.zoom) }
+        zoomOut.addClickListener { ArcheryEvents.zoomCamera.onNext(-Vars.zoom) }
         bowRotation.addListener(object: ChangeListener() {
             override fun changed(event: ChangeEvent, actor: Actor) {
-                Events.bowRotation.onNext(bowRotation.value)
+                ArcheryEvents.bowRotation.onNext(bowRotation.value)
             }
         })
 
         bowPower.addListener(object: ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Events.bowPower.onNext(bowPower.value)
+                ArcheryEvents.bowPower.onNext(bowPower.value)
             }
         })
 
-        fire.addClickListener { Events.fireBow.onNext(bowRotation.value to bowPower.value) }
-        createArrow.addClickListener { Events.createArrow.onNext(Unit) }
+        fire.addClickListener { ArcheryEvents.fireBow.onNext(bowRotation.value to bowPower.value) }
+        createArrow.addClickListener { ArcheryEvents.createArrow.onNext(Unit) }
 
 
         addActor(finishTable)
