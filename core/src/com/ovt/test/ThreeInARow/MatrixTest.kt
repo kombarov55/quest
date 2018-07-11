@@ -75,7 +75,8 @@ class testFindPlusGroup: StringSpec() {
     }
 }
 
-fun loadMatrixFromFile(path: String): Matrix {
+fun loadMatrixFromFile(dir: String, filename: String): Matrix {
+    val path = dir + filename
 
     val lines = Files.readAllLines(Paths.get(path))
             .reversed()
@@ -103,3 +104,7 @@ fun loadMatrixFromFile(path: String): Matrix {
 
     return m
 }
+
+val matrixDir = "/Users/nikolay/IdeaProjects/quest/matrix-test-samples/"
+
+fun loadMatrixFromFile(filename: String): Matrix = loadMatrixFromFile(matrixDir, filename)

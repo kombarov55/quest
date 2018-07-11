@@ -58,7 +58,12 @@ open class Matrix(val maxColumns: Int, val maxRows: Int) {
         println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     }
 
-    fun getRow(rownum: Int): List<Item?> = matrix.map { column -> column.first() }
+    fun getRow(rownum: Int): List<Item?> {
+        var list = listOf<Item?>()
+        for (i in 0 until this.maxColumns)
+            list += get(i, rownum)
+        return list
+    }
 
     fun getColumn(colnum: Int): List<Item?> = matrix[colnum]
 
