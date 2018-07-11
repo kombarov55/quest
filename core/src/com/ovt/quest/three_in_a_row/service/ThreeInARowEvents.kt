@@ -33,7 +33,7 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
     val playerScored = PublishSubject.create<List<Item>>()
 
 
-    val enemySwap = PublishSubject.create<Pair<Coords, Coords>>()
+    val enemySwap = PublishSubject.create<Pair<Item, Item>>()
     val enemyRemoveLoop = PublishSubject.create<List<Item>>()
     val enemyScored = PublishSubject.create<List<Item>>()
 
@@ -104,14 +104,13 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
         startEnemyTurn.subscribe {
             println("хмммм.....")
             Thread.sleep(1000)
-            enemySwap.onNext(Coords(1, 1) to Coords(2, 1))
+            val turn  = Prediction.findAvailableTurns(screen.matrix)
+            enemySwap.onNext(turn.first().toSwap)
             println("Сходим вот так..")
 
         }
 
         enemySwap
-                .map { (c1, c2) ->  screen.getItems(c1, c2) }
-                .filter { (c1, c2) -> c1 != null && c2 != null }.map { (c1, c2) -> c1!! to c2!! }
                 .flatMap { (i1, i2) -> screen.rxVisualSwap(i1, i2) }
                 .doOnNext { (i1, i2) -> screen.coordsSwap(i1, i2) }
                 .subscribe { pair ->
@@ -126,7 +125,7 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
         enemyRemoveLoop
                 .doOnNext { group ->
                     screen.playDissapearSound()
-                    playerScored.onNext(group)
+                    enemyScored.onNext(group)
                 }
                 .flatMap { groups -> screen.RX_visualRemove(groups) }
                 .doOnNext {group -> screen.coordsRemove(group) }
@@ -138,7 +137,7 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
                 .map { GroupFinder.findGroups(screen.matrix) }
                 .subscribe { groups ->
                     if (groups.isNotEmpty()) {
-                        removeLoop.onNext(groups.flatten())
+                        enemyRemoveLoop.onNext(groups.flatten())
                     } else {
                         screen.unfreeze()
                     }
@@ -158,20 +157,8 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
                     Item.Type.Pink -> enemyPinkPoints += 1
                 }
             }
-            screen.updateEnemyCounters(redPoints, bluePoints, yellowPoints, pinkPoints)
+            screen.updateEnemyCounters(enemyRedPoints, enemyBluePoints, enemyYellowPoints, enemyPinkPoints)
         }
     }
 
-}
-
-fun main(args: Array<String>) {
-    val o = Observable.just(1)
-    o.flatMap {
-        println("flatmap..")
-        Thread.sleep(1000)
-        println("flatmap complete")
-        Observable.just(Unit)
-    }.subscribe {
-        println("complete")
-    }
 }
