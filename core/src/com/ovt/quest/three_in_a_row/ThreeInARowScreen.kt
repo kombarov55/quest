@@ -53,8 +53,13 @@ class ThreeInARowScreen(private val game: QuestGame) : Screen {
 
     }
 
-    fun finish() {
+    fun win() {
         val finishTable = FinishTable(game)
+        hud.addActor(finishTable)
+    }
+
+    fun lose() {
+        val finishTable = FinishTable(game, "Вы проиграли!")
         hud.addActor(finishTable)
     }
 

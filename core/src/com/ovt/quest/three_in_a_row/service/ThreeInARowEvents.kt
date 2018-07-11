@@ -3,7 +3,6 @@ package com.ovt.quest.three_in_a_row.service
 import com.ovt.quest.three_in_a_row.ThreeInARowScreen
 import com.ovt.quest.three_in_a_row.model.Coords
 import com.ovt.quest.three_in_a_row.model.Item
-import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 
@@ -87,7 +86,7 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
         playerScored.subscribe { group ->
             totalPoints += group.size
             if (totalPoints >= limit) {
-                screen.finish()
+                screen.win()
             }
 
             group.forEach { item ->
@@ -146,7 +145,7 @@ class ThreeInARowEvents(private val screen: ThreeInARowScreen) {
         enemyScored.subscribe { group ->
             enemyPoints += group.size
             if (enemyPoints >= limit) {
-                screen.finish()
+                screen.lose()
             }
 
             group.forEach { item ->
