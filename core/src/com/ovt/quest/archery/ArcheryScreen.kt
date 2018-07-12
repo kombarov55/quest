@@ -40,12 +40,13 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         sb = SpriteBatch()
 
         tilemap = TmxMapLoader().load("maps/archery/basic/archery-sample.tmx")
-        tilemapRenderer = OrthogonalTiledMapRenderer(tilemap, sb)
+        tilemapRenderer = OrthogonalTiledMapRenderer(tilemap, 1/128f, sb)
         camera = OrthographicCamera()
-        camera.setToOrtho(false, 1600f, 1600f)
+        camera.setToOrtho(false, 8f, 4.8f)
     }
 
     override fun render(delta: Float) {
+        Gdx.gl.glClearColor(0f, 1f, 0f, 0f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         tilemapRenderer.setView(camera)
