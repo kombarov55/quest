@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.maps.MapLayer
 import com.badlogic.gdx.maps.objects.PolygonMapObject
+import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.MathUtils
@@ -28,10 +29,26 @@ import com.ovt.quest.main_menu_screens.MainMenuScreen
  */
 class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
+    lateinit var sb: SpriteBatch
+
+    lateinit var tilemap: TiledMap
+    lateinit var tilemapRenderer: OrthogonalTiledMapRenderer
+    lateinit var camera: OrthographicCamera
+
     override fun show() {
+
+        sb = SpriteBatch()
+
+        tilemap = TmxMapLoader().load("maps/archery/basic/archery-sample.tmx")
+        tilemapRenderer = OrthogonalTiledMapRenderer(tilemap, sb)
+        camera = OrthographicCamera()
+        camera.setToOrtho(false, 1600f, 1600f)
     }
 
     override fun render(delta: Float) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        tilemapRenderer.setView(camera)
+        tilemapRenderer.render()
     }
 }
