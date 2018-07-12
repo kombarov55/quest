@@ -1,7 +1,6 @@
 Квест:
 
 Стрельба:
-. Вращать body стрелы
-. http://rotatingcanvas.com/arrows-and-bullets-in-box2d/
+. Исправить выход камеры за границы
 
 
