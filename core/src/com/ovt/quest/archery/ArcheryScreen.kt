@@ -6,9 +6,11 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.maps.MapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.QuestGame
@@ -39,6 +41,9 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
     val unitScale = worldHeight/tilemapHeight
 
+    lateinit var bow: Bow
+    lateinit var target: Target
+
 
     override fun show() {
         sb = SpriteBatch()
@@ -54,12 +59,9 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         Gdx.input.inputProcessor = imul
 
         objectFactory = ObjectFactory(world, tilemap, worldWidth / tilemap.width(), worldHeight / tilemap.height())
-        createObjects()
-    }
 
-    fun createObjects() {
-        objectFactory.createBow()
-        objectFactory.createTarget()
+        bow = objectFactory.createBow()
+        target = objectFactory.createTarget()
     }
 
 
@@ -72,5 +74,10 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         tilemapRenderer.setView(camera)
         tilemapRenderer.render()
         box2DDebugRenderer.render(world, camera.combined)
+
+        sb.begin()
+        bow.draw(sb)
+
+        sb.end()
     }
 }
