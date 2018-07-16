@@ -32,6 +32,6 @@
  </layer>
  <objectgroup name="objects">
   <object id="1" name="bow" x="384.828" y="910.853" width="213.179" height="221.484"/>
-  <object id="2" name="target" x="2386.49" y="764.12" width="334.994" height="368.217"/>
+  <object id="2" name="target" x="2386.49" y="789.037" width="334.994" height="368.217"/>
  </objectgroup>
 </map>

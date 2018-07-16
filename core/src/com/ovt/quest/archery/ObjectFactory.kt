@@ -32,7 +32,8 @@ class ObjectFactory(private val world: World,
         val mapobj = tilemap.layers["objects"].objects["target"]
         val r = mapobjToRectangle(mapobj)
         val body = rectangleToBody(r)
-        return Target(body)
+        val t = Texture(Gdx.files.internal("maps/archery/target.png"))
+        return Target(body, t, r)
     }
 
     fun rectangleToBody(rect: Rectangle): Body {

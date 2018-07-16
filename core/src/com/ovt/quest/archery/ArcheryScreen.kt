@@ -77,7 +77,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
         sb.begin()
         bow.draw(sb)
-
+        target.draw(sb)
         sb.end()
     }
 }
