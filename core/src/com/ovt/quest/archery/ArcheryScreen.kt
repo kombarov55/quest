@@ -58,7 +58,9 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         bow = objectFactory.createBow()
         target = objectFactory.createTarget()
 
-        imul = InputMultiplexer(BowRotationListener(Rectangle(1f, 1f, 1f, 1f), scaler), CameraInputProcessor(camera), KeyInputProcessor(camera))
+        val zone = objectFactory.getZone()
+
+        imul = InputMultiplexer(BowRotationListener(zone, scaler), CameraInputProcessor(camera), KeyInputProcessor(camera))
         Gdx.input.inputProcessor = imul
     }
 

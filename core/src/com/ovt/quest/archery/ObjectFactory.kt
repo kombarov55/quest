@@ -35,7 +35,12 @@ class ObjectFactory(private val world: World,
         return Target(body, t, r)
     }
 
-    fun rectangleToBody(rect: Rectangle): Body {
+    fun getZone(): Rectangle {
+        val mapobj = tilemap.layers["areas"].objects["rotation-area"]
+        return mapobjToRectangle(mapobj)
+    }
+
+    private fun rectangleToBody(rect: Rectangle): Body {
         val bdef = BodyDef()
         bdef.position.set(rect.x + rect.width/2, rect.y + rect.height/2)
         val body = world.createBody(bdef)
@@ -47,7 +52,7 @@ class ObjectFactory(private val world: World,
         return body
     }
 
-    fun mapobjToRectangle(mapObject: MapObject): Rectangle {
+    private fun mapobjToRectangle(mapObject: MapObject): Rectangle {
         val rect = Rectangle(
                 mapObject.properties.get("x", Float::class.java),
                 mapObject.properties.get("y", Float::class.java),
