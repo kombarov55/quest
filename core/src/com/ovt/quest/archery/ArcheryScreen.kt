@@ -59,6 +59,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
     fun createObjects() {
         objectFactory.createBow()
+        objectFactory.createTarget()
     }
 
 
