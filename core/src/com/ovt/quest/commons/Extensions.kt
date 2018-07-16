@@ -1,5 +1,7 @@
 package com.ovt.quest.commons
 
+import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -15,4 +17,14 @@ fun Actor.addClickListener(f: () -> Unit) {
             return super.touchDown(event, x, y, pointer, button)
         }
     })
+}
+
+fun TiledMap.width(): Int = properties["width"] as Int * properties.get("tilewidth") as Int
+fun TiledMap.height(): Int = properties["height"] as Int * properties.get("tileheight") as Int
+
+fun Rectangle.scale(xScale: Float, yScale: Float) {
+    this.x = this.x * xScale
+    this.y = this.y * yScale
+    this.width = this.width * xScale
+    this.height = this.height * yScale
 }

@@ -12,7 +12,7 @@ fun toPositive(x: Float) = if (x < 0) -x else x
 
 fun Vector2(x: Int, y: Int): Vector2 = Vector2(x.toFloat(), y.toFloat())
 
-fun toRectangle(mapObject: MapObject): Rectangle {
+fun Rectangle(mapObject: MapObject): Rectangle {
     return Rectangle(
             mapObject.properties.get("x", Float::class.java),
             mapObject.properties.get("y", Float::class.java),
