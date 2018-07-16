@@ -13,8 +13,7 @@ import com.ovt.quest.commons.scale
 
 class ObjectFactory(private val world: World,
                     private val tilemap: TiledMap,
-                    private val scaleX: Float,
-                    private val scaleY: Float) {
+                    private val scaler: Scaler) {
 
 
 
@@ -32,7 +31,7 @@ class ObjectFactory(private val world: World,
         val mapobj = tilemap.layers["objects"].objects["target"]
         val r = mapobjToRectangle(mapobj)
         val body = rectangleToBody(r)
-        val t = Texture(Gdx.files.internal("maps/archery/target.png"))
+        val t = Texture(Gdx.files.internal("maps/archery/target-rescaled.png"))
         return Target(body, t, r)
     }
 
@@ -56,7 +55,7 @@ class ObjectFactory(private val world: World,
                 mapObject.properties.get("height", Float::class.java)
         )
 
-        rect.scale(scaleX, scaleY)
+        rect.scale(scaler.xScale, scaler.yScale)
         return rect
     }
 

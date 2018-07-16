@@ -33,35 +33,33 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
     lateinit var objectFactory: ObjectFactory
 
-    val worldWidth = 100f
-    val worldHeight = 50f
-
-    val tilmapWidth = 3200f
-    val tilemapHeight = 1600f
-
-    val unitScale = worldHeight/tilemapHeight
-
     lateinit var bow: Bow
     lateinit var target: Target
+
+    lateinit var scaler: Scaler
 
 
     override fun show() {
         sb = SpriteBatch()
 
-        tilemap = TmxMapLoader().load("maps/archery/basic/archery-sample.tmx")
-        tilemapRenderer = OrthogonalTiledMapRenderer(tilemap, unitScale, sb)
         camera = OrthographicCamera()
         camera.setToOrtho(false, 8f, 4.8f)
         world = World(Vector2(0f, -10f), true)
         box2DDebugRenderer = Box2DDebugRenderer()
 
-        imul = InputMultiplexer(CameraInputProcessor(camera), KeyInputProcessor(camera))
-        Gdx.input.inputProcessor = imul
+        scaler = Scaler(camera = camera)
 
-        objectFactory = ObjectFactory(world, tilemap, worldWidth / tilemap.width(), worldHeight / tilemap.height())
+        tilemap = TmxMapLoader().load("maps/archery/basic/archery-sample.tmx")
+        tilemapRenderer = OrthogonalTiledMapRenderer(tilemap, scaler.unitScale, sb)
+
+
+        objectFactory = ObjectFactory(world, tilemap, scaler)
 
         bow = objectFactory.createBow()
         target = objectFactory.createTarget()
+
+        imul = InputMultiplexer(BowRotationListener(Rectangle(1f, 1f, 1f, 1f), scaler), CameraInputProcessor(camera), KeyInputProcessor(camera))
+        Gdx.input.inputProcessor = imul
     }
 
 

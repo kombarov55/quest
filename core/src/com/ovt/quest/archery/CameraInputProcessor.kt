@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.InputAdapter
 
 
-class CameraInputProcessor(internal var cam: OrthographicCamera) : InputAdapter() {
+class CameraInputProcessor(private var cam: OrthographicCamera) : InputAdapter() {
 
     var lastTouch = Vector3()
     var tmp = Vector3()

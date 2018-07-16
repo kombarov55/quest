@@ -1,7 +1,10 @@
 package com.ovt.quest.commons
 
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -27,4 +30,10 @@ fun Rectangle.scale(xScale: Float, yScale: Float) {
     this.y = this.y * yScale
     this.width = this.width * xScale
     this.height = this.height * yScale
+}
+
+fun OrthographicCamera.unproject(v: Vector2): Vector2 {
+    val r = this.unproject(Vector3(v, 0f))
+    v.set(r.x, r.y)
+    return v
 }
