@@ -21,18 +21,16 @@ class ObjectFactory(private val world: World,
     fun createBow(): Bow {
         val mapobj = tilemap.layers["objects"].objects["bow"]
         val r = mapobjToRectangle(mapobj)
-        val body = rectangleToBody(r)
         //TODO: сделать загрузчик текстур
         val t = Texture(Gdx.files.internal("maps/archery/bow-rescaled.png"))
-        return Bow(body, t, r)
+        return Bow(t, r)
     }
 
     fun createTarget(): Target {
         val mapobj = tilemap.layers["objects"].objects["target"]
         val r = mapobjToRectangle(mapobj)
-        val body = rectangleToBody(r)
         val t = Texture(Gdx.files.internal("maps/archery/target-rescaled.png"))
-        return Target(body, t, r)
+        return Target(t, r)
     }
 
     fun getZone(): Rectangle {
