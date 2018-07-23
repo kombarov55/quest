@@ -11,6 +11,11 @@ class Bow(private val texture: Texture, val shape: Rectangle) {
 
     var rotation = 0f
 
+    //TODO: выбрать фрейм в анимации, от 0.0 до 1.0
+    fun setPower(power: Float) {
+
+    }
+
 
     fun draw(sb: SpriteBatch) {
         sb.draw(texture,

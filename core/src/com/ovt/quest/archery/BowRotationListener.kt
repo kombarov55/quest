@@ -26,7 +26,10 @@ class BowRotationListener(private val zone: Rectangle, private val scaler: Scale
             val p = scaler.toWorldCoords(screenX, screenY)
             val angle = getAngle(p, bow)
             val distance = getDistance(p, bow)
+
             bow.rotation = angle
+            bow
+
             println("alpha: $angle, distance: $distance")
             return true
         } else {
