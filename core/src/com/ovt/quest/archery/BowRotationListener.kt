@@ -11,8 +11,7 @@ class BowRotationListener(private val zone: Rectangle, private val scaler: Scale
     private var isDragging = false
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        val p = Vector2(screenX, screenY)
-        scaler.toWorldCoords(p)
+        val p = scaler.toWorldCoords(screenX, screenY)
         if (zone.contains(p)) {
             isDragging = true
             println(true)
@@ -24,11 +23,11 @@ class BowRotationListener(private val zone: Rectangle, private val scaler: Scale
 
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
         if (isDragging) {
-            val p = Vector2(screenX, screenY)
-            scaler.toWorldCoords(p)
+            val p = scaler.toWorldCoords(screenX, screenY)
             val angle = getAngle(p, bow)
+            val distance = getDistance(p, bow)
             bow.rotation = angle
-            println("alpha: $angle")
+            println("alpha: $angle, distance: $distance")
             return true
         } else {
             return false
@@ -44,10 +43,15 @@ class BowRotationListener(private val zone: Rectangle, private val scaler: Scale
         }
     }
 
+    private fun getDistance(touch: Vector2, bow: Bow): Float {
+        val projectedTouch = scaler.toWorldCoords(touch)
+        val projectedCenter = scaler.toWorldCoords(bow.center)
+
+        val vector = Vector2(projectedTouch.x - projectedCenter.x, projectedTouch.y - projectedCenter.y)
+        return vector.len()
+    }
+
     private fun getAngle(touch: Vector2, bow: Bow): Float {
-        //float degrees = (float) ((Math.atan2(touchPoint.x - crocodile.position.x, -(touchPoint.y - crocodile.position.y)) * 180.0d / Math.PI));
-
         return MathUtils.atan2(touch.y - bow.center.y, touch.x - bow.center.x) * 180f / Math.PI.toFloat()
-
     }
 }
