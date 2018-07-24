@@ -28,7 +28,7 @@ class BowRotationListener(private val zone: Rectangle, private val scaler: Scale
             val distance = getDistance(p, bow)
 
             bow.rotation = angle
-            bow
+            bow.setPower(distance)
 
             println("alpha: $angle, distance: $distance")
             return true

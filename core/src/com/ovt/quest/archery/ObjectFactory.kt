@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.World
+import com.ovt.quest.commons.MyAnimation
 import com.ovt.quest.commons.scale
 
 class ObjectFactory(private val world: World,
@@ -22,8 +23,9 @@ class ObjectFactory(private val world: World,
         val mapobj = tilemap.layers["objects"].objects["bow"]
         val r = mapobjToRectangle(mapobj)
         //TODO: сделать загрузчик текстур
-        val t = Texture(Gdx.files.internal("maps/archery/bow-rescaled.png"))
-        return Bow(t, r)
+        val t = Texture(Gdx.files.internal("maps/archery/bow-anim.png"))
+        val animation = MyAnimation(t, 70, 90)
+        return Bow(animation, r)
     }
 
     fun createTarget(): Target {
