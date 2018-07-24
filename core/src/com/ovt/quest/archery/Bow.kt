@@ -13,7 +13,6 @@ class Bow(private val animation: MyAnimation, val shape: Rectangle) {
     var rotation = 0f
     var currentFrame: TextureRegion = animation.getFrame(0)
 
-    //TODO: выбрать фрейм в анимации, от 0.0 до 1.0
     fun setPower(power: Float) {
         val frameIndex = (animation.size * power).toInt()
         currentFrame = animation.getFrame(frameIndex)
