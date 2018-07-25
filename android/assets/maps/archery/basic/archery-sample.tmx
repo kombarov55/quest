@@ -35,6 +35,6 @@
   <object id="2" name="target" x="2386.49" y="789.037" width="334.994" height="368.217"/>
  </objectgroup>
  <objectgroup name="areas">
-  <object id="3" name="rotation-area" x="155.039" y="645.072" width="777.962" height="705.98"/>
+  <object id="3" name="rotation-area" x="368.217" y="645.072" width="564.784" height="708.749"/>
  </objectgroup>
 </map>
