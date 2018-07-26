@@ -37,3 +37,8 @@ fun OrthographicCamera.unproject(v: Vector2): Vector2 {
     v.set(r.x, r.y)
     return v
 }
+
+fun OrthographicCamera.unproject(x: Float, y: Float): Vector2 {
+    val v2 = Vector2(x, y)
+    return unproject(v2)
+}

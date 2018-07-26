@@ -6,16 +6,12 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.maps.MapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.QuestGame
-import com.ovt.quest.commons.height
-import com.ovt.quest.commons.width
 
 /**
  * Created by nikolay on 28.03.18.
@@ -60,7 +56,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
         val zone = objectFactory.getZone()
 
-        imul = InputMultiplexer(BowRotationListener(zone, scaler, bow), CameraInputProcessor(camera), KeyInputProcessor(camera))
+        imul = InputMultiplexer(BowControlListener(zone, scaler, bow, objectFactory), CameraInputProcessor(camera), KeyInputProcessor(camera))
         Gdx.input.inputProcessor = imul
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-up" width="50" height="25" tilewidth="64" tileheight="64" infinite="0" nextobjectid="4">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-up" width="50" height="25" tilewidth="64" tileheight="64" infinite="0" nextobjectid="5">
  <tileset firstgid="1" source="tiles/basic.tsx"/>
  <layer name="background-layer" width="50" height="25">
   <data encoding="csv">
@@ -33,6 +33,9 @@
  <objectgroup name="objects">
   <object id="1" name="bow" x="384.828" y="910.853" width="213.179" height="221.484"/>
   <object id="2" name="target" x="2386.49" y="789.037" width="334.994" height="368.217"/>
+  <object id="4" name="arrow" x="533" y="990">
+   <polygon points="0,0 60,29 -1,62 -137,32"/>
+  </object>
  </objectgroup>
  <objectgroup name="areas">
   <object id="3" name="rotation-area" x="368.217" y="645.072" width="564.784" height="708.749"/>

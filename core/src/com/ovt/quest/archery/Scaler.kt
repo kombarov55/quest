@@ -4,12 +4,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector2
 import com.ovt.quest.commons.unproject
 import com.ovt.quest.three_in_a_row.Vector2
+import com.ovt.quest.three_in_a_row.merge
 
 class Scaler(
-        val worldWidth: Float = 100f,
-        val worldHeight: Float = 50f,
-        val tilemapWidth: Float = 3200f,
-        val tilemapHeight: Float = 1600f,
+        worldWidth: Float = 100f,
+        worldHeight: Float = 50f,
+        tilemapWidth: Float = 3200f,
+        tilemapHeight: Float = 1600f,
         val camera: OrthographicCamera
 ) {
     val unitScale = worldHeight/tilemapHeight
@@ -24,4 +25,13 @@ class Scaler(
     }
 
     fun toWorldCoords(x: Int, y: Int): Vector2 = toWorldCoords(Vector2(x, y))
+
+    fun toWorldCoords(vertices: FloatArray): FloatArray {
+        var i = 0
+        val (xVertices, yVertices) = vertices.partition { i++ % 2 == 0 }
+        val transformedXVertices = xVertices.map {x -> x * xScale }
+        val transformedYVertices = yVertices.map { y -> y * yScale }
+
+        return merge(transformedXVertices, transformedYVertices).toFloatArray()
+    }
 }

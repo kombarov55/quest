@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.ovt.quest.three_in_a_row.Vector2
 
-class BowRotationListener(private val zone: Rectangle, private val scaler: Scaler, private val bow: Bow): InputAdapter() {
+class BowControlListener(private val zone: Rectangle, private val scaler: Scaler, private val bow: Bow, private val objectFactory: ObjectFactory): InputAdapter() {
 
     private var isDragging = false
 
@@ -29,7 +29,6 @@ class BowRotationListener(private val zone: Rectangle, private val scaler: Scale
 
             bow.rotation = angle
             bow.setPower(distance)
-
             println("alpha: $angle, distance: $distance")
             return true
         } else {
@@ -40,10 +39,16 @@ class BowRotationListener(private val zone: Rectangle, private val scaler: Scale
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (isDragging) {
             isDragging = false
+            fireBow()
             return true
         } else {
             return false
         }
+    }
+
+    //TODO: вынести в другое место
+    private fun fireBow() {
+        objectFactory.createArrow(bow.center, bow.rotation)
     }
 
     private fun getDistance(touch: Vector2, bow: Bow): Float {
