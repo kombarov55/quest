@@ -8,10 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.Body
-import com.badlogic.gdx.physics.box2d.BodyDef
-import com.badlogic.gdx.physics.box2d.PolygonShape
-import com.badlogic.gdx.physics.box2d.World
+import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.commons.MyAnimation
 import com.ovt.quest.commons.scale
 
@@ -67,23 +64,38 @@ class ObjectFactory(private val world: World,
         return rect
     }
 
-    fun createArrow(center: Vector2, degrees: Float) {
+    fun createArrow(center: Vector2, degrees: Float): Body {
         val bdef = BodyDef()
         bdef.position.set(center)
         //TODO: потом сделать динамическим
-        bdef.type = BodyDef.BodyType.StaticBody
+        bdef.type = BodyDef.BodyType.DynamicBody
         val body = world.createBody(bdef)
 
-        val mapobj = getObject("arrow") as PolygonMapObject
-        val vertices = mapobj.polygon.vertices
-        val scaledVertices = scaler.toWorldCoords(vertices)
+//        val mapobj = getObject("arrow") as PolygonMapObject
+//        val vertices = mapobj.polygon.vertices
+//        val scaledVertices = scaler.toWorldCoords(vertices)
+
+        var vertices = arrayOf(Vector2(-1.4f, 0f), Vector2(0f, -0.1f), Vector2(0.6f, 0f), Vector2(0f, 0.1f))
+//        var vertices = arrayOf(Vector2(-1.4f * 5, 0f), Vector2(0f, -0.1f * 5), Vector2(0.6f * 5, 0f), Vector2(0f, 0.1f * 5))
 
         val shape = PolygonShape()
-        shape.set(scaledVertices)
+        shape.set(vertices)
         //TODO: поменять density
-        body.createFixture(shape, 1f)
-        val radians = MathUtils.degreesToRadians * degrees
-        body.setTransform(body.worldCenter, radians)
+        val fdef = FixtureDef()
+        fdef.shape = shape
+        fdef.density = 1f
+        fdef.friction = 0.5f
+        fdef.restitution = 0.5f
+
+        body.createFixture(fdef)
+        body.setTransform(body.worldCenter, MathUtils.degreesToRadians * degrees)
+
+        val force = 20f
+        val xForce = MathUtils.cos(body.angle) * force
+        val yForce = MathUtils.sin(body.angle) * force
+        body.setLinearVelocity(xForce, yForce)
+
+        return body
     }
 
     private fun getObject(name: String): MapObject = tilemap.layers["objects"].objects[name]

@@ -4,7 +4,6 @@ import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.ovt.quest.three_in_a_row.Vector2
 
 class BowControlListener(private val zone: Rectangle, private val scaler: Scaler, private val bow: Bow, private val objectFactory: ObjectFactory): InputAdapter() {
 
@@ -48,7 +47,8 @@ class BowControlListener(private val zone: Rectangle, private val scaler: Scaler
 
     //TODO: вынести в другое место
     private fun fireBow() {
-        objectFactory.createArrow(bow.center, bow.rotation)
+        val arrow = objectFactory.createArrow(bow.center, bow.rotation)
+        Bodies.arrow = arrow
     }
 
     private fun getDistance(touch: Vector2, bow: Bow): Float {
