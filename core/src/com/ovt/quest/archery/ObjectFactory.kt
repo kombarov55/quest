@@ -2,24 +2,19 @@ package com.ovt.quest.archery
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.maps.MapObject
-import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.commons.MyAnimation
-import com.ovt.quest.commons.scale
 
 //TODO: переименовать на связанное с tilemap, или же разделить функциональность на доставание из tilemap и создание объекта
 class ObjectFactory(private val world: World,
-                    private val tilemap: TiledMap,
-                    private val scaler: Scaler) {
+                    private val tilemapHelper: TilemapHelper) {
 
 
     fun createBow(): Bow {
-        val mapobj = getObject("bow")
-        val r = mapobjToRectangle(mapobj)
+        val r = tilemapHelper.getBowRectangle()
         //TODO: сделать загрузчик текстур
         val t = Texture(Gdx.files.internal("maps/archery/bow-anim.png"))
         val animation = MyAnimation(t, 70, 90)
@@ -27,15 +22,9 @@ class ObjectFactory(private val world: World,
     }
 
     fun createTarget(): Target {
-        val mapobj = getObject("target")
-        val r = mapobjToRectangle(mapobj)
+        val r = tilemapHelper.getTargetRectangle()
         val t = Texture(Gdx.files.internal("maps/archery/target-rescaled.png"))
         return Target(t, r)
-    }
-
-    fun getZone(): Rectangle {
-        val mapobj = getArea("rotation-area")
-        return mapobjToRectangle(mapobj)
     }
 
     private fun rectangleToBody(rect: Rectangle): Body {
@@ -48,27 +37,6 @@ class ObjectFactory(private val world: World,
         body.createFixture(shape, 1f)
 
         return body
-    }
-
-    private fun mapobjToRectangle(mapObject: MapObject): Rectangle {
-        val rect = Rectangle(
-                mapObject.properties.get("x", Float::class.java),
-                mapObject.properties.get("y", Float::class.java),
-                mapObject.properties.get("width", Float::class.java),
-                mapObject.properties.get("height", Float::class.java)
-        )
-
-        rect.scale(scaler.xScale, scaler.yScale)
-        return rect
-    }
-
-    fun getCameraStartingPoint(): Vector2 {
-        val mapobj = getObject("camera-starting-point")
-
-        return Vector2(
-                mapobj.properties.get("x", Float::class.java),
-                mapobj.properties.get("y", Float::class.java))
-                .scl(scaler.xScale, scaler.yScale)
     }
 
     fun createArrow(center: Vector2, degrees: Float): Body {
@@ -104,9 +72,5 @@ class ObjectFactory(private val world: World,
 
         return body
     }
-
-    private fun getObject(name: String): MapObject = tilemap.layers["objects"].objects[name]
-
-    private fun getArea(name: String): MapObject = tilemap.layers["areas"].objects[name]
 
 }

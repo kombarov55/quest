@@ -35,12 +35,12 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
     lateinit var scaler: Scaler
 
-
     override fun show() {
         sb = SpriteBatch()
 
         camera = OrthographicCamera()
         camera.setToOrtho(false, 8f, 4.8f)
+
         world = World(Vector2(0f, -10f), true)
         box2DDebugRenderer = Box2DDebugRenderer(true, true, true, true, true, true)
 
@@ -49,16 +49,22 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         tilemap = TmxMapLoader().load("maps/archery/basic/archery-sample.tmx")
         tilemapRenderer = OrthogonalTiledMapRenderer(tilemap, scaler.unitScale, sb)
 
+        val tilemapHelper = TilemapHelper(tilemap, scaler)
 
-        objectFactory = ObjectFactory(world, tilemap, scaler)
+        val zone = tilemapHelper.getZone()
+        val cameraStartingPoint = tilemapHelper.getCameraStartingPoint()
+
+        objectFactory = ObjectFactory(world, tilemapHelper)
 
         bow = objectFactory.createBow()
         target = objectFactory.createTarget()
 
-        val zone = objectFactory.getZone()
-
         imul = InputMultiplexer(BowControlListener(zone, scaler, bow, objectFactory), CameraInputProcessor(camera), KeyInputProcessor(camera))
         Gdx.input.inputProcessor = imul
+
+        camera.zoom = 8f
+        camera.position.x = cameraStartingPoint.x
+        camera.position.y = cameraStartingPoint.y
     }
 
 

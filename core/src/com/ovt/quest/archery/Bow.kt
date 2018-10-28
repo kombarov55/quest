@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.ovt.quest.commons.MyAnimation
 
-class Bow(private val animation: MyAnimation, val shape: Rectangle) {
+class Bow(private val animation: MyAnimation, private val shape: Rectangle) {
 
     val center: Vector2 = Vector2(shape.x + shape.width/2, shape.y + shape.height/2)
 
