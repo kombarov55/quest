@@ -3,7 +3,6 @@ package com.ovt.quest.archery
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.maps.MapObject
-import com.badlogic.gdx.maps.objects.PolygonMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
@@ -12,11 +11,10 @@ import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.commons.MyAnimation
 import com.ovt.quest.commons.scale
 
+//TODO: переименовать на связанное с tilemap, или же разделить функциональность на доставание из tilemap и создание объекта
 class ObjectFactory(private val world: World,
                     private val tilemap: TiledMap,
                     private val scaler: Scaler) {
-
-
 
 
     fun createBow(): Bow {
@@ -62,6 +60,15 @@ class ObjectFactory(private val world: World,
 
         rect.scale(scaler.xScale, scaler.yScale)
         return rect
+    }
+
+    fun getCameraStartingPoint(): Vector2 {
+        val mapobj = getObject("camera-starting-point")
+
+        return Vector2(
+                mapobj.properties.get("x", Float::class.java),
+                mapobj.properties.get("y", Float::class.java))
+                .scl(scaler.xScale, scaler.yScale)
     }
 
     fun createArrow(center: Vector2, degrees: Float): Body {
