@@ -15,7 +15,6 @@ class BowControlListener(private val zone: Rectangle, private val scaler: Scaler
         val p = scaler.toWorldCoords(screenX, screenY)
         if (zone.contains(p)) {
             isDragging = true
-            println(true)
             return true
         } else {
             return false
