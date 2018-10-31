@@ -9,12 +9,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.physics.box2d.*
+import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.badlogic.gdx.physics.box2d.World
 import com.ovt.quest.QuestGame
 import com.ovt.quest.archery.box2d.ArcheryContactListener
+import com.ovt.quest.archery.box2d.Collision.ARROW_TYPE
+import com.ovt.quest.archery.box2d.Collision.TARGET_TYPE
+import com.ovt.quest.archery.box2d.getUserDataMap
 import com.ovt.quest.archery.events.Subscriptions
 
 /**
@@ -70,7 +74,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         val subscriptions = Subscriptions(objectFactory)
         subscriptions.makeSubscriptions()
 
-        world.setContactListener(ArcheryContactListener())
+        world.setContactListener(ArcheryContactListener(world))
     }
 
 
@@ -79,6 +83,35 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         world.step(1 / 60f, 6, 2)
+
+        if (Bodies.contact != null) {
+            val contact = Bodies.contact!!
+
+            val type1 = contact.fixtureA.getUserDataMap()["type"]
+            val type2 = contact.fixtureB.getUserDataMap()["type"]
+
+            val arrowFixture =
+                    if (type1 == ARROW_TYPE)
+                        contact.fixtureA else
+                        contact.fixtureB
+
+            val targetFixture =
+                    if (type1 == TARGET_TYPE)
+                        contact.fixtureA else
+                        contact.fixtureB
+
+            arrowFixture.body.type = BodyDef.BodyType.StaticBody
+
+//            val jdef = WeldJointDef()
+//            jdef.bodyA = arrowFixture.body
+//            jdef.bodyB = targetFixture.body
+//
+//            world.createJoint(jdef)
+//
+//            println("arrow and target hit")
+
+            Bodies.contact = null
+        }
 
 //        cameraMovement()
         camera.update()
