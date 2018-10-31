@@ -28,7 +28,6 @@ class BowControlListener(private val zone: Rectangle, private val scaler: Scaler
 
             bow.rotation = angle
             bow.setPower(distance)
-            println("alpha: $angle, distance: $distance")
             return true
         } else {
             return false
@@ -49,6 +48,11 @@ class BowControlListener(private val zone: Rectangle, private val scaler: Scaler
     private fun fireBow() {
         val arrow = objectFactory.createArrow(bow.center, bow.rotation)
         Bodies.arrow = arrow
+
+        val force = 20f
+        val xForce = MathUtils.cos(arrow.angle) * force
+        val yForce = MathUtils.sin(arrow.angle) * force
+        arrow.setLinearVelocity(xForce, yForce)
     }
 
     private fun getDistance(touch: Vector2, bow: Bow): Float {

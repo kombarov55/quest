@@ -34,7 +34,7 @@
   <object id="1" name="bow" x="384.828" y="910.853" width="213.179" height="221.484"/>
   <object id="2" name="target" x="2386.49" y="789.037" width="334.994" height="368.217"/>
   <object id="4" name="arrow" x="527.5" y="979">
-   <polygon points="21,20 64.6667,33 20.1667,42.6667 -137,32"/>
+   <polygon points="21,24.4469 64.6667,33 20.7226,39.3315 -137,32"/>
   </object>
  </objectgroup>
  <objectgroup name="areas">

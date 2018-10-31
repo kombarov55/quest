@@ -62,11 +62,6 @@ class ObjectFactory(private val world: World,
         body.setTransform(body.worldCenter, MathUtils.degreesToRadians * degrees)
         body.angularDamping = 3f
 
-        val force = 20f
-        val xForce = MathUtils.cos(body.angle) * force
-        val yForce = MathUtils.sin(body.angle) * force
-        body.setLinearVelocity(xForce, yForce)
-
         return body
     }
 
