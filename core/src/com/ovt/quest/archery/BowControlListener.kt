@@ -49,7 +49,7 @@ class BowControlListener(private val zone: Rectangle, private val scaler: Scaler
         val arrow = objectFactory.createArrow(bow.center, bow.rotation)
         Bodies.arrow = arrow
 
-        val force = 800f
+        val force = 50f
         val xForce = MathUtils.cos(arrow.angle) * force
         val yForce = MathUtils.sin(arrow.angle) * force
         arrow.setLinearVelocity(xForce, yForce)

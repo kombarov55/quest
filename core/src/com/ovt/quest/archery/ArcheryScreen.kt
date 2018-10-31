@@ -25,7 +25,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
     private val tilemap: TiledMap = TmxMapLoader().load("maps/archery/basic/archery-sample.tmx")
     private lateinit var tilemapRenderer: OrthogonalTiledMapRenderer
     private lateinit var camera: OrthographicCamera
-    private val world: World = World(Vector2(0f, -80f), true)
+    private val world: World = World(Vector2(0f, -10f), true)
     private val box2DDebugRenderer: Box2DDebugRenderer = Box2DDebugRenderer(true, true, true, true, true, true)
 
     private lateinit var objectFactory: ObjectFactory
