@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.QuestGame
+import com.ovt.quest.archery.events.Subscriptions
 
 /**
  * Created by nikolay on 28.03.18.
@@ -63,6 +64,9 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         camera.zoom = 8f
         camera.position.x = cameraStartingPoint.x
         camera.position.y = cameraStartingPoint.y
+
+        val subscriptions = Subscriptions(objectFactory)
+        subscriptions.makeSubscriptions()
     }
 
 

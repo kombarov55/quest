@@ -4,6 +4,8 @@ import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import com.ovt.quest.archery.events.Events
+import com.ovt.quest.archery.events.dto.BowFiredDto
 
 class BowControlListener(private val zone: Rectangle, private val scaler: Scaler, private val bow: Bow, private val objectFactory: ObjectFactory): InputAdapter() {
 
@@ -37,7 +39,7 @@ class BowControlListener(private val zone: Rectangle, private val scaler: Scaler
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (isDragging) {
             isDragging = false
-            fireBow()
+            Events.bowFired.onNext(BowFiredDto(bow.center, bow.rotation, 50f))
             return true
         } else {
             return false
