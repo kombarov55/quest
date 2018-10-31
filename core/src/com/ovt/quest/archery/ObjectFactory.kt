@@ -6,8 +6,10 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
-import com.ovt.quest.archery.box2d.getDataMap
+import com.ovt.quest.archery.box2d.Collision
+import com.ovt.quest.archery.box2d.getFixtureUserData
 import com.ovt.quest.commons.MyAnimation
+import kotlin.experimental.or
 
 //TODO: переименовать на связанное с tilemap, или же разделить функциональность на доставание из tilemap и создание объекта
 class ObjectFactory(private val world: World,
@@ -29,9 +31,19 @@ class ObjectFactory(private val world: World,
     }
 
     fun createTargetCollisionLine(): Body {
-        val vertices = tilemapHelper.getTargetCollisionLine()
+        val bdef = BodyDef()
+        bdef.type = BodyDef.BodyType.StaticBody
+        val body = world.createBody(bdef)
 
-        return verticesArrayToBody(vertices)
+        val vertices = tilemapHelper.getTargetCollisionLine()
+        val fdef = verticesArrayToFdef(vertices)
+        fdef.filter.categoryBits = Collision.TARGET_BITS
+        fdef.filter.maskBits = Collision.ARROW_BITS
+
+        body.createFixture(fdef)
+        body.getFixtureUserData()["type"] = "target"
+
+        return body
     }
 
     private fun rectangleToBody(rect: Rectangle): Body {
@@ -66,11 +78,14 @@ class ObjectFactory(private val world: World,
         fdef.friction = 1f
         fdef.restitution = 0.5f
 
+        fdef.filter.categoryBits = Collision.ARROW_BITS
+        fdef.filter.maskBits = Collision.TARGET_BITS or Collision.GROUND_BITS
+
         body.createFixture(fdef)
         body.setTransform(body.worldCenter, MathUtils.degreesToRadians * degrees)
 
         body.angularDamping = 3f
-        body.getDataMap()["type"] = "arrow"
+        body.getFixtureUserData()["type"] = "arrow"
 
         return body
     }
@@ -90,26 +105,22 @@ class ObjectFactory(private val world: World,
         fdef.density = 1f
         fdef.friction = 1f
         fdef.restitution = 0.5f
+        fdef.filter.categoryBits = Collision.GROUND_BITS
+        fdef.filter.maskBits = Collision.ARROW_BITS
 
         body.createFixture(fdef)
 
         return body
     }
 
-    private fun verticesArrayToBody(vertices: FloatArray): Body {
-        val bdef = BodyDef()
-        bdef.type = BodyDef.BodyType.StaticBody
-        val body = world.createBody(bdef)
-
+    private fun verticesArrayToFdef(vertices: FloatArray): FixtureDef {
         val shape = PolygonShape()
         shape.set(vertices)
 
         val fdef = FixtureDef()
         fdef.shape = shape
 
-        body.createFixture(fdef)
-
-        return body
+        return fdef
     }
 
 }

@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.QuestGame
+import com.ovt.quest.archery.box2d.ArcheryContactListener
 import com.ovt.quest.archery.events.Subscriptions
 
 /**
@@ -66,10 +67,10 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         camera.position.x = cameraStartingPoint.x
         camera.position.y = cameraStartingPoint.y
 
-
-
         val subscriptions = Subscriptions(objectFactory)
         subscriptions.makeSubscriptions()
+
+        world.setContactListener(ArcheryContactListener())
     }
 
 
@@ -79,7 +80,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
         world.step(1 / 60f, 6, 2)
 
-        cameraMovement()
+//        cameraMovement()
         camera.update()
         tilemapRenderer.setView(camera)
         tilemapRenderer.render()

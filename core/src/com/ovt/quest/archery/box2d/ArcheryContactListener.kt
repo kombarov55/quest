@@ -8,7 +8,11 @@ import com.badlogic.gdx.physics.box2d.Manifold
 class ArcheryContactListener : ContactListener {
 
     override fun beginContact(contact: Contact) {
+        val type1 = contact.fixtureA.getUserDataMap()["type"]
+        val type2 = contact.fixtureB.getUserDataMap()["type"]
 
+        println("type1: $type1")
+        println("type2: $type2")
     }
 
     override fun endContact(contact: Contact?) {}
