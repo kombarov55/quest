@@ -23,8 +23,12 @@ import com.ovt.quest.archery.objects.Bow
 import com.ovt.quest.archery.objects.ObjectFactory
 import com.ovt.quest.archery.objects.Target
 import com.ovt.quest.archery.objects.TilemapHelper
-import com.ovt.quest.archery.pl.*
 import com.ovt.quest.archery.pl.CameraMovementType.FOLLOWING_ARROW
+import com.ovt.quest.archery.pl.Scaler
+import com.ovt.quest.archery.pl.listeners.BowControlListener
+import com.ovt.quest.archery.pl.listeners.CameraInputProcessor
+import com.ovt.quest.archery.pl.listeners.KeyInputProcessor
+import com.ovt.quest.archery.pl.listeners.TouchDownListener
 
 /**
  * Created by nikolay on 28.03.18.
