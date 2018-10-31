@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.*
 import com.ovt.quest.QuestGame
 
@@ -71,6 +72,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
         world.step(1 / 60f, 6, 2)
 
+        cameraMovement()
         camera.update()
         tilemapRenderer.setView(camera)
         tilemapRenderer.render()
@@ -80,5 +82,13 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         bow.draw(sb)
         target.draw(sb)
         sb.end()
+    }
+
+    private fun cameraMovement() {
+        val arrow = Bodies.arrow
+
+        if (arrow != null) {
+            camera.position.set(Vector3(arrow.position, 0f))
+        }
     }
 }
