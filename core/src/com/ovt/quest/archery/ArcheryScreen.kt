@@ -18,7 +18,8 @@ import com.ovt.quest.archery.box2d.ArcheryContactListener
 import com.ovt.quest.archery.events.Bodies
 import com.ovt.quest.archery.events.Events
 import com.ovt.quest.archery.events.Subscriptions
-import com.ovt.quest.archery.events.dto.ArrowHitDto
+import com.ovt.quest.archery.events.dto.GroundHitDto
+import com.ovt.quest.archery.events.dto.TargetHitDto
 import com.ovt.quest.archery.objects.Bow
 import com.ovt.quest.archery.objects.ObjectFactory
 import com.ovt.quest.archery.objects.Target
@@ -91,10 +92,16 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
         world.step(1 / 60f, 6, 2)
 
-        if (Bodies.contact != null) {
-            val contact = Bodies.contact!!
-            Events.arrowHit.onNext(ArrowHitDto(contact))
-            Bodies.contact = null
+        if (Bodies.arrowAndTargetContact != null) {
+            val contact = Bodies.arrowAndTargetContact!!
+            Events.targetHit.onNext(TargetHitDto(contact))
+            Bodies.arrowAndTargetContact = null
+        }
+
+        if (Bodies.arrowAndGroundContact != null) {
+            val contact = Bodies.arrowAndGroundContact!!
+            Events.groundHit.onNext(GroundHitDto(contact))
+            Bodies.arrowAndGroundContact = null
         }
 
 //        cameraMovement()

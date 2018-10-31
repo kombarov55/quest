@@ -6,6 +6,9 @@ import com.badlogic.gdx.physics.box2d.Contact
 object Bodies {
 
     var arrow: Body? = null
-    var contact: Contact? = null
+    // Костыли чтобы вызвать прилипание стрелы после world.step
+    var arrowAndTargetContact: Contact? = null
+    var arrowAndGroundContact: Contact? = null
+
 
 }
