@@ -10,24 +10,21 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.ovt.quest.QuestGame
 import com.ovt.quest.archery.box2d.ArcheryContactListener
-import com.ovt.quest.archery.events.Bodies
 import com.ovt.quest.archery.events.Events
 import com.ovt.quest.archery.events.Subscriptions
+import com.ovt.quest.archery.events.Vars
 import com.ovt.quest.archery.events.dto.GroundHitDto
 import com.ovt.quest.archery.events.dto.TargetHitDto
 import com.ovt.quest.archery.objects.Bow
 import com.ovt.quest.archery.objects.ObjectFactory
 import com.ovt.quest.archery.objects.Target
 import com.ovt.quest.archery.objects.TilemapHelper
-import com.ovt.quest.archery.pl.BowControlListener
-import com.ovt.quest.archery.pl.CameraInputProcessor
-import com.ovt.quest.archery.pl.KeyInputProcessor
-import com.ovt.quest.archery.pl.Scaler
+import com.ovt.quest.archery.pl.*
+import com.ovt.quest.archery.pl.CameraMovementType.FOLLOWING_ARROW
 
 /**
  * Created by nikolay on 28.03.18.
@@ -72,7 +69,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         objectFactory.createGround()
         objectFactory.createTargetCollisionLine()
 
-        imul = InputMultiplexer(BowControlListener(zone, scaler, bow, objectFactory), CameraInputProcessor(camera), KeyInputProcessor(camera))
+        imul = InputMultiplexer(TouchDownListener(), BowControlListener(zone, scaler, bow), CameraInputProcessor(camera), KeyInputProcessor(camera))
         Gdx.input.inputProcessor = imul
 
         camera.zoom = 8f
@@ -92,19 +89,19 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
         world.step(1 / 60f, 6, 2)
 
-        if (Bodies.arrowAndTargetContact != null) {
-            val contact = Bodies.arrowAndTargetContact!!
+        if (Vars.arrowAndTargetContact != null) {
+            val contact = Vars.arrowAndTargetContact!!
             Events.targetHit.onNext(TargetHitDto(contact))
-            Bodies.arrowAndTargetContact = null
+            Vars.arrowAndTargetContact = null
         }
 
-        if (Bodies.arrowAndGroundContact != null) {
-            val contact = Bodies.arrowAndGroundContact!!
+        if (Vars.arrowAndGroundContact != null) {
+            val contact = Vars.arrowAndGroundContact!!
             Events.groundHit.onNext(GroundHitDto(contact))
-            Bodies.arrowAndGroundContact = null
+            Vars.arrowAndGroundContact = null
         }
 
-//        cameraMovement()
+        cameraMovement()
         camera.update()
         tilemapRenderer.setView(camera)
         tilemapRenderer.render()
@@ -118,10 +115,8 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
     }
 
     private fun cameraMovement() {
-        val arrow = Bodies.arrow
-
-        if (arrow != null) {
-            camera.position.set(Vector3(arrow.position, 0f))
+        if (Vars.cameraMovementType == FOLLOWING_ARROW) {
+            camera.position.set(Vector2(Vars.arrow!!.position), 0f)
         }
     }
 }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Manifold
 import com.ovt.quest.archery.box2d.Collision.ARROW_TYPE
 import com.ovt.quest.archery.box2d.Collision.GROUND_TYPE
 import com.ovt.quest.archery.box2d.Collision.TARGET_TYPE
-import com.ovt.quest.archery.events.Bodies
+import com.ovt.quest.archery.events.Vars
 
 class ArcheryContactListener : ContactListener {
 
@@ -17,12 +17,12 @@ class ArcheryContactListener : ContactListener {
 
         val arrowAndTarget = (type1 == ARROW_TYPE && type2 == TARGET_TYPE) || (type1 == TARGET_TYPE && type2 == ARROW_TYPE)
         if (arrowAndTarget) {
-            Bodies.arrowAndTargetContact = contact
+            Vars.arrowAndTargetContact = contact
         }
 
         val arrowAndGround = (type1 == GROUND_TYPE && type2 == ARROW_TYPE) || (type1 == ARROW_TYPE && type2 == GROUND_TYPE)
         if (arrowAndGround) {
-            Bodies.arrowAndGroundContact = contact
+            Vars.arrowAndGroundContact = contact
         }
 
     }
