@@ -19,7 +19,16 @@ import com.ovt.quest.archery.box2d.ArcheryContactListener
 import com.ovt.quest.archery.box2d.Collision.ARROW_TYPE
 import com.ovt.quest.archery.box2d.Collision.TARGET_TYPE
 import com.ovt.quest.archery.box2d.getUserDataMap
+import com.ovt.quest.archery.events.Bodies
 import com.ovt.quest.archery.events.Subscriptions
+import com.ovt.quest.archery.objects.Bow
+import com.ovt.quest.archery.objects.ObjectFactory
+import com.ovt.quest.archery.objects.Target
+import com.ovt.quest.archery.objects.TilemapHelper
+import com.ovt.quest.archery.pl.BowControlListener
+import com.ovt.quest.archery.pl.CameraInputProcessor
+import com.ovt.quest.archery.pl.KeyInputProcessor
+import com.ovt.quest.archery.pl.Scaler
 
 /**
  * Created by nikolay on 28.03.18.
@@ -101,14 +110,6 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
                         contact.fixtureB
 
             arrowFixture.body.type = BodyDef.BodyType.StaticBody
-
-//            val jdef = WeldJointDef()
-//            jdef.bodyA = arrowFixture.body
-//            jdef.bodyB = targetFixture.body
-//
-//            world.createJoint(jdef)
-//
-//            println("arrow and target hit")
 
             Bodies.contact = null
         }

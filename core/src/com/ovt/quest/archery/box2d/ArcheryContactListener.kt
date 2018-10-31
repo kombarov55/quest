@@ -1,9 +1,9 @@
 package com.ovt.quest.archery.box2d
 
 import com.badlogic.gdx.physics.box2d.*
-import com.ovt.quest.archery.Bodies
 import com.ovt.quest.archery.box2d.Collision.ARROW_TYPE
 import com.ovt.quest.archery.box2d.Collision.TARGET_TYPE
+import com.ovt.quest.archery.events.Bodies
 
 class ArcheryContactListener(private val world: World) : ContactListener {
 

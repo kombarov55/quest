@@ -1,11 +1,14 @@
-package com.ovt.quest.archery
+package com.ovt.quest.archery.pl
 
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import com.ovt.quest.archery.events.Bodies
 import com.ovt.quest.archery.events.Events
 import com.ovt.quest.archery.events.dto.BowFiredDto
+import com.ovt.quest.archery.objects.Bow
+import com.ovt.quest.archery.objects.ObjectFactory
 
 class BowControlListener(private val zone: Rectangle, private val scaler: Scaler, private val bow: Bow, private val objectFactory: ObjectFactory): InputAdapter() {
 

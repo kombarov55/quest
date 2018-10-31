@@ -1,4 +1,4 @@
-package com.ovt.quest.archery
+package com.ovt.quest.archery.pl
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter

@@ -1,4 +1,4 @@
-package com.ovt.quest.archery
+package com.ovt.quest.archery.events
 
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.Contact

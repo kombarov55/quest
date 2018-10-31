@@ -1,4 +1,4 @@
-package com.ovt.quest.archery
+package com.ovt.quest.archery.objects
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture

@@ -1,4 +1,4 @@
-package com.ovt.quest.archery
+package com.ovt.quest.archery.objects
 
 import com.badlogic.gdx.maps.MapObject
 import com.badlogic.gdx.maps.objects.PolygonMapObject
@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.objects.PolylineMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import com.ovt.quest.archery.pl.Scaler
 import com.ovt.quest.commons.scale
 
 class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {

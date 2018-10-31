@@ -1,9 +1,8 @@
 package com.ovt.quest.archery.events
 
 import com.badlogic.gdx.math.MathUtils
-import com.ovt.quest.archery.Bodies
-import com.ovt.quest.archery.ObjectFactory
 import com.ovt.quest.archery.events.dto.BowFiredDto
+import com.ovt.quest.archery.objects.ObjectFactory
 
 class Subscriptions(private val objectFactory: ObjectFactory) {
 

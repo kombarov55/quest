@@ -1,8 +1,8 @@
-package com.ovt.quest.archery
+package com.ovt.quest.archery.pl
 
-import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.math.Vector3
 
 
 class CameraInputProcessor(private var cam: OrthographicCamera) : InputAdapter() {
