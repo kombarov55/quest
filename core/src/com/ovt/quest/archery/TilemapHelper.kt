@@ -57,17 +57,12 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
         throw RuntimeException("Не найден объект $name в слое $layer")
     }
 
-    private fun mapobjToRectangle(mapObject: MapObject): Rectangle {
-        val rect = Rectangle(
-                mapObject.properties.get("x", Float::class.java),
-                mapObject.properties.get("y", Float::class.java),
-                mapObject.properties.get("width", Float::class.java),
-                mapObject.properties.get("height", Float::class.java)
-        )
-
-
-        return rect
-    }
+    private fun mapobjToRectangle(mapObject: MapObject): Rectangle = Rectangle(
+            mapObject.properties.get("x", Float::class.java),
+            mapObject.properties.get("y", Float::class.java),
+            mapObject.properties.get("width", Float::class.java),
+            mapObject.properties.get("height", Float::class.java)
+    )
 
     companion object {
         private val AREAS_LAYER = "areas"

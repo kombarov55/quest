@@ -12,7 +12,6 @@ import com.ovt.quest.commons.MyAnimation
 class ObjectFactory(private val world: World,
                     private val tilemapHelper: TilemapHelper) {
 
-
     fun createBow(): Bow {
         val r = tilemapHelper.getBowRectangle()
         //TODO: сделать загрузчик текстур
@@ -46,11 +45,8 @@ class ObjectFactory(private val world: World,
         bdef.type = BodyDef.BodyType.DynamicBody
         val body = world.createBody(bdef)
 
-//        val mapobj = getObject("arrow") as PolygonMapObject
-//        val vertices = mapobj.polygon.vertices
-//        val scaledVertices = scaler.toWorldCoords(vertices)
-
-        var vertices = arrayOf(Vector2(-1.4f, 0f), Vector2(0f, -0.1f), Vector2(0.6f, 0f), Vector2(0f, 0.1f))
+        val vertices = tilemapHelper.getArrowVertices()
+//        val vertices = arrayOf(Vector2(-1.4f, 0f), Vector2(0f, -0.1f), Vector2(0.6f, 0f), Vector2(0f, 0.1f))
 //        var vertices = arrayOf(Vector2(-1.4f * 5, 0f), Vector2(0f, -0.1f * 5), Vector2(0.6f * 5, 0f), Vector2(0f, 0.1f * 5))
 
         val shape = PolygonShape()
@@ -64,6 +60,7 @@ class ObjectFactory(private val world: World,
 
         body.createFixture(fdef)
         body.setTransform(body.worldCenter, MathUtils.degreesToRadians * degrees)
+        body.angularDamping = 3f
 
         val force = 20f
         val xForce = MathUtils.cos(body.angle) * force
