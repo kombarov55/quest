@@ -83,7 +83,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         val subscriptions = Subscriptions(objectFactory)
         subscriptions.makeSubscriptions()
 
-        world.setContactListener(ArcheryContactListener(world))
+        world.setContactListener(ArcheryContactListener())
     }
 
 

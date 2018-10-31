@@ -1,11 +1,14 @@
 package com.ovt.quest.archery.box2d
 
-import com.badlogic.gdx.physics.box2d.*
+import com.badlogic.gdx.physics.box2d.Contact
+import com.badlogic.gdx.physics.box2d.ContactImpulse
+import com.badlogic.gdx.physics.box2d.ContactListener
+import com.badlogic.gdx.physics.box2d.Manifold
 import com.ovt.quest.archery.box2d.Collision.ARROW_TYPE
 import com.ovt.quest.archery.box2d.Collision.TARGET_TYPE
 import com.ovt.quest.archery.events.Bodies
 
-class ArcheryContactListener(private val world: World) : ContactListener {
+class ArcheryContactListener : ContactListener {
 
     override fun beginContact(contact: Contact) {
         val type1 = contact.fixtureA.getUserDataMap()["type"]
