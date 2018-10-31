@@ -41,7 +41,7 @@ class ObjectFactory(private val world: World,
         fdef.filter.maskBits = Collision.ARROW_BITS
 
         body.createFixture(fdef)
-        body.getFixtureUserData()["type"] = "target"
+        body.getFixtureUserData()["type"] = Collision.TARGET_TYPE
 
         return body
     }
@@ -85,7 +85,7 @@ class ObjectFactory(private val world: World,
         body.setTransform(body.worldCenter, MathUtils.degreesToRadians * degrees)
 
         body.angularDamping = 3f
-        body.getFixtureUserData()["type"] = "arrow"
+        body.getFixtureUserData()["type"] = Collision.ARROW_TYPE
 
         return body
     }
@@ -109,6 +109,8 @@ class ObjectFactory(private val world: World,
         fdef.filter.maskBits = Collision.ARROW_BITS
 
         body.createFixture(fdef)
+
+        body.getFixtureUserData()["type"] = Collision.GROUND_TYPE
 
         return body
     }
