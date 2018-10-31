@@ -6,5 +6,6 @@ import io.reactivex.subjects.PublishSubject
 object Events {
 
     val bowFired: PublishSubject<BowFiredDto> = PublishSubject.create()
+    val arrowHit: PublishSubject<Unit> = PublishSubject.create()
 
 }
