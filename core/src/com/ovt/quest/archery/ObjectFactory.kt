@@ -65,4 +65,25 @@ class ObjectFactory(private val world: World,
         return body
     }
 
+    fun createGround(): Body {
+        val vertices = tilemapHelper.getGroundVertices()
+
+        val bdef = BodyDef()
+        bdef.type = BodyDef.BodyType.StaticBody
+        val body = world.createBody(bdef)
+
+        val shape = PolygonShape()
+        shape.set(vertices)
+
+        val fdef = FixtureDef()
+        fdef.shape = shape
+        fdef.density = 1f
+        fdef.friction = 0.5f
+        fdef.restitution = 0.5f
+
+        body.createFixture(fdef)
+
+        return body
+    }
+
 }

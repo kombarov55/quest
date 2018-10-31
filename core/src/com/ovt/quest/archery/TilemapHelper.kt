@@ -2,6 +2,7 @@ package com.ovt.quest.archery
 
 import com.badlogic.gdx.maps.MapObject
 import com.badlogic.gdx.maps.objects.PolygonMapObject
+import com.badlogic.gdx.maps.objects.PolylineMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
@@ -50,6 +51,13 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
                 .scl(scaler.xScale, scaler.yScale)
     }
 
+    fun getGroundVertices(): FloatArray {
+        val mapObj = getMapObj(AREAS_LAYER, GROUND) as PolylineMapObject
+        val vertices = mapObj.polyline.transformedVertices
+
+        return scaler.toWorldCoords(vertices)
+    }
+
 
     private fun getMapObj(layer: String, name: String): MapObject = try {
         tilemap.layers[layer].objects[name]
@@ -73,6 +81,7 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
         private val BOW = "bow"
         private val TARGET = "target"
         private val ROTATION_AREA = "rotation-area"
+        private val GROUND = "ground"
     }
 
 }
