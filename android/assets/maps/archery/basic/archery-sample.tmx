@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-up" width="50" height="25" tilewidth="64" tileheight="64" infinite="0" nextobjectid="5">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-up" width="50" height="25" tilewidth="64" tileheight="64" infinite="0" nextobjectid="14">
  <tileset firstgid="1" source="tiles/basic.tsx"/>
  <layer name="background-layer" width="50" height="25">
   <data encoding="csv">
@@ -37,7 +37,10 @@
    <polygon points="21,20 64.6667,33 20.1667,42.6667 -137,32"/>
   </object>
  </objectgroup>
- <objectgroup name="areas" visible="0">
+ <objectgroup name="areas">
   <object id="3" name="rotation-area" x="354.717" y="636.072" width="564.784" height="708.749"/>
+  <object id="11" name="camera-starting-point" x="1190.48" y="891.473">
+   <point/>
+  </object>
  </objectgroup>
 </map>

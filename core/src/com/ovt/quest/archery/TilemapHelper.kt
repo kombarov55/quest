@@ -42,7 +42,7 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
     }
 
     fun getCameraStartingPoint(): Vector2 {
-        val mapObj = getMapObj(OBJECTS_LAYER, CAMERA_STARTING_POINT)
+        val mapObj = getMapObj(AREAS_LAYER, CAMERA_STARTING_POINT)
 
         return Vector2(
                 mapObj.properties.get("x", Float::class.java),
@@ -51,8 +51,11 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
     }
 
 
-
-    private fun getMapObj(layer: String, name: String): MapObject = tilemap.layers[layer].objects[name]
+    private fun getMapObj(layer: String, name: String): MapObject = try {
+        tilemap.layers[layer].objects[name]
+    } catch (e: Exception) {
+        throw RuntimeException("Не найден объект $name в слое $layer")
+    }
 
     private fun mapobjToRectangle(mapObject: MapObject): Rectangle {
         val rect = Rectangle(
