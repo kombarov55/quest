@@ -11,16 +11,14 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.ovt.quest.QuestGame
 import com.ovt.quest.archery.box2d.ArcheryContactListener
-import com.ovt.quest.archery.box2d.Collision.ARROW_TYPE
-import com.ovt.quest.archery.box2d.Collision.TARGET_TYPE
-import com.ovt.quest.archery.box2d.getUserDataMap
 import com.ovt.quest.archery.events.Bodies
+import com.ovt.quest.archery.events.Events
 import com.ovt.quest.archery.events.Subscriptions
+import com.ovt.quest.archery.events.dto.ArrowHitDto
 import com.ovt.quest.archery.objects.Bow
 import com.ovt.quest.archery.objects.ObjectFactory
 import com.ovt.quest.archery.objects.Target
@@ -95,22 +93,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
 
         if (Bodies.contact != null) {
             val contact = Bodies.contact!!
-
-            val type1 = contact.fixtureA.getUserDataMap()["type"]
-            val type2 = contact.fixtureB.getUserDataMap()["type"]
-
-            val arrowFixture =
-                    if (type1 == ARROW_TYPE)
-                        contact.fixtureA else
-                        contact.fixtureB
-
-            val targetFixture =
-                    if (type1 == TARGET_TYPE)
-                        contact.fixtureA else
-                        contact.fixtureB
-
-            arrowFixture.body.type = BodyDef.BodyType.StaticBody
-
+            Events.arrowHit.onNext(ArrowHitDto(contact))
             Bodies.contact = null
         }
 
