@@ -57,6 +57,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         bow = objectFactory.createBow()
         target = objectFactory.createTarget()
         objectFactory.createGround()
+        objectFactory.createTargetCollisionLine()
 
         imul = InputMultiplexer(BowControlListener(zone, scaler, bow, objectFactory), CameraInputProcessor(camera), KeyInputProcessor(camera))
         Gdx.input.inputProcessor = imul
@@ -64,6 +65,8 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         camera.zoom = 8f
         camera.position.x = cameraStartingPoint.x
         camera.position.y = cameraStartingPoint.y
+
+
 
         val subscriptions = Subscriptions(objectFactory)
         subscriptions.makeSubscriptions()
@@ -80,12 +83,13 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         camera.update()
         tilemapRenderer.setView(camera)
         tilemapRenderer.render()
-        box2DDebugRenderer.render(world, camera.combined)
 
         sb.begin()
         bow.draw(sb)
         target.draw(sb)
         sb.end()
+
+        box2DDebugRenderer.render(world, camera.combined)
     }
 
     private fun cameraMovement() {

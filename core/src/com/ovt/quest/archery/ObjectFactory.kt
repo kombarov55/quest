@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
+import com.ovt.quest.archery.box2d.getDataMap
 import com.ovt.quest.commons.MyAnimation
 
 //TODO: переименовать на связанное с tilemap, или же разделить функциональность на доставание из tilemap и создание объекта
@@ -23,7 +24,14 @@ class ObjectFactory(private val world: World,
     fun createTarget(): Target {
         val r = tilemapHelper.getTargetRectangle()
         val t = Texture(Gdx.files.internal("maps/archery/target-rescaled.png"))
+
         return Target(t, r)
+    }
+
+    fun createTargetCollisionLine(): Body {
+        val vertices = tilemapHelper.getTargetCollisionLine()
+
+        return verticesArrayToBody(vertices)
     }
 
     private fun rectangleToBody(rect: Rectangle): Body {
@@ -60,7 +68,9 @@ class ObjectFactory(private val world: World,
 
         body.createFixture(fdef)
         body.setTransform(body.worldCenter, MathUtils.degreesToRadians * degrees)
+
         body.angularDamping = 3f
+        body.getDataMap()["type"] = "arrow"
 
         return body
     }
@@ -80,6 +90,22 @@ class ObjectFactory(private val world: World,
         fdef.density = 1f
         fdef.friction = 1f
         fdef.restitution = 0.5f
+
+        body.createFixture(fdef)
+
+        return body
+    }
+
+    private fun verticesArrayToBody(vertices: FloatArray): Body {
+        val bdef = BodyDef()
+        bdef.type = BodyDef.BodyType.StaticBody
+        val body = world.createBody(bdef)
+
+        val shape = PolygonShape()
+        shape.set(vertices)
+
+        val fdef = FixtureDef()
+        fdef.shape = shape
 
         body.createFixture(fdef)
 

@@ -118,6 +118,7 @@ project(":core") {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         compile group: 'io.kotlintest', name: 'kotlintest', version: '2.0.7'
         compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.12'
+        compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
 
 //        compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.2.30-dev-146'
     }

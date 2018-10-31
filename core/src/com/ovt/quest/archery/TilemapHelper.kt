@@ -58,6 +58,13 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
         return scaler.toWorldCoords(vertices)
     }
 
+    fun getTargetCollisionLine(): FloatArray {
+        val mapObj = getMapObj(AREAS_LAYER, TARGET_COLLISION_LINE) as PolylineMapObject
+        val vertices = mapObj.polyline.transformedVertices
+
+        return scaler.toWorldCoords(vertices)
+    }
+
 
     private fun getMapObj(layer: String, name: String): MapObject = try {
         tilemap.layers[layer].objects[name]
@@ -82,6 +89,7 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
         private val TARGET = "target"
         private val ROTATION_AREA = "rotation-area"
         private val GROUND = "ground"
+        private val TARGET_COLLISION_LINE = "target-collision-line"
     }
 
 }
