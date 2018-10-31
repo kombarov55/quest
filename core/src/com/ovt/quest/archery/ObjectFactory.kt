@@ -55,7 +55,7 @@ class ObjectFactory(private val world: World,
         val fdef = FixtureDef()
         fdef.shape = shape
         fdef.density = 1f
-        fdef.friction = 0.5f
+        fdef.friction = 1f
         fdef.restitution = 0.5f
 
         body.createFixture(fdef)
@@ -78,7 +78,7 @@ class ObjectFactory(private val world: World,
         val fdef = FixtureDef()
         fdef.shape = shape
         fdef.density = 1f
-        fdef.friction = 0.5f
+        fdef.friction = 1f
         fdef.restitution = 0.5f
 
         body.createFixture(fdef)
