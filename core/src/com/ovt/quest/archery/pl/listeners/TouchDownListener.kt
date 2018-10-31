@@ -1,4 +1,4 @@
-package com.ovt.quest.archery.pl
+package com.ovt.quest.archery.pl.listeners
 
 import com.badlogic.gdx.InputAdapter
 import com.ovt.quest.archery.events.Events
