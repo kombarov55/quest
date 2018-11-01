@@ -7,7 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.ovt.quest.archery.pl.Scaler
-import com.ovt.quest.commons.scale
+
 
 class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
 
@@ -15,7 +15,7 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
     fun getBowRectangle(): Rectangle {
         val mapObj = getMapObj(OBJECTS_LAYER, BOW)
         val rect = mapobjToRectangle(mapObj)
-        rect.scale(scaler.xScale, scaler.yScale)
+        scaler.toWorldCoords(rect)
 
         return rect
     }
@@ -23,7 +23,7 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
     fun getTargetRectangle(): Rectangle {
         val mapObj = getMapObj(OBJECTS_LAYER, TARGET)
         val rect = mapobjToRectangle(mapObj)
-        rect.scale(scaler.xScale, scaler.yScale)
+        scaler.toWorldCoords(rect)
 
         return rect
     }
@@ -38,7 +38,7 @@ class TilemapHelper(private val tilemap: TiledMap, private val scaler: Scaler) {
     fun getZone(): Rectangle {
         val mapobj = getMapObj(AREAS_LAYER, ROTATION_AREA)
         val rect = mapobjToRectangle(mapobj)
-        rect.scale(scaler.xScale, scaler.yScale)
+        scaler.toWorldCoords(rect)
 
         return rect
     }

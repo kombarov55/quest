@@ -1,6 +1,7 @@
 package com.ovt.quest.archery.pl
 
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.ovt.quest.commons.unproject
 import com.ovt.quest.three_in_a_row.Vector2
@@ -33,5 +34,14 @@ class Scaler(
         val transformedYVertices = yVertices.map { y -> y * yScale }
 
         return merge(transformedXVertices, transformedYVertices).toFloatArray()
+    }
+
+    fun toWorldCoords(r: Rectangle): Rectangle {
+        r.x = r.x * xScale
+        r.y = r.y * yScale
+        r.width = r.width * xScale
+        r.height = r.height * yScale
+
+        return r
     }
 }
