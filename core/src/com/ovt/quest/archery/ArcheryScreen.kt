@@ -73,7 +73,7 @@ class ArcheryScreen(private val game: QuestGame) : ScreenAdapter() {
         objectFactory.createGround()
         objectFactory.createTargetCollisionLine()
 
-        imul = InputMultiplexer(TouchDownListener(), BowControlListener(zone, scaler, bow), CameraInputProcessor(camera), KeyInputProcessor(camera))
+        imul = InputMultiplexer(TouchDownListener(), BowControlListener(zone, scaler, bow), CameraInputProcessor(camera, scaler), KeyInputProcessor(camera))
         Gdx.input.inputProcessor = imul
 
         camera.zoom = 8f

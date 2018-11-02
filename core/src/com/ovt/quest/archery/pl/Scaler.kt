@@ -7,11 +7,14 @@ import com.ovt.quest.commons.unproject
 import com.ovt.quest.three_in_a_row.Vector2
 import com.ovt.quest.three_in_a_row.merge
 
+/**
+ * Класс, отвечающий за координаты и скалирование между кординатами экрана и мира.
+ */
 class Scaler(
-        worldWidth: Float = 100f,
-        worldHeight: Float = 50f,
-        tilemapWidth: Float = 3200f,
-        tilemapHeight: Float = 1600f,
+        private val worldWidth: Float = 100f,
+        private val worldHeight: Float = 50f,
+        private val tilemapWidth: Float = 3200f,
+        private val tilemapHeight: Float = 1600f,
         val camera: OrthographicCamera
 ) {
     val unitScale = worldHeight/tilemapHeight
@@ -43,5 +46,30 @@ class Scaler(
         r.height = r.height * yScale
 
         return r
+    }
+
+    fun isOob(cam: OrthographicCamera): Boolean {
+        return camera.viewportBottomY() <= 0 || camera.viewportTopY() >= worldHeight ||
+                camera.viewportLeftX() <= 0 || camera.viewportRightX() >= worldWidth
+    }
+
+    /**
+     * Выходит ли камера за границы экрана.
+     *
+     * @param cameraX координаты центра камеры.
+     * @param cameraY координаты центра камеры.
+     * @param zoom приближение камеры.
+     * @param viewportWidth ширина окна камеры.
+     * @param viewportHeight высота окна камеры.
+     * @param worldWidth ширина мира.
+     * @param worldHeight высота мира.
+     */
+    private fun isOob(cameraX: Float, cameraY: Float, zoom: Float, viewportWidth: Float, viewportHeight: Float, worldWidth: Float, worldHeight: Float): Boolean {
+        val isBottomOob = (cameraY / zoom - viewportHeight / 2) <= 0
+        val isTopOob = (cameraY / zoom + viewportHeight / 2) >= worldHeight
+        val isLeftOob = (cameraX / zoom - viewportWidth / 2) <= 0
+        val isRightOob = (cameraX / zoom + viewportWidth / 2) >= worldWidth
+
+        return isBottomOob || isTopOob || isLeftOob || isRightOob
     }
 }
