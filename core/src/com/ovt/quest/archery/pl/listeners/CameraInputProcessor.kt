@@ -27,7 +27,7 @@ class CameraInputProcessor(private var cam: OrthographicCamera, private val scal
         cam.translate(tmp)
 
         if (scaler.isOob(cam)) {
-
+            // translate камеру обратно настолько, насколько она вылезла за границы
         }
         lastTouch.set(screenX.toFloat(), screenY.toFloat(), 0f)
 
@@ -35,6 +35,7 @@ class CameraInputProcessor(private var cam: OrthographicCamera, private val scal
     }
 
     override fun scrolled(amount: Int): Boolean {
+        // Тоже применять oob
         cam.zoom *= if (amount > 0) 1.05f else 0.95f
 
         return false

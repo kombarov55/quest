@@ -49,8 +49,8 @@ class Scaler(
     }
 
     fun isOob(cam: OrthographicCamera): Boolean {
-        return camera.viewportBottomY() <= 0 || camera.viewportTopY() >= worldHeight ||
-                camera.viewportLeftX() <= 0 || camera.viewportRightX() >= worldWidth
+        return cam.viewportBottomY() <= 0 || cam.viewportTopY() >= worldHeight ||
+                cam.viewportLeftX() <= 0 || cam.viewportRightX() >= worldWidth
     }
 
     /**
